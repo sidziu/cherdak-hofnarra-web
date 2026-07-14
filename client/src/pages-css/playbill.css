@@ -1,0 +1,196 @@
+
+.playbill-container {
+    margin-top: 100px; /* Отступ сверху под фиксированную шапку */
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.playbill-title {
+    font-family: "main", sans-serif;
+    font-size: 4rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 40px;
+}
+
+/* Статусные сообщения */
+.playbill-status, .playbill-error {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 40px 0;
+}
+.playbill-error {
+    color: #ff0000;
+}
+
+
+.playbill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; 
+}
+
+
+.play-card {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.play-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+.play-img-container {
+    position: relative;
+    width: 100%; 
+    height: 100%;
+    min-width: 250px;
+    overflow: hidden;
+
+}
+
+.play-img-bg-container {
+    position: relative;
+    width: 30%; /* Картинка занимает 30% ширины карточки */
+    min-width: 250px;
+    overflow: hidden;
+
+}
+
+.play-img-bg {
+    position: absolute;
+    filter: blur(13px) brightness(0.9);
+    width: 100%;
+    height: 100%;
+    object-position: center;
+}
+
+.play-img  {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* Описание спектакля */
+.play-info {
+    padding: 30px;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.play-title-rating {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.play-card-title {
+    font-family: "main", sans-serif;
+    font-size: 28px;
+    color: #1f2937;
+    margin-bottom: 15px;
+}
+
+
+.play-rating {
+    top: 15px;
+    left: 15px;;
+    color: #000000;
+    padding: 6px 6px;
+    font-size: 20px;
+    font-weight: second;
+}
+
+.play-genre, .play-director {
+    font-size: 15px;
+    color: #4b5563;
+    margin-bottom: 8px;
+}
+
+.play-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* Блок с датой, временем и залом */
+.play-event-info {
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.play-date {
+    font-weight: bold;
+    color: #8b0000; /* Выделяем дату цветом занавеса */
+}
+
+/* Кнопка записи */
+.booking-btn {
+    align-self: flex-start; /* Кнопка не растягивается во всю ширину */
+    padding: 12px 24px;
+    background-color: #8b0000; /* Тематический красный */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.booking-btn:hover {
+    background-color: #820000;
+}
+
+.booking-btn.disabled {
+    background-color: rgba(194, 10, 10, 0.82);
+    color: #2475f6;
+    cursor: not-allowed;
+}
+
+/* для мобилок  */
+@media (max-width: 768px) {
+    .play-card {
+        flex-direction: column; /* Картинка сверху, текст снизу */
+    }
+    
+    .play-img-container {
+        width: 100%;
+        height: 300px;
+    }
+
+    .play-img-bg-container {
+        width: 100%;
+        height: 300px;
+    }
+    
+    .play-info {
+        width: 100%;
+    }
+    
+    .booking-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

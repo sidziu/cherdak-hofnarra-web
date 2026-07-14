@@ -1,0 +1,124 @@
+.header-container { 
+    /* Расположение */ 
+    position: fixed;      /* ИСПРАВЛЕНО: Фиксируем плашку на экране */
+    width: 100%; 
+    height: 100px;
+    left: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+    z-index: 1000;        /* Плашка всегда поверх остального */
+
+    /* Оформление */
+    background-color: rgba(255, 255, 255, 0.95); /* Полупрозрачный белый */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);    /* Тень снизу */
+
+    /* Настройка плавности выезда */
+    transition: top 0.4s ease-in-out;
+}
+
+/* Прячем плашку */ 
+.header-container.hidden { 
+    top: -120px; 
+}
+
+/* Показываем плашку */ 
+.header-container.visible { 
+    top: 0; 
+}
+
+/* Наш логотип  */ 
+.logo { 
+    width: 70px;         
+    height: auto;         
+    transition: transform 0.2s ease; 
+}
+
+/* Прыжок вверх при наведении */ 
+.logo:hover { 
+    transform: translateY(-5px); 
+}
+
+/* Ссылка-обертка */ 
+.logo-link { 
+    text-decoration: none; 
+    display: flex;
+    align-items: center;  /* Чтобы логотип стоял ровно по центру */ 
+}
+
+/* Контейнер для нашего заголовка (ИСПРАВЛЕНО) */ 
+.breadcrumb-container { 
+    font-family: "main", sans-serif; 
+    font-size: 35px; 
+    margin-left: 20px; 
+    margin-right: auto;
+    margin-top: 30px;     /* Сохраняем твой старый отступ */ 
+    display: flex; 
+    align-items: center;  /* Выравниваем текст по одной линии */ 
+    gap: 8px;             /* Небольшой пробел в хлебных крошках */ 
+}
+
+/* Сами ссылки (Главная, О нас, Афиша) (ИСПРАВЛЕНО) */ 
+.breadcrumb-link { 
+    color: #9ca3af;
+    text-decoration: none; 
+    font-weight: bold; 
+    display: inline-block; /* ИСПРАВЛЕНО: Обязательно для анимации сдвига */ 
+    transition: color 0.2s ease, transform 0.2s ease; 
+}
+
+.breadcrumb-link.active { 
+    color: #1f2937; 
+}
+
+.breadcrumb-link:hover { 
+    color: #8b0000; 
+    transform: translateY(-5px); 
+}
+
+.breadcrumb-link.active:hover { 
+    color: #1f2937; 
+    transform: none; 
+}
+
+.breadcrumb-link.gray { 
+    color: #9ca3af; 
+}
+
+.breadcrumb-link.gray:hover { 
+    color: #8b0000; 
+    transform: translateY(-5px); 
+}
+
+/* Точка-разделитель в хлебных крошках (ИСПРАВЛЕНО) */ 
+.breadcrumb-separator { 
+    color: #1f2937;
+    font-weight: bold; 
+    cursor: default; 
+    display: inline-block; /* ИСПРАВЛЕНО: Чтобы заработал сдвиг вверх */ 
+    transform: translateY(-8px); /* Поднимаем точку вверх на середину букв */ 
+}
+
+/* Кнопка меню бургер (ИСПРАВЛЕНО) */ 
+.three-palki { 
+    font-size: 50px; 
+    margin-top: 0px;      /* Убрали margin-top: 20px, который пихал её вниз */ 
+    transform: translateY(-4px); /* Слегка приподняли для идеального центра */ 
+    color: #1f2937; 
+    cursor: pointer; 
+    transition: color 0.2s ease, transform 0.2s ease; 
+}
+
+/* Легкий интерактив при наведении на бургер */ 
+.three-palki:hover { 
+    color: #8b0000;       /* Становится красным при наведении */ 
+    transform: translateY(-7px); /* Слегка подпрыгивает вверх */ 
+}
+
+.breadcrumb-link.active.reload-link:hover { 
+    color: #8b0000;               /* Становится красным при наведении */
+    transform: translateY(-5px);  /* Подпрыгивает на 5px вверх */
+}

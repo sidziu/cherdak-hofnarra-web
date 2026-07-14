@@ -1,0 +1,222 @@
+
+
+/* ДЕЯТЕЛЬНОСТЬ НЕЙРОСЕТИ*/ 
+
+/* =======================================
+   ОБЩИЙ КОНТЕЙНЕР ПОДВАЛА
+   ======================================= */
+.footer-container {
+    display: block;
+    width: 100%;
+    background-color: #111111;
+    color: #ffffff;
+    padding: 50px 40px 20px 40px;
+    font-family: Arial, sans-serif;
+    border-top: 1px solid #222222;
+    margin-top: 50px;
+    box-sizing: border-box;
+}
+
+/* СЕТКА ПОДВАЛА (Сделали все 5 колонок идеально одинаковыми по ширине!) */
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Было: 2fr 1fr 1fr 1fr 1.5fr */
+    gap: 40px;
+    align-items: start; /* Выравниваем все блоки по верхнему краю */
+}
+
+.footer-column h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-column p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #aaaaaa;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+/* =======================================
+   ЖИВЫЕ ССЫЛКИ В ПОДВАЛЕ (НАВИГАЦИЯ)
+   ======================================= */
+.footer-link {
+    font-size: 13px;
+    color: #aaaaaa;
+    text-decoration: none;
+    display: inline-block; /* Нужно для анимации подпрыгивания */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Прыжок вверх и подсветка красным при наведении */
+.footer-link:hover {
+    color: #8b0000;
+    transform: translateY(-2px);
+}
+
+/* Активная ссылка (страница, на которой мы стоим прямо сейчас) */
+.footer-link.active {
+    color: #8b0000;
+    font-weight: bold;
+}
+
+/* Старые заглушки (оставим на всякий случай) */
+.footer-link-dummy {
+    font-size: 13px;
+    color: #666666;
+    cursor: default;
+}
+
+.footer-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-link {
+    font-size: 13px;
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: bold;
+}
+
+.social-link:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+.social-logo {
+    width: 100%;
+    max-width: 90px;
+    height: auto;
+    margin-top: 8px;
+    border-radius: 12px;
+}
+
+/* =======================================
+   КОЛОНКА С ЛОГОТИПОМ И СЕКРЕТНАЯ ПАСХАЛКА
+   ======================================= */
+.footer-logo-column {
+    width: 100%;
+    max-width: 90px; 
+    height: auto;
+    border-radius: 12px;
+    cursor: pointer; 
+    margin-top: 30px;    
+
+}
+
+.brick-logo {
+    width: 100%;
+    max-width: 90px; 
+    height: auto;
+    border-radius: 12px;
+    cursor: pointer; 
+    margin-top: 10px;
+}
+
+/* Наш логотип кота */
+.footer-meow-logo {
+    width: 100%;
+    max-width: 130px;
+    height: auto;
+    border-radius: 12px;
+    cursor: pointer; 
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Эффект легкого покачивания при наведении */
+.footer-meow-logo:hover {
+    transform: scale(1.05) rotate(5deg); 
+}
+
+/* Эффект сжатия при клике */
+.footer-meow-logo:active {
+    transform: scale(0.95); 
+}
+
+/* Контейнер для выезжающего сообщения */
+.cat-message-box {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Тоже выравниваем по левому краю */
+    text-align: left;
+    gap: 6px;
+    min-height: 40px; 
+}
+
+/* Текст настроения кота */
+.cat-mood-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #8b0000; 
+    animation: meowAppear 0.3s ease; 
+}
+
+/* Счетчик поглаживаний */
+.pet-counter {
+    font-size: 11px;
+    color: #888888;
+}
+
+.pet-counter strong {
+    color: #8b0000;
+}
+
+/* =======================================
+   НИЖНЯЯ ЧАСТЬ ПОДВАЛА (КОПИРАЙТ)
+   ======================================= */
+.footer-bottom {
+    width: 100%;          /* Растягиваем блок на всю ширину */
+    max-width: 1200px;
+    margin: 30px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid #222222;
+    display: block;       /* Делаем его блочным */
+    text-align: center;   /* Выравниваем содержимое по центру */
+}
+
+.footer-bottom p {
+    font-size: 11px;
+    color: #555555;
+    text-align: center;   /* Явно центрируем сам текст внутри абзаца */
+    width: 100%;
+    margin: 0 auto;       /* Центрируем блок текста */
+}
+
+/* =======================================
+   АДАПТИВНОСТЬ ПОД ТЕЛЕФОНЫ И ПЛАНШЕТЫ
+   ======================================= */
+/* Для планшетов — делим на 2 колонки в ряд */
+@media (max-width: 992px) {
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Для мобилок — всё выстраивается в один столбик */
+@media (max-width: 560px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    .footer-logo-column {
+        margin-top: 20px;
+    }
+}

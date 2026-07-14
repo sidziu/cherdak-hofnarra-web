@@ -1,0 +1,116 @@
+.archive-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 40px 60px 40px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #1f2937;
+    text-align: left;
+}
+
+.archive-title {
+    font-family: "main", sans-serif;
+    font-size: 50px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #1f2937;
+    padding-bottom: 15px;
+}
+
+.archive-status, .archive-error {
+    font-family: "second", serif;
+    font-size: 20px;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.archive-error {
+    color: #8b0000;
+}
+
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.archive-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    box-sizing: border-box;
+    border-radius: 0; /* Строгий ровный угол */
+}
+
+.archive-img-container {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+}
+
+.archive-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transition: filter 0.3s ease;
+}
+
+.archive-card:hover .archive-card-img {
+    filter: brightness(0.8);
+}
+
+.archive-card-info {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.archive-card-genre {
+    font-family: "second", serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #8b0000;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.archive-card-title {
+    font-family: "main", sans-serif;
+    font-size: 28px;
+    margin: 0;
+    color: #1f2937;
+}
+
+.archive-card-director {
+    font-family: "second", serif;
+    font-size: 18px;
+    color: #4b5563;
+    margin: 0 0 15px 0;
+}
+
+.archive-more-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background-color: #1f2937;
+    color: #ffffff;
+    text-decoration: none;
+    text-align: center;
+    font-family: "second", serif;
+    font-size: 16px;
+    font-weight: bold;
+    box-sizing: border-box;
+    border-radius: 0;
+    transition: background-color 0.2s ease;
+}
+
+.archive-more-btn:hover {
+    background-color: #8b0000;
+}

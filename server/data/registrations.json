@@ -1,0 +1,45 @@
+[
+  {
+    "boundEventID": 1782867165541,
+    "individual_ID": 1782930768447,
+    "surname": "Фамилия1",
+    "firstName": "Имя1",
+    "lastName": "Отчество1",
+    "phoneNumber": "+79005002010"
+  },
+  {
+    "boundEventID": 1782867165541,
+    "individual_ID": 1782930787653,
+    "surname": "Фамилия2",
+    "firstName": "Имя2",
+    "lastName": "Отчество2",
+    "email": "example@mail.ru"
+  },
+  {
+    "boundEventID": 1782867165541,
+    "individual_ID": 1782969466319,
+    "surname": "Тян",
+    "firstName": "Дмитрий",
+    "lastName": "Владимирович",
+    "email": "sidziu16may@gmail.com",
+    "phoneNumber": "+79911161038"
+  },
+  {
+    "boundEventID": 1782867165541,
+    "individual_ID": 1782999571278,
+    "surname": "ы",
+    "firstName": "ы",
+    "lastName": "ы",
+    "email": "ajdjas@mail.com",
+    "phoneNumber": "ыфвфывфывфыв"
+  },
+  {
+    "boundEventID": 1782994954152,
+    "individual_ID": 1782999605139,
+    "surname": "ы",
+    "firstName": "ы",
+    "lastName": "ы",
+    "email": "mail@mail.ru",
+    "phoneNumber": "89505256959"
+  }
+]

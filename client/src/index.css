@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'main'; 
+  src: url('./assets/fonts/newcyrillicgoth.ttf') format('truetype'); 
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'second'; 
+  src: url('./assets/fonts/CAMBRIAI.ttf') format('truetype'); 
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* Cброс отступов */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Базовые настройки страницы */
+html, body {
+  width: 100%;
+  min-height: 100vh; 
+  background-color: #ffffff; 
+  overflow-x: hidden;
+  
+}
+
+/* Ограничение контейнера React */
+#root {
+  width: 100%;
+  min-height: 100vh; 
+}
+
+
+

@@ -1,0 +1,221 @@
+/* ОСНОВНОЙ КОНТЕЙНЕР */
+.admin-container {
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    color: #000000;
+    background-color: #ffffff;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* ВЕРХНЯЯ ПАНЕЛЬ НАВИГАЦИИ */
+.admin-top-nav {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 8px 20px;
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.admin-top-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.admin-top-nav a:hover {
+    text-decoration: underline;
+}
+
+.admin-top-nav a.active {
+    background-color: #be1111;
+    color: #333;
+    padding: 2px 6px;
+    border-radius: 2px;
+}
+
+/* ПОДМЕНЮ */
+.admin-sub-nav {
+    background-color: #ffffff;
+    padding: 8px 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ffffff;
+}
+
+.admin-sub-nav input[type="text"] {
+    border: 1px solid #000000;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+/* ОСНОВНОЕ СОДЕРЖИМОЕ */
+.admin-content {
+    padding: 20px 40px;
+}
+
+.admin-page-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000000;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+/* ВКЛАДКИ */
+.admin-tabs {
+    display: flex;
+    margin-bottom: 0;
+}
+
+.admin-tab {
+    padding: 6px 15px;
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    border: 1px solid #000000;
+    border-bottom: none;
+    cursor: pointer;
+    margin-right: 2px;
+}
+
+.admin-tab:hover {
+    background-color: #3b607e;
+}
+
+.admin-tab.active {
+    background-color: #ad0909;
+    border-color: #ad0909;
+    color: #000000;
+}
+
+/* ТАБЛИЦЫ */
+.admin-table-wrapper {
+    margin-bottom: 40px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #000000;
+}
+
+.admin-table th {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+    padding: 8px 12px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 2px solid #ffffff;
+}
+
+.admin-table td {
+    padding: 8px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+/* Чередующиеся цвета строк */
+.admin-table tr:nth-child(even) td {
+    background-color: #ffffff;
+}
+.admin-table tr:nth-child(odd) td {
+    background-color: #FFFFFF;
+}
+
+/* Ссылки/Имена в таблице */
+.admin-table td.highlight-text {
+    color: #4A6782;
+    font-weight: bold;
+}
+
+/* Изображения в таблице */
+.admin-table img {
+    height: 40px;
+    width: auto;
+    border: 1px solid #ffffff;
+}
+
+/* -- ФОРМЫ И ЭЛЕМЕНТЫ УПРАВЛЕНИЯ -- */
+.admin-form-section {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.admin-form-group {
+    margin-bottom: 15px;
+}
+
+.admin-form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #000000;
+}
+
+.admin-input, 
+.admin-textarea {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #9CA1A6;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.admin-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Кнопки */
+.admin-btn {
+    padding: 6px 15px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+}
+
+.admin-btn:hover {
+    background-color: #000000;
+}
+
+.admin-btn-primary {
+    background-color: #000000;
+    color: rgb(227, 227, 227);
+    border-color: #ffffff;
+}
+
+.admin-btn-primary:hover {
+    background-color: #000000;
+}
+
+.admin-btn-danger {
+    background-color: #7c0b0b;
+    color: white;
+    border-color: #80100c;
+}
+
+.admin-btn-danger:hover {
+    background-color: #000000;
+}
+
+.admin-btn-action {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-right: 5px;
+}

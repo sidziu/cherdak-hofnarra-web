@@ -1,0 +1,134 @@
+/* Темный полупрозрачный фон на весь экран */
+.booking-menu-overlay {
+    position: fixed;      /* Фиксируем поверх всего */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); /* Затемнение */
+    display: flex;
+    justify-content: center; /* Центрируем форму по горизонтали */
+    align-items: center;     /* Центрируем форму по вертикали */
+    z-index: 3000;           /* Самый высокий приоритет отображения */
+    backdrop-filter: blur(4px); /* Легкое размытие заднего фона */
+}
+
+/* Белое окошко формы */
+.booking-menu-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    position: relative;
+    box-sizing: border-box;
+    color: #1f2937;
+}
+
+/* Заголовок формы */
+.booking-menu-content h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-family: "main", sans-serif;
+    text-align: center;
+}
+
+/* Кнопка закрытия (крестик) */
+.menu-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+
+.menu-close-btn:hover {
+    color: #1f2937;
+}
+
+/* Контейнер полей ввода */
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #fff;
+    color: #1f2937;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #8b0000;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #8b0000;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #6a0000;
+}
+
+.submit-btn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Сообщения об ошибках и успехе */
+.status-error {
+    color: #dc2626;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+
+.status-success {
+    color: #16a34a;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

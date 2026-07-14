@@ -1,0 +1,37 @@
+[
+  {
+    "eventID": 1782867149426,
+    "performanceReferenceID": 1782866645607,
+    "activestate": false,
+    "scene": "Главный зал, расположение Б",
+    "date": "2025-11-13T16:00:00.000Z"
+  },
+  {
+    "eventID": 1782867165541,
+    "performanceReferenceID": 1782866500212,
+    "activestate": false,
+    "scene": "Главный зал, расположение А",
+    "date": "2026-06-25T16:00:00.000Z"
+  },
+  {
+    "eventID": 1782867184418,
+    "performanceReferenceID": 1782866500212,
+    "activestate": false,
+    "scene": "Главный зал, расположение А",
+    "date": "2026-06-28T16:00:00.000Z"
+  },
+  {
+    "eventID": 1782867223866,
+    "performanceReferenceID": 1782866645607,
+    "activestate": false,
+    "scene": "Главный зал, расположение Б",
+    "date": "2025-12-07T16:00:00.000Z"
+  },
+  {
+    "eventID": 1782994954152,
+    "performanceReferenceID": 1782994919247,
+    "activestate": false,
+    "scene": "ГАСУ",
+    "date": "2026-07-03T12:22:00.000Z"
+  }
+]
