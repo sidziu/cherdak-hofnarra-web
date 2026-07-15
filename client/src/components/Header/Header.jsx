@@ -5,8 +5,8 @@ import { NavLink, useLocation } from "react-router-dom";
 
 // Импорт логотипов
 // * Импорт с точками запомнить.
-import logoDefault from "../../assets/new_logo_withouttext.png"; // Обычный
-import logoHover from "../../assets/new_logo.png"; // При наведении
+import logoDefault from "../../assets/logotypes/new-logo-withouttext.png"; // Обычный
+import logoHover from "../../assets/logotypes/new-logo.png"; // При наведении
 
 import Sidebar from "../Sidebar/Sidebar.jsx";
 

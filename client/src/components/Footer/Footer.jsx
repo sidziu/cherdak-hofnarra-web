@@ -9,9 +9,9 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 // Импортируем твой логотип-кота
-import meowLogo from "../../assets/logo-myau-darkred.png"; 
-import brick from "../../assets/brick-logo-1.png";
-import newLogo from "../../assets/new_logo_footer.png"; 
+import meowLogo from "../../assets/logotypes/logo-myau-darkred-white.png"; 
+import brick from "../../assets/logotypes/brick-logo-white.png";
+import newLogo from "../../assets/logotypes/new-logo-white.png"; 
 
 function Footer() {
     // ==========================================
