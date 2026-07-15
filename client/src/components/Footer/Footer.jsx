@@ -3,15 +3,15 @@
 
 // ДЕЯТЕЛЬНОСТЬ НЕЙРОСЕТИ
 
-
+import './Footer.css';
 
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 // Импортируем твой логотип-кота
-import meowLogo from "../assets/logo-myau-darkred.png"; 
-import brick from "../assets/brick-logo-1.png";
-import newLogo from "../assets/new_logo_footer.png"; 
+import meowLogo from "../../assets/logo-myau-darkred.png"; 
+import brick from "../../assets/brick-logo-1.png";
+import newLogo from "../../assets/new_logo_footer.png"; 
 
 function Footer() {
     // ==========================================

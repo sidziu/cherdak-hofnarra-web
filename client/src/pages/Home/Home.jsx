@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import "../pages-css/home.css"; 
+import "./Home.css"; 
 
 // Импорты компонентов и ресурсов (сохранены из твоего файла)
-import logo from "../assets/new_logo_withouttext.png";
-import heroBg from "../assets/bg1.jpeg";
-import BookingMenu from "../components/booking-menu";
+import logo from "../../assets/new_logo_withouttext.png";
+import heroBg from "../../assets/bg1.jpeg";
+import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3001").replace(/\/$/, "");
 

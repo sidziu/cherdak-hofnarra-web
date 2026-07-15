@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "../pages-css/playbill.css";
+import "./Playbill.css";
 
-import BookingMenu from "../components/booking-menu"; 
+import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; 
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 

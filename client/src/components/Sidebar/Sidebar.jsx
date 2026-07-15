@@ -5,8 +5,8 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom"; // Для переходов по страницам
-import "../components-css/sidebar.css"; // Подключаем стили, которые создадим на следующем шаге
-import gasuLogo from "../assets/gasu-logo-chb.png";
+import "./Sidebar.css"; // Подключаем стили, которые создадим на следующем шаге
+import gasuLogo from "../../assets/gasu-logo-chb.png";
 
 // В скобках мы принимаем два "пропса" (настройки) от родителя (шапки):
 // isOpen - открыто меню сейчас или нет (true/false)

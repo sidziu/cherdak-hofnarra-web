@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import "../pages-css/archive-detail.css";
+import "./ArchiveDetail.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 

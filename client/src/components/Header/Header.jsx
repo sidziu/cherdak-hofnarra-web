@@ -1,13 +1,14 @@
 // ИЗМЕНЕНО ДЕЯТЕЛЬНОСТЬЮ ПУТЁМ ДЕЯТЕЛЬНОСТИ НЕЙРОСЕТИ
 import { useState, useEffect } from "react"; 
-import "../components-css/header.css"; 
+import "./Header.css"; 
 import { NavLink, useLocation } from "react-router-dom";
 
 // Импорт логотипов
-import logoDefault from "../assets/new_logo_withouttext.png"; // Обычный
-import logoHover from "../assets/new_logo.png"; // При наведении
+// * Импорт с точками запомнить.
+import logoDefault from "../../assets/new_logo_withouttext.png"; // Обычный
+import logoHover from "../../assets/new_logo.png"; // При наведении
 
-import Sidebar from "./sidebar.jsx";
+import Sidebar from "../Sidebar/Sidebar.jsx";
 
 function Header() { 
     const location = useLocation(); 

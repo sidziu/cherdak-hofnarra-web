@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import '../pages-css/admin.css';
+import './Admin.css';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api` || "http://localhost:3001";
 
