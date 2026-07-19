@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Playbill.css";
+import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; 
 
@@ -18,50 +19,16 @@ function Playbill() {
     useEffect(() => {
         const controller = new AbortController();
 
-        async function fetchPlaybill() {
+
+        async function loadData() {
             try {
                 setLoading(true);
                 setError("");
 
-                const response = await fetch(`${API_URL}/api/performances`, { 
-                    signal: controller.signal 
-                });
-
-                if (!response.ok) {
-                    throw new Error("Не удалось загрузить афишу спектаклей");
-                }
-
-                const data = await response.json();
+                const { playbill, rawPerformances } = await API.getPlaybill(controller.signal);
                 
-                setRawPerformances(data);
-
-                const flatPlaybill = [];
-                data.forEach((perf) => {
-                    const eventsList = perf.performances;
-
-                    if (eventsList && Array.isArray(eventsList)) {
-                        eventsList.forEach((event) => {
-                                flatPlaybill.push({
-                                    id: event.eventID, 
-                                    title: perf.title,
-                                    genre: perf.genre,
-                                    director: perf.director,
-                                    description: perf.description,
-                                    duration: perf.duration,
-                                    rating: perf.rating,
-                                    image: perf.imageUrl ? perf.imageUrl.split("/").pop() : "",
-                                    scene: event.scene,
-                                    activestate: event.activestate,
-                                    date: Array.isArray(event.date) ? event.date[0] : event.date
-                                });
-                        });
-                    }
-                });
-
-                // Сортируем показы по дате (от ближайших к поздним), чтобы афиша выглядела логично
-                flatPlaybill.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                setPlaybill(flatPlaybill);
+                setPlaybill(playbill);
+                setRawPerformances(rawPerformances);
             } catch (err) {
                 if (err.name !== "AbortError") {
                     setError(err.message);
@@ -71,24 +38,15 @@ function Playbill() {
             }
         }
 
-        fetchPlaybill();
+        loadData();
 
         return () => {
             controller.abort();
         };
     }, []);
 
-    const formatPlaybillDate = (isoString) => {
-        if (!isoString) return "";
-        const dateObj = new Date(isoString);
-        return dateObj.toLocaleDateString("ru-RU", {
-            day: "numeric",
-            month: "long",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    };
 
+    
     const handleOpenBooking = (eventId) => {
         setBookingEventId(eventId);
         setIsBookingOpen(true);
@@ -116,13 +74,13 @@ function Playbill() {
                         
                         <div className="play-img-bg-container">
                             <img 
-                                src={`${API_URL}/images/events/${play.image}`} 
+                                src={play.image} 
                                 className="play-img-bg"
                                 alt="" 
                             />
                             <div className="play-img-container">
                                 <img 
-                                    src={`${API_URL}/images/events/${play.image}`} 
+                                    src={play.image} 
                                     alt={play.title} 
                                     className="play-img" 
                                 />
@@ -141,7 +99,7 @@ function Playbill() {
                             <div className="play-event-info">
                                 <span>📍 {play.scene} </span>
                                 <span>⏱ {play.duration} мин. </span>
-                                <span className="play-date"> {formatPlaybillDate(play.date)}</span>
+                                <span className="play-date"> {play.date}</span>
                             </div>
 
                             {play.activestate ? (
@@ -164,7 +122,7 @@ function Playbill() {
                 isOpen={isBookingOpen} 
                 onClose={handleCloseBooking} 
                 performances={rawPerformances}
-                initialEventId={bookingEventId}
+                initialEventIsd={bookingEventId}
             />
 
         </div>
