@@ -55,7 +55,7 @@ export const API = {
         });
 
         //*Записать как работает
-        flatPlaybill.sort((a, b) => new Date(a.rawDate) - new Date(b.rawDate));
+        flatPlaybill.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
 
         return {
             playbill: flatPlaybill, // Сами отсортированные данные афиши
