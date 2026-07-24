@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import "./BookingMenu.css"; 
 
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3001").replace(/\/$/, "");
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001"
 
 function BookingMenu({ 
     isOpen, 
     onClose, 
-    performances = [], // Пропсы по умолчанию
+    performances = [],
     initialPerformanceId = null, 
     initialEventId = null 
 }) {

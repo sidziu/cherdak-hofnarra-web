@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Playbill.css";
-import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
+import { API } from '../../api/Playbill.js'; // Импортируем обьект API с функциями для запросов на сервер
 
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; 
 
@@ -10,14 +10,13 @@ function Playbill() {
     const [rawPerformances, setRawPerformances] = useState([]); // Сохраняем сырые данные для меню
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [bookingEventId, setBookingEventId] = useState(null);
+    const [bookingPerformanceId, setBookingPerformanceId] = useState(null);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        //*Написать в конспект логику работы AbortController() (страница - Обьяснение(Playbill.jsx))
         const controller = new AbortController();
-
 
         async function loadData() {
             try {
@@ -47,13 +46,15 @@ function Playbill() {
 
     // Функция для перключения состояни панели бронирования, то есть при срабатвыание панель открроется/покажется
     // +Стейт с eventId поможет октрыть панель с правильно выбранным событием, например, если пользователь тыкнет по карточке со спектаклем
-    const handleOpenBooking = (eventId) => {
-        setBookingEventId(eventId);
+    const openBooking = (evId=null, perfId=null) => { // null - дефолтное значние, на случай если ничего не передано
+        setBookingEventId(evId);
+        setBookingPerformanceId(perfId);
         setIsBookingOpen(true);
     };
     // Функция для закрытия панели и сброса id для последующих открытий 
-    const handleCloseBooking = () => {
+    const closeBooking = () => {
         setIsBookingOpen(false);
+        setBookingPerformanceId(null);
         setBookingEventId(null); // Сбрасываем выбранный ID
     };
 
@@ -78,7 +79,7 @@ function Playbill() {
                 {playbill.map((play) => (
                     // Записать отдельно key (логический обьект из React)
                     // Контейнер карточки события
-                    <div key={play.id} className="play-card">
+                    <div key={play.eventId} className="play-card">
 
                         {/* Контейнер для левой части карточки с постером */}
                         <div className="play-img-bg-container">
@@ -126,7 +127,7 @@ function Playbill() {
                             {play.activestate ? (
                                 <button 
                                     className="booking-btn" 
-                                    onClick={() => handleOpenBooking(play.id)}
+                                    onClick={() => openBooking(play.eventId, play.performanceId)} // Передаём данные выбранного события
                                 >
                                     Записаться на показ
                                 </button>
@@ -141,10 +142,11 @@ function Playbill() {
 
             <BookingMenu
             // Стейты сверху
-            isOpen={isBookingOpen}           // Передаем текущее состояние (открыто/закрыто)
-            onClose={handleCloseBooking}     // Передаем функцию закрытия внутрь формы
-            performances={rawPerformances}   // Даем форме все данные о спектаклях
-            initialEventIsd={bookingEventId} // Говорим форме, какой ID мы выбрали
+            isOpen={isBookingOpen}                      // Передаем текущее состояние (открыто/закрыто)
+            onClose={closeBooking}                            // Передаем функцию закрытия внутрь формы
+            performances={rawPerformances}                        // Даем форме все данные о спектаклях
+            initialEventId={bookingEventId}               // Говорим форме, какой ID события мы выбрали
+            initialPerformanceId={bookingPerformanceId} // Говорим форме, какой ID спектакля мы выбрали
             />
 
         </div>

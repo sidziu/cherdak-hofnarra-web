@@ -28,10 +28,10 @@
     "date": "2025-12-07T16:00:00.000Z"
   },
   {
-    "eventID": 1782994954152,
-    "performanceReferenceID": 1782994919247,
-    "activestate": false,
-    "scene": "ГАСУ",
-    "date": "2026-07-03T12:22:00.000Z"
+    "eventID": 1784760643653,
+    "performanceReferenceID": 1784760559748,
+    "activestate": true,
+    "scene": "к.418",
+    "date": "2418-02-15T01:00:00.000Z"
   }
 ]
