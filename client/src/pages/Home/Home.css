@@ -42,9 +42,10 @@
 }
 
 .title {
-    font-size: 10rem;
+    font-size: clamp(5rem, 15vw, 10rem);
     margin: 0;
     font-weight: 700;
+    line-height: 1;
 }
 
 .subtitle {
