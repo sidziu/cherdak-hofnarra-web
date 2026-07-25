@@ -33,5 +33,19 @@
     "activestate": true,
     "scene": "к.418",
     "date": "2418-02-15T01:00:00.000Z"
+  },
+  {
+    "eventID": 1784979332783,
+    "performanceReferenceID": 1784760559748,
+    "activestate": true,
+    "scene": "к.418",
+    "date": "2418-05-15T21:00:00.000Z"
+  },
+  {
+    "eventID": 1784979387024,
+    "performanceReferenceID": 1784979256668,
+    "activestate": true,
+    "scene": "к.418(2)",
+    "date": "2812-02-14T10:13:00.000Z"
   }
 ]

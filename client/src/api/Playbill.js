@@ -50,6 +50,7 @@ export const API = {
                         date: formatPlaybillDate(event.date), // Вызываем функцию для конвертации даты в удобный формат
                         rawDate: event.date, // Сохраняем исходную дату для сортировки событий ( ниже )
                     });
+                    //console.log("rawPerformances", data); // Для проверки, что мы получаем с сервера
                 });
             }
         });

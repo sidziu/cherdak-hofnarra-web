@@ -60,7 +60,6 @@ function Playbill() {
 
 
     return (
-        // Написать в конспект отдельным разделом все: <div></div>, <p></p> и другие все возможные виды
         <div className="playbill-container">
             <h1 className="playbill-title">Афиша</h1>
 
@@ -73,11 +72,9 @@ function Playbill() {
                     <p className="playbill-status">В данный момент нет запланированных показов.</p>
                 )}
                 
-                {/* Записать в конспект логику метода .map
-                Вкратце: Для каждого элемента в массиве (play в данном случая временное назвнание каждого элемента)
-                Отрисуй : <div****></div>*/}
+            
                 {playbill.map((play) => (
-                    // Записать отдельно key (логический обьект из React)
+
                     // Контейнер карточки события
                     <div key={play.eventId} className="play-card">
 
@@ -144,7 +141,7 @@ function Playbill() {
             // Стейты сверху
             isOpen={isBookingOpen}                      // Передаем текущее состояние (открыто/закрыто)
             onClose={closeBooking}                            // Передаем функцию закрытия внутрь формы
-            performances={rawPerformances}                        // Даем форме все данные о спектаклях
+            rawPerformances={rawPerformances}                     // Даем форме все данные о спектаклях
             initialEventId={bookingEventId}               // Говорим форме, какой ID события мы выбрали
             initialPerformanceId={bookingPerformanceId} // Говорим форме, какой ID спектакля мы выбрали
             />

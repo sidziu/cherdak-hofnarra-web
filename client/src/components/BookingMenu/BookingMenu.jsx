@@ -4,9 +4,10 @@ import "./BookingMenu.css";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001"
 
 function BookingMenu({ 
+    // Передаем пропсы для работы с родительским компонентом
     isOpen, 
     onClose, 
-    performances = [],
+    rawPerformances = [],
     initialPerformanceId = null, 
     initialEventId = null 
 }) {
@@ -25,6 +26,7 @@ function BookingMenu({
     // Сбрасываем форму и устанавливаем начальные ID при открытии окна
     // Делаем это. с помощью пропса isOpen (хватит use Effect, тут не нужно обновление при каждом рендере)
     useEffect(() => {
+        // Сбрасываем форму и устанавливаем начальные ID при открытии окна
         if (isOpen) {
             setName("");
             setPhone("");
@@ -33,38 +35,41 @@ function BookingMenu({
             setIsSuccess(false);
             setSelectedPerformanceId(initialPerformanceId ? String(initialPerformanceId) : "");
             setSelectedEventId(initialEventId ? String(initialEventId) : "");
+
+
+            // При открытом окне, кнопка escape закрывает форму
+            const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                onClose();
+            }};
+            window.addEventListener("keydown", handleKeyDown);
+            return () => window.removeEventListener("keydown", handleKeyDown);
         }
+        
     }, [isOpen, initialPerformanceId, initialEventId]);
+    // Пропсы в [] - условие чтобы useEffect срабатывал при их изменении, то есть если пользователь откроет форму, закроет, потом снова откроет, то данные будут сбрасываться и устанавливаться заново
 
-    // Атоматический поиск спектакля, если передан только ID сеанса 
-    useEffect(() => {
-        if (isOpen && initialEventId && !initialPerformanceId) {
-            const foundPerf = performances.find(perf => 
-                perf.performances?.some(event => String(event.eventID) === String(initialEventId))
-            );
-            if (foundPerf) {
-                setSelectedPerformanceId(String(foundPerf.id));
-            }
-        }
-    }, [isOpen, initialEventId, initialPerformanceId, performances]);
-
-    if (!isOpen) return null; // то есть если окно закрыто, ничего не выводим
+    
+    if (!isOpen) return null; // то есть если окно закрыто, то и код ничего не возвращает.
 
     // Находим выбранный спектакль в массиве
-    // Сделано в виде "цикла", с неивестной p
-    const selectedPerf = performances.find(p => String(p.id) === String(selectedPerformanceId));
+    // Сделано в виде "цикла", с неивестной "x"
+    const selectedPerf = rawPerformances.find(x => String(x.id) === String(selectedPerformanceId));
 
-
+    // Получаем список событий для выбранного спектакля, (да, они почему то по пути performances, мб я не так понял)
     const rawEvents = selectedPerf && Array.isArray(selectedPerf.performances) 
         ? selectedPerf.performances 
         : [];
 
-    // ТЕСТОВЫЙ РЕЖИМ: Отображаем все сеансы (даже если у них "activestate": false)
-    // const availableEvents = rawEvents;
+    // Фильтруем события, оставляя только активные. Вообще оно не нужно, так как кнопка записи на неактивные события не отображается
+    // И выбрать другое невозможно, но пущай будет
     const availableEvents = rawEvents.filter(event => event.activestate === true);
+    const availablePerformances = rawPerformances.filter(perf => perf.performances.some(event => event.activestate === true)
+    );
 
 
-    // Форматирование даты для адекватного вывода
+
+    // Функкия для конвертанции даты в удобный формат
     const formatEventDate = (dateVal) => {
         const actualDate = Array.isArray(dateVal) ? dateVal[0] : dateVal;
         const date = new Date(actualDate);
@@ -76,6 +81,7 @@ function BookingMenu({
         });
     };
 
+    
     // Отправка формы на сервер
     const handleSubmit = async (e) => {
         e.preventDefault(); // Нужно чтоб выполнение дождалось следующих условий, 
@@ -169,7 +175,6 @@ function BookingMenu({
                             />
                         </div>
 
-                        {/*ПОЧТА */}
                         <div className="form-group">
                             <label>Электронная почта (Email):</label>
                             <input 
@@ -190,11 +195,11 @@ function BookingMenu({
                                     setSelectedPerformanceId(e.target.value);
                                     setSelectedEventId(""); 
                                 }}
-                                disabled={initialPerformanceId !== null} 
+                                //disabled={initialPerformanceId !== null} 
                                 required
                             >
                                 <option value="">-- Выберите спектакль --</option>
-                                {performances.map(perf => (
+                                {availablePerformances.map(perf => (
                                     <option key={perf.id} value={perf.id}>
                                         {perf.title} ({perf.genre})
                                     </option>
@@ -208,7 +213,7 @@ function BookingMenu({
                             <select 
                                 value={selectedEventId}
                                 onChange={(e) => setSelectedEventId(e.target.value)}
-                                disabled={initialEventId !== null} 
+                                //disabled={initialEventId !== null} 
                                 required
                             >
                                 <option value="">
