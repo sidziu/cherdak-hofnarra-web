@@ -58,6 +58,60 @@ function Playbill() {
         setBookingEventId(null); // Сбрасываем выбранный ID
     };
 
+    // Разделяем афишу на актуальные и прошедшие показы
+    const activePlays = playbill.filter(p => p.activestate);
+    const pastPlays = playbill.filter(p => !p.activestate);
+
+    // Функция для рендера карточки спектакля
+    const renderPlayCard = (play) => (
+        <div key={play.eventId} className="play-card">
+
+            <div className="play-img-bg-container">
+                <img 
+                    src={play.image} 
+                    className="play-img-bg"
+                    alt="" 
+                />
+                <div className="play-img-container">
+                    <img 
+                        src={play.image} 
+                        alt={play.title} 
+                        className="play-img" 
+                    />
+                </div>
+            </div>
+
+            <div className="play-info">
+                <div className="play-title-rating">
+                    <h2 className="play-card-title">{play.title}</h2>
+                    <p className="play-rating">{play.rating}</p>
+                </div>
+
+                <p className="play-genre"> <strong>Жанр:</strong> {play.genre}</p>
+                <p className="play-director"> <strong>Режиссёр:</strong> {play.director}</p>
+                <p className="play-description">{play.description}</p>
+
+                <div className="play-event-info">
+                    <span>📍 {play.scene} </span>
+                    <span>⏱ {play.duration} мин. </span>
+                    <span className="play-date"> {play.date}</span>
+                </div>
+
+                {play.activestate ? (
+                    <button 
+                        className="booking-btn" 
+                        onClick={() => openBooking(play.eventId, play.performanceId)}
+                    >
+                        Записаться на показ
+                    </button>
+                ) : (
+                    <button className="booking-btn disabled" disabled>Спектакль прошёл</button>
+                )}
+            </div>
+
+        </div>
+    );
+
 
     return (
         <div className="playbill-container">
@@ -71,70 +125,17 @@ function Playbill() {
                 {playbill.length === 0 && !loading && !error && (
                     <p className="playbill-status">В данный момент нет запланированных показов.</p>
                 )}
-                
-            
-                {playbill.map((play) => (
 
-                    // Контейнер карточки события
-                    <div key={play.eventId} className="play-card">
+                {activePlays.map((play) => renderPlayCard(play))}
 
-                        {/* Контейнер для левой части карточки с постером */}
-                        <div className="play-img-bg-container">
-
-                            {/* Заблюренный фон изображения */}
-                            <img 
-                                src={play.image} 
-                                className="play-img-bg"
-                                alt="" 
-                            />
-                            {/* Само изображние постера */}
-                            <div className="play-img-container">
-                                <img 
-                                    src={play.image} 
-                                    alt={play.title} 
-                                    className="play-img" 
-                                />
-                            </div>
-                        </div>
-
-                        {/* Правая часть карточки с информацией*/}
-                        <div className="play-info">
-
-                            {/* Название и рейтинг */}
-                             <div className="play-title-rating">
-                                <h2 className="play-card-title">{play.title}</h2>
-                                <p className="play-rating">{play.rating}</p>
-                            </div>
-
-                            {/* Данные спектакля */}
-                            <p className="play-genre"> <strong>Жанр:</strong> {play.genre}</p>
-                            <p className="play-director"> <strong>Режиссёр:</strong> {play.director}</p>
-                            <p className="play-description">{play.description}</p>
-                            
-                            {/* Данные события */}
-                            <div className="play-event-info">
-                                <span>📍 {play.scene} </span>
-                                <span>⏱ {play.duration} мин. </span>
-                                <span className="play-date"> {play.date}</span>
-                            </div>
-
-                            {/* Проверка на актуальность спектакля и выбор нужного состояния кнопки */}
-                            {/* {play.activestate ? "Активен" : "Прошел"} */}
-                            {/*    activestate   =    true    |  false    */}
-                            {play.activestate ? (
-                                <button 
-                                    className="booking-btn" 
-                                    onClick={() => openBooking(play.eventId, play.performanceId)} // Передаём данные выбранного события
-                                >
-                                    Записаться на показ
-                                </button>
-                            ) : (
-                                <button className="booking-btn disabled" disabled>Спектакль прошёл</button>
-                            )}
-                        </div>
-
+                {pastPlays.length > 0 && (
+                    <div className="divider-line-container">
+                        <hr className="divider-line" />
+                        <h3 className="divider-line-tittle">Недавно прошедшие</h3>
                     </div>
-                ))}
+                )}
+
+                {pastPlays.map((play) => renderPlayCard(play))}
             </div>
 
             <BookingMenu

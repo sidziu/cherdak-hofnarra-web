@@ -55,8 +55,20 @@ export const API = {
             }
         });
 
-        //*Сортировка по дате: сначала новее
+        // Сортировка по дате: сначала новее
         flatPlaybill.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
+
+        // Оставляем все активные и первые 4 неактивных спектакля
+        let nonActiveCount = 0;
+        for (let id = 0; id < flatPlaybill.length; id++) {
+            if (!flatPlaybill[id].activestate) {
+                nonActiveCount++;
+                if (nonActiveCount > 4) {
+                    flatPlaybill.splice(id, 1);
+                    id--; 
+                    }
+                }
+            }
 
         return {
             playbill: flatPlaybill, // Сами отсортированные данные афиши
