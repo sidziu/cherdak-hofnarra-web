@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 const logger = require("../utilities/logger");
@@ -55,7 +57,7 @@ router.get("/", async function(request, response) {
                 description: perf.description,
                 duration: perf.duration,
                 rating: perf.rating,
-                imageUrl: `http://localhost:${PORT}/images/events/${perf.image}`,
+                imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
                 performances: mappedEvents
             };
         });

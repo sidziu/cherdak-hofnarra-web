@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 const logger = require("../utilities/logger");
@@ -20,7 +22,7 @@ router.get("/", async function(request, response) {
 
         const personsWithUrls = persons.map(person => ({
             ...person,
-            imageUrl: `http://localhost:${PORT}/images/persons/${person.image}`
+            imageUrl: `${SERVER_URL}/images/persons/${person.image}`
         }));
 
         response.json(personsWithUrls);
@@ -64,7 +66,7 @@ router.post("/", authMiddleware, uploadPerson.single("image"), async function (r
             message: "Актер успешно добавлен!",
             person: {
                 ...newPerson,
-                imageUrl: `http://localhost:${PORT}/images/persons/${newPerson.image}`
+                imageUrl: `${SERVER_URL}/images/persons/${newPerson.image}`
             }
         });
 

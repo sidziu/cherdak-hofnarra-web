@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 const logger = require("../utilities/logger");

@@ -8,6 +8,7 @@ const multer = require("multer");
 const logger = require("./utilities/logger");
 
 const app = express();
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 // -- MIDDLEWARE --
@@ -62,5 +63,5 @@ app.listen(PORT, function(){
         );
     };
 
-    logger.info("Сервер запущен на localhost:" + PORT);
+    logger.info(`Сервер прослушивает порт ${PORT}. Доступ по адресу ${SERVER_URL}.`);
 });

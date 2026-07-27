@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 const logger = require("../utilities/logger");
@@ -20,7 +22,7 @@ router.get("/", async function(request, response) {
 
         const supervisorsWithUrls = supervisors.map(supervisor => ({
             ...supervisor,
-            imageUrl: `http://localhost:${PORT}/images/supervisors/${supervisor.image}`
+            imageUrl: `${SERVER_URL}/images/supervisors/${supervisor.image}`
         }));
 
         response.json(supervisorsWithUrls);
@@ -64,7 +66,7 @@ router.post("/", authMiddleware, uploadSupervisor.single("image"), async functio
             message: "Руководитель успешно добавлен!",
             supervisor: {
                 ...newSupervisor,
-                imageUrl: `http://localhost:${PORT}/images/supervisors/${newSupervisor.image}`
+                imageUrl: `${SERVER_URL}/images/supervisors/${newSupervisor.image}`
             }
         });
 

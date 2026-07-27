@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
 
 const logger = require("../utilities/logger");
@@ -55,14 +57,14 @@ router.get("/", async function(request, response) {
                     id: actor.id,
                     name: actor.name,
                     role: actor.role,
-                    imageUrl: `http://localhost:${PORT}/images/persons/${actor.image}`
+                    imageUrl: `${SERVER_URL}/images/persons/${actor.image}`
                 };
             }).filter(actor => actor !== null);
 
             return {
                 ...item,
-                imageUrl: `http://localhost:${PORT}/images/events/${item.image}`,
-                photoUrls: item.photos.map(photo => `http://localhost:${PORT}/images/archive/${photo}`),
+                imageUrl: `${SERVER_URL}/images/events/${item.image}`,
+                photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`),
                 actors: mappedActors 
             };
         });
