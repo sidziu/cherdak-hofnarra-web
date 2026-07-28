@@ -38,6 +38,7 @@
     margin: 0;
     font-weight: 700;
     line-height: 1;
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
 }
 
 .subtitle, .title-spbgasu {
