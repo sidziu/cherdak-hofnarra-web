@@ -14,6 +14,9 @@ import brick from "../../assets/logotypes/brick-logo-white.png";
 import newLogo from "../../assets/logotypes/new-logo-white.png"; 
 
 function Footer() {
+    if (location.pathname === "/admin") {
+        return null;
+    }
     // ==========================================
     // ЛОГИКА НАШЕЙ СЕКРЕТНОЙ ПАСХАЛКИ
     // ==========================================

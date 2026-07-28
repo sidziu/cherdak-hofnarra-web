@@ -1,20 +1,15 @@
-/* Общий контейнер для всей страницы */
+/* Общий контейнер */
 .home-container {
     width: 100%;
-    margin: 0;
-    padding: 0;
 }
 
-
-/*--------------САМА СТРАНИЦА-------------- */
-.section-container {
+.start-container {
     width: 100%;
-    height: 100vh; 
+    height: 100vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-    
 }
 
 .overlay-container {
@@ -23,22 +18,19 @@
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     padding: 20px;
     color: #ffffff;
     text-align: center;
     font-family: 'main';
-    align-items: flex-end;
 }
 
 .content-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1px;
-    justify-content: center;
     justify-content: flex-end;
+    gap: 1px;
 }
 
 .title {
@@ -48,7 +40,7 @@
     line-height: 1;
 }
 
-.subtitle {
+.subtitle, .title-spbgasu {
     font-size: 0.8rem;
     margin: 0;
     opacity: 0.9;
@@ -56,330 +48,52 @@
     color: #9d9d9d;
 }
 
-.title-spbgasu {
-    font-size: 0.8rem;
-    margin: 0;
-    opacity: 0.9;
-    font-family: Arial;
-    color: #9d9d9d;
-}
-
-/* Секция для скролла */
-.dummy-scroll-section {
-    height: 400x;
-    padding: 100px 40px;
-    background-color: #ffffff;
-    text-align: center;
-    color: #000000;
-}
-
-
-/*--------------ЗАНАВЕС-------------- */
+/* ЗАНАВЕС */
 .curtain-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 2000;        /* Перекрывает все, включая плашку */
-    pointer-events: none; /* Пропускает клики мыши сквозь себя после открытия */
+    z-index: 2000;
+    pointer-events: none;
     display: flex;
 }
 
-/* Общие правила для левой и правой половин занавеса */
 .curtain {
     width: 50%;
     height: 100%;
-    background-color: #8b0000; 
-    
-    /* Настройка анимации */
-    animation-duration: 2.5s;        /* Время открытия занавеса */
-    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* Плавное замедление к концу */
-    animation-fill-mode: forwards;   /* Сохраняет занавес в открытом состоянии */
+    background-color: #8b0000;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    animation-fill-mode: forwards;
 }
 
-/* Левая половина сжимается к левому краю */
 .left-curtain {
-    transform-origin: left;          /* Точка фиксации - левый край */
+    transform-origin: left;
     animation-name: openLeftCurtain;
 }
 
-/* Правая половина сжимается к правому краю */
 .right-curtain {
-    transform-origin: right;         
+    transform-origin: right;
     animation-name: openRightCurtain;
 }
 
-/*----CSS-АНИМАЦИИ (KEYFRAMES)---*/
 @keyframes openLeftCurtain {
-    0% {
-        transform: scaleX(1); /* Занавес полностью растянут */
-    }
-    100% {
-        transform: scaleX(0); /* Сжимается по горизонтали до 0 */
-        opacity: 0;           /* В конце становится полностью прозрачным */
-    }
+    0% { transform: scaleX(1); }
+    100% { transform: scaleX(0); opacity: 0; }
 }
 
 @keyframes openRightCurtain {
-    0% {
-        transform: scaleX(1);
-    }
-    100% {
-        transform: scaleX(0);
-        opacity: 0;
-    }
-}
-
-/*booking*/
-
-/* Кнопка записи на главном экране */
-.playbill-bottom-actions .booking-btn,
-button.booking-btn {
-    margin-top: 30px;
-    padding: 15px 35px;
-    background-color: #8b0000 !important;
-    color: #ffffff !important;
-    border: 2px solid #8b0000 !important;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    appearance: none;
-}
-
-.playbill-bottom-actions .booking-btn:hover,
-button.booking-btn:hover {
-    background-color: #a00000 !important;
-    border-color: #ffffff !important;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
-}
-
-.playbill-bottom-actions .booking-btn:disabled,
-button.booking-btn:disabled {
-    background-color: #4b5563 !important;
-    border-color: #4b5563 !important;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    0% { transform: scaleX(1); }
+    100% { transform: scaleX(0); opacity: 0; }
 }
 
 .error-text {
     color: #f87171;
     margin-top: 15px;
     font-size: 0.9rem;
-}
-
-
-/* ========================================================================== */
-/* СТИЛИ СЛАЙДЕРА С АВТОШИРИНОЙ КАРТОЧЕК (БЕЗ СКРУГЛЕНИЙ)                      */
-/* ========================================================================== */
-
-.playbill-3d-section {
-    background-color: #ffffff;
-    color: #1f2937;
-    padding: 80px 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.playbill-content-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 40px;
-    box-sizing: border-box;
-    position: relative;
-}
-
-/* ======================================
-НОВОЕ: стиль для ссылки-заголовка Афиша
-====================================== */
-.playbill-head-link {
-    text-decoration: none;
-    color: inherit;
-    display: inline-block;
-    width: 100%;
-}
-
-.playbill-head-link:hover .playbill-head {
-    color: #8b0000;
-    transform: translateY(-3px);
-}
-
-.playbill-head {
-    font-size: 3rem;
-    font-family: "main", sans-serif;
-    margin-bottom: 20px;
-    text-align: center;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.playbill-divider {
-    border: none;
-    border-top: 1px solid #e5e7eb;
-    margin-bottom: 40px;
-}
-
-.playbill-carousel-viewport {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    padding: 40px 0; /* Место для 3D-вылетов */
-    box-sizing: border-box;
-}
-
-.playbill-carousel-track {
-    display: flex;
-    gap: 40px; /* Отступы между карточками */
-    width: max-content;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
-}
-
-.atropos-card-container {
-    perspective: 1200px;
-    width: auto;       
-    height: 480px;     
-    flex-shrink: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.inactive-slide {
-    opacity: 0.4;
-    transform: scale(0.9);
-}
-
-.active-slide {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.atropos-card {
-    height: 100%;
-    width: auto;       
-    display: flex;     
-    position: relative;
-    border-radius: 0px; 
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
-    background-color: #111827;
-    transform-style: preserve-3d; 
-    transition: transform 0.15s ease-out;
-}
-
-.atropos-fg-image {
-    height: 100%;
-    width: auto;       
-    display: block;
-    object-fit: cover; 
-    border-radius: 0px; 
-    filter: brightness(1); 
-    transition: filter 0.3s ease;
-    transform: translateZ(0px); 
-}
-
-.active-slide .atropos-card:hover .atropos-fg-image {
-    filter: brightness(0.5); 
-}
-
-.atropos-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 30px 24px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: #ffffff;
-    text-align: left;
-    z-index: 3;
-    transform: translateZ(60px); 
-    transition: transform 0.3s ease;
-}
-
-.atropos-header-info {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.atropos-badge {
-    background-color: #8b0000;
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 0px; 
-    letter-spacing: 0.05em;
-}
-
-.atropos-rating-badge {
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 0px; 
-}
-
-.atropos-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    font-family: "main", sans-serif;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-}
-
-.atropos-director {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin: 0;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
-}
-
-.carousel-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #ffffff;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%; 
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-    transition: all 0.2s ease;
-    outline: none;
-}
-
-.carousel-nav-btn:hover {
-    background-color: #8b0000;
-    border-color: #8b0000;
-    transform: translateY(-50%) scale(1.1);
-}
-
-.prev-btn {
-    left: 20px;
-}
-
-.next-btn {
-    right: 20px;
+    font-family: Arials;
 }
 
 .loading-text {
@@ -387,25 +101,4 @@ button.booking-btn:disabled {
     color: #6b7280;
     text-align: center;
     padding: 40px 0;
-}
-
-@media (max-width: 768px) {
-    .atropos-card-container {
-        width: 280px;
-        height: 420px;
-    }
-    
-    .carousel-nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-    }
-}
-
-
-.playbill-bottom-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px; /* Отступ кнопки от карусели */
-    width: 100%;
 }

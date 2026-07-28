@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Playbill.css";
-import { API } from '../../api/Playbill.js'; // Импортируем обьект API с функциями для запросов на сервер
+import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; 
 
