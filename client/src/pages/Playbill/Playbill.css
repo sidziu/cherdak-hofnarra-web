@@ -147,26 +147,37 @@
 
 /* Кнопка записи */
 .booking-btn {
-    align-self: flex-start; /* Кнопка не растягивается во всю ширину */
-    padding: 12px 24px;
-    background-color: #8b0000; /* Тематический красный */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
+    margin-top: 30px;
+    margin-right: auto;
+    padding: 15px 35px;
+    background-color: #8b0000 !important;
+    color: #ffffff !important;
+    border: 2px solid #8b0000 !important;
+    border-radius: 30px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
 }
 
 .booking-btn:hover {
-    background-color: #820000;
+    background-color: #a00000 !important;
+    border-color: #ffffff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
 .booking-btn.disabled {
-    background-color: rgba(194, 10, 10, 0.82);
-    color: #2475f6;
+    background-color: #534949 !important;
+    border-color: #7a0337 !important;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* для мобилок  */
