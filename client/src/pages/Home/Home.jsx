@@ -53,14 +53,20 @@ function Home() {
     };
   }, []);
 
-  // Данные для карусели
-  // let - потому что мы будем изменять массив
-  let carouselItems = [...performances];
+    // Данные для карусели
+
+    // Разделяем афишу на актуальные и прошедшие показы
+
+    const activePerformances = performances.filter(p => p.performances.some((event) => event.activestate === true));
+    const pastPerformances = performances.filter(p => p.performances.some((event) => event.activestate === false));
+    // let - потому что мы будем изменять массив
+    let carouselItems = [...activePerformances, ...pastPerformances];
+
 
   // Склеиваем массив сам с собой, чтоб корректно работал loop при малом количестве спектаклей
   if (carouselItems.length > 0 && carouselItems.length < 5) {
     while (carouselItems.length < 8) {
-      carouselItems = carouselItems.concat(performances);
+      carouselItems = carouselItems.concat(carouselItems);
     }
   }
 
