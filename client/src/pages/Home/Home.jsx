@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Home.css";
 import { API } from "../../api";
 
@@ -15,18 +15,26 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "atropos/css";
+
+
 import "./Carousel.css";
 
-function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Состояние меню бронирования
-  const [menuParams, setMenuParams] = useState({
-    performanceId: null,
-    eventId: null,
-  }); // Параметры для заполнения формы записи
+import { useNavigate } from "react-router-dom"; // для навигации на страницу архива при клике на карточку прошедшего спектакля
 
-  const [performances, setPerformances] = useState([]); // Данные о спектаклях с сервера
-  const [loading, setLoading] = useState(false); // Состояние загрузки
-  const [error, setError] = useState(""); // Состояние ошибки
+function Home() {
+
+    const navigate = useNavigate();
+    // Ссылка на Swiper, чтобы управлять его поведением (остановка автопрокрутки при наведении)
+    const swiperRef = useRef(null);
+
+    // Стейты для управления менб бронирования
+    const [isBookingOpen, setIsBookingOpen] = useState(false);
+    const [bookingEventId, setBookingEventId] = useState(null);
+    const [bookingPerformanceId, setBookingPerformanceId] = useState(null);
+
+    const [performances, setPerformances] = useState([]); // Данные о спектаклях с сервера
+    const [loading, setLoading] = useState(false); // Состояние загрузки
+    const [error, setError] = useState(""); // Состояние ошибки
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,6 +60,22 @@ function Home() {
       controller.abort();
     };
   }, []);
+  
+  
+    // Функция для перключения состояни панели бронирования, то есть при срабатвыание панель открроется/покажется
+    // +Стейт с eventId поможет октрыть панель с правильно выбранным событием, например, если пользователь тыкнет по карточке со спектаклем
+    const openBooking = (perfId=null) => { // null - дефолтное значние, на случай если ничего не передано
+        setBookingPerformanceId(perfId);
+        setIsBookingOpen(true);
+    };
+    // Функция для закрытия панели и сброса id для последующих открытий 
+    const closeBooking = () => {
+        setIsBookingOpen(false);
+        setBookingPerformanceId(null);
+    };
+
+
+
 
     // Данные для карусели
 
@@ -98,98 +122,119 @@ function Home() {
 
         <h1 className="carousel-title">Афиша</h1>
 
-        <Swiper
-          // key заставляет Swiper переинициализироваться при изменении количества данных
-          key={carouselItems.length}
-          modules={[Navigation, Pagination, Autoplay]}
-          slidesPerView="auto"
-          spaceBetween={300}
-          centeredSlides={true}
-          loop={true}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
-          pagination={{
-            // Модуль пагинации, ну типа точек снизу карусели (один из вариантов)
-            clickable: true,
-            dynamicBullets: true,
-            // Тип точек-индикаторов снизу карусели
-            el: ".swiper-pagination",
-          }}
-          navigation={{
-            nextEl: ".swiper-next",
-            prevEl: ".swiper-prev",
-          }}
-          className="posters-swiper"
+        <div
+        // Из-за конфлитка Atropos и Swiper, требуется ручная настройка остановки карусели при наведении
+          className="carousel-swiper-wrapper"
+          onMouseEnter={() => swiperRef.current?.autoplay?.stop()}
+          onMouseLeave={() => swiperRef.current?.autoplay?.start()}
         >
-          {carouselItems.map((item, index) => {
-            const activestateEvent = Array.isArray(item.performances)
-              ? item.performances.some((event) => event.activestate === true)
-              : false;
+          <Swiper
+            // key заставляет Swiper переинициализироваться при изменении количества данных
+            key={carouselItems.length}
+            modules={[Navigation, Pagination, Autoplay]}
+            slidesPerView="auto"
+            spaceBetween={300}
+            centeredSlides={true}
+            loop={true}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            autoplay={{ 
+              delay: 4000, 
+              disableOnInteraction: false,
+              pauseOnMouseEnter: false,
+            }}
+            pagination={{
+              // Модуль пагинации, ну типа точек снизу карусели (один из вариантов)
+              clickable: true,
+              dynamicBullets: true,
+              // Тип точек-индикаторов снизу карусели
+              el: ".swiper-pagination",
+            }}
+            navigation={{
+              nextEl: ".swiper-next",
+              prevEl: ".swiper-prev",
+            }}
+            className="posters-swiper"
+          >
+            {carouselItems.map((item, index) => {
+              const hasActivePerformance = item.performances.some((event) => event.activestate === true)
 
-            return (
-              // Так как мы дублируем массив, то ключи могут повторяться, поэтому приклеиваем "-" и индекс
-              <SwiperSlide key={`${item.id}-${index}`} className="posters-swiper-slide">
-                <Atropos
-                  className="atropos-card"
-                  activeOffset={50} // Сила наклона
-                  highlight={false}
-                  shadow={false}
-                >
-                  <a
-                    href={`/archive/${item.id}`}
-                    className="x-card posters-swiper-card"
-                    // target="_blank" // Открывать в новой вкладке.
-                    // rel="noopener noreferrer" // Это для безопасноти (читать подробнее в инете), использовать в связке с _blank
+              const handleCardClick = (event) => {
+                if (hasActivePerformance) {
+                  openBooking(item.id);
+                } else {
+                  navigate(`/archive/${item.id}`);
+                }
+              };
+
+              return (
+                // Так как мы дублируем массив, то ключи могут повторяться, поэтому приклеиваем "-" и индекс
+                <SwiperSlide key={`${item.id}-${index}`} className="posters-swiper-slide">
+                  <Atropos
+                    className="atropos-card"
+                    activeOffset={50} // Сила наклона
+                    // highlight={false} // Подсветка карточки при наведении (тень)
+                    shadow={false}
+                    onClick={handleCardClick}
                   >
-                    {/* Картинка */}
-                    <div className="x-card-img" data-atropos-offset="0">
-                      <img src={item.imageUrl} alt={item.title} className="x-img__img" />
-                    </div>
-
-                    {/* Контент */}
-                    <div className="posters-swiper-card-content">
-                      <div className="content-bottom-align">
-                        {activestateEvent ? (
-                          <span className="card-activestate-true" data-atropos-offset="2">
-                            Премьера
-                          </span>
-                        ) : (
-                          <span className="card-activestate-false" data-atropos-offset="2">
-                            Прошёл
-                          </span>
-                        )}
-
-                        <span className="card-title" data-atropos-offset="6">
-                          {item.title}
-                        </span>
-
-                        <span className="card-genre" data-atropos-offset="4">
-                          {item.genre}
-                        </span>
+                    <a
+                      className="x-card posters-swiper-card"
+                      // target="_blank" // Открывать в новой вкладке.
+                      // rel="noopener noreferrer" // Это для безопасноти (читать подробнее в инете), использовать в связке с _blank
+                    >
+                      {/* Картинка */}
+                      <div className="x-card-img" data-atropos-offset="0">
+                        <img src={item.imageUrl} alt={item.title} className="x-img__img" />
                       </div>
-                    </div>
-                  </a>
-                </Atropos>
-              </SwiperSlide>
-            );
-          })}
 
-          {/* Навигация */}
-          <div className="swiper-controls-container">
-            <button className="swiper-prev custom-nav-btn">←</button>
-            <div className="swiper-pagination"></div>
-            <button className="swiper-next custom-nav-btn">→</button>
-          </div>
-        </Swiper>
+                      {/* Контент */}
+                      <div className="posters-swiper-card-content">
+                        <div className="content-bottom-align">
+                          {hasActivePerformance ? (
+                            <span className="card-activestate-true" data-atropos-offset="2">
+                              Премьера
+                            </span>
+                          ) : (
+                            <span className="card-activestate-false" data-atropos-offset="2">
+                              Прошёл
+                            </span>
+                          )}
+
+                          <span className="card-title" data-atropos-offset="6">
+                            {item.title}
+                          </span>
+
+                          <span className="card-genre" data-atropos-offset="4">
+                            {item.genre}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  </Atropos>
+                </SwiperSlide>
+              );
+            })}
+
+            {/* Навигация */}
+            <div className="swiper-controls-container">
+              <button className="swiper-prev custom-nav-btn">←</button>
+              <div className="swiper-pagination"></div>
+              <button className="swiper-next custom-nav-btn">→</button>
+            </div>
+          </Swiper>
+        </div>
       </section>
 
       {/* Меню бронирования */}
       <BookingMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        performances={performances}
-        initialPerformanceId={menuParams.performanceId}
-        initialEventId={menuParams.eventId}
-      />
+        // Стейты сверху
+        isOpen={isBookingOpen}                      // Передаем текущее состояние (открыто/закрыто)
+        onClose={closeBooking}                            // Передаем функцию закрытия внутрь формы
+        initialPerformanceId={bookingPerformanceId} // Говорим форме, какой ID спектакля мы выбрали
+        rawPerformances={performances}                    // Даем форме все данные о спектаклях
+        />
+
     </div>
   );
 }
