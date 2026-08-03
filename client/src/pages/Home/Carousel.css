@@ -1,0 +1,215 @@
+/* Общие настройки */
+.carousel-container {
+  background-color: #ffffff;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 100px 0;
+  box-sizing: border-box;
+}
+
+.carousel-title {
+  font-family: 'main';
+  font-size: 5rem;
+  color: #000000 !important;
+  text-align: center;
+
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Ширина слайда зависит от содержимого и одинаковой высоты картинки */
+.posters-swiper-slide {
+  width: auto;
+  max-width: 100%;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+
+/* Карточка */
+.posters-swiper-card {
+  display: inline-block;
+  height: 450px;
+  width: auto;
+  min-width: 260px;
+  max-width: calc(100vw - 48px);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  margin-bottom: -5px;
+}
+
+.atropos-card {
+  display: block;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
+}
+
+@media (max-width: 768px) {
+  .posters-swiper-slide {
+    max-width: 100%;
+    padding: 90px 6px;
+  }
+
+  .posters-swiper-card {
+    height: 420px;
+    min-width: 0;
+    max-width: calc(100vw - 24px);
+  }
+}
+
+/* Изображение */
+.x-card-img,
+.x-img {
+  height: 100%;
+}
+
+.x-card-img {
+  display: block;
+}
+
+
+.x-img__img {
+  height: 100%;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(45deg, #222, #333); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Контент поверх картинки */
+.posters-swiper-card-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px 24px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 30%);
+}
+
+.content-bottom-align {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Элементы текста */
+.card-activestate-true {
+  font-family: second;
+  background-color: #8c020b;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card-activestate-false {
+  font-family: second;
+  background-color: #2e2b2b;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.card-genre {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Кастомная навигация */
+.swiper-controls-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 100px;
+  margin-top: 30px;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.swiper-controls-container .swiper-pagination {
+  position: static ;
+  transform: none !important;
+}
+
+.swiper-prev {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.swiper-next {
+  grid-column: 3;
+  justify-self: start;
+}
+
+.custom-nav-btn {
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #000000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.custom-nav-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.custom-pagination {
+  width: auto;
+}
+
+.carousel-status {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.carousel-status.error {
+  color: #d53541;
+}
+
+/* Стили пагинации Swiper */
+.swiper-pagination-bullet {
+  background: #000 !important;
+  opacity: 0.3;
+}
+.swiper-pagination-bullet-active {
+  background: #83060e !important;
+  opacity: 1;
+
+}

@@ -20,5 +20,6 @@ npm run start
 ```bash
 cd client
 npm i
+npm install swiper atropos
 npm run dev
 ```
