@@ -8,7 +8,7 @@ import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; // Ко�
 
 // Swiper и Atropos для карусели
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, FreeMode, Mousewheel } from "swiper/modules";
 import Atropos from "atropos/react";
 
 import "swiper/css";
@@ -36,8 +36,29 @@ function Home() {
     const [loading, setLoading] = useState(false); // Состояние загрузки
     const [error, setError] = useState(""); // Состояние ошибки
 
+    // Для скоролла карусели на мобильных устройствах
+    const [itsMobileWindow, setItsMobileWindow] = useState(() =>
+    //typeof - возвращает тип переменной | Если мобила => то true, нет false
+        typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+    );
+
   useEffect(() => {
     const controller = new AbortController();
+
+    // Проверка, на случай по типу "пользователь перевернул телефон", поэтому в useEffect
+    const windowModeStatus = window.matchMedia("(max-width: 768px)"); 
+
+    const updateItsMobileWindow = () => setItsMobileWindow(windowModeStatus.matches); // обновление стейта, чтоб не перезагрудать старинцу
+
+    updateItsMobileWindow();
+
+    // Сам слушатель для переменных, вызовет функцию при изменении разрешения эерана
+    if (typeof windowModeStatus.addEventListener === "function") {
+      windowModeStatus.addEventListener("change", updateItsMobileWindow); // addEventLiistener для современных бразуеров
+    } else {
+      windowModeStatus.addListener(updateItsMobileWindow); // addListener для старых бразуеров
+    } 
+
 
     async function loadHomeData() {
       try {
@@ -58,6 +79,15 @@ function Home() {
 
     return () => {
       controller.abort();
+
+      // Для отмена слушателя, на случай если пользователь быстро уйдет на другую старницу
+      // Кароче логика как у аборт контроллера
+      if (typeof windowModeStatus.removeEventListener === "function") {
+        windowModeStatus.removeEventListener("change", updateItsMobileWindow);
+      } else {
+        windowModeStatus.removeListener(updateItsMobileWindow);
+      }
+
     };
   }, []);
   
@@ -131,11 +161,27 @@ function Home() {
           <Swiper
             // key заставляет Swiper переинициализироваться при изменении количества данных
             key={carouselItems.length}
-            modules={[Navigation, Pagination, Autoplay]}
+            modules={[Navigation, Pagination, Autoplay, FreeMode, Mousewheel]}
             slidesPerView="auto"
             spaceBetween={100}
             centeredSlides={true}
             loop={true}
+            //-
+            freeMode={{ // свободный скролл карусели
+              enabled: true,
+              sticky: true, // доводчик до следующего слайда
+              momentum: true, // "инерция"
+              momentumRatio: itsMobileWindow ? 0.5 : 1, // коэффициент силы инерции, для телефона и декстопа разная
+              momentumBounce: false, // отключает "отскок" в конце списка
+            }}
+            mousewheel={{ // реакция на колесико/скролл на тачпаде
+              forceToAxis: true,  // карусель будет реагировать только на горизонтальную прокрутнку
+              sensitivity: itsMobileWindow ? 0.5 : 1, // разная скорость прокрутки для мобил и декстопа
+              releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
+            }}
+            grabCursor={true} // меняет вид курсора при наведении
+            speed={500} // время до доводчика
+
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -217,7 +263,7 @@ function Home() {
                         </span>
 
                         <span className="performance-genre" data-atropos-offset="0">
-                          {item.genre}
+                          Жанр: {item.genre}
                         </span>
                         </div>
 
