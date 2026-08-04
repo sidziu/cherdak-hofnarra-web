@@ -133,7 +133,7 @@ function Home() {
             key={carouselItems.length}
             modules={[Navigation, Pagination, Autoplay]}
             slidesPerView="auto"
-            spaceBetween={300}
+            spaceBetween={100}
             centeredSlides={true}
             loop={true}
             onSwiper={(swiper) => {
@@ -170,45 +170,57 @@ function Home() {
 
               return (
                 // Так как мы дублируем массив, то ключи могут повторяться, поэтому приклеиваем "-" и индекс
-                <SwiperSlide key={`${item.id}-${index}`} className="posters-swiper-slide">
+                <SwiperSlide key={`${item.id}-${index}`} className="performances-swiper-slide">
                   <Atropos
-                    className="atropos-card"
+                    className="atropos-performance"
                     activeOffset={50} // Сила наклона
                     // highlight={false} // Подсветка карточки при наведении (тень)
                     shadow={false}
                     onClick={handleCardClick}
+
+
                   >
                     <a
-                      className="x-card posters-swiper-card"
+                      className="performance-swiper-card"
                       // target="_blank" // Открывать в новой вкладке.
                       // rel="noopener noreferrer" // Это для безопасноти (читать подробнее в инете), использовать в связке с _blank
                     >
-                      {/* Картинка */}
-                      <div className="x-card-img" data-atropos-offset="0">
-                        <img src={item.imageUrl} alt={item.title} className="x-img__img" />
-                      </div>
-
-                      {/* Контент */}
-                      <div className="posters-swiper-card-content">
-                        <div className="content-bottom-align">
-                          {hasActivePerformance ? (
-                            <span className="card-activestate-true" data-atropos-offset="2">
-                              Премьера
-                            </span>
-                          ) : (
-                            <span className="card-activestate-false" data-atropos-offset="2">
-                              Прошёл
-                            </span>
-                          )}
-
-                          <span className="card-title" data-atropos-offset="6">
-                            {item.title}
-                          </span>
-
-                          <span className="card-genre" data-atropos-offset="4">
-                            {item.genre}
-                          </span>
+                      {/* Постер */}
+                      <div className="performance-card-container" data-atropos-offset="0">
+                        <div className="performance-img-container" data-atropos-offset="0">
+                          <img src={item.imageUrl} alt={item.title} className="performance-img"/>
                         </div>
+                      {/* Содержимое карточки */}
+                      <div className="performance-content">
+                        <div className="text-line-1">
+                        {hasActivePerformance ? (
+                          <span className="performance-activestate-true" data-atropos-offset="2">
+                            Премьера
+                          </span>
+                        ) : (
+                          <span className="performance-activestate-false" data-atropos-offset="2">
+                            Прошёл
+                          </span>
+                        )}
+
+                        <span className="performance-rate" data-atropos-offset="2">
+                          {item.rating}
+                        </span>
+                        </div>
+
+                        <span className="performance-title" data-atropos-offset="6">
+                          {item.title}
+                        </span>
+                        
+                        <span className="performance-director" data-atropos-offset="0">
+                          Режиссёр: {item.director}
+                        </span>
+
+                        <span className="performance-genre" data-atropos-offset="0">
+                          {item.genre}
+                        </span>
+                        </div>
+
                       </div>
                     </a>
                   </Atropos>

@@ -1,167 +1,225 @@
-/* Общие настройки */
 .carousel-container {
   background-color: #ffffff;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
   padding: 100px 0;
-  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .carousel-title {
   font-family: 'main';
   font-size: 5rem;
-  color: #000000 !important;
+  color: #000000;
   text-align: center;
-
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Ширина слайда зависит от содержимого и одинаковой высоты картинки */
-.posters-swiper-slide {
+
+.performances-swiper-slide {
   width: auto;
   max-width: 100%;
   padding: 20px 10px;
-  box-sizing: border-box;
   margin-top: 30px;
 }
 
-/* Карточка */
-.posters-swiper-card {
-  display: inline-block;
+
+.performance-swiper-card {
+  display: flex;
   height: 450px;
-  width: auto;
+  width: 100%;
   min-width: 260px;
   max-width: calc(100vw - 48px);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  margin-bottom: -5px;
+  transition: transform 0.3s ease;
+  margin-bottom: -11px;
+  cursor: pointer;
 }
 
-.atropos-card {
-  display: block;
+.atropos-performance {
+  width: 650px; /* бзовая ширина для десктопа */
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
+  cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .posters-swiper-slide {
-    max-width: 100%;
-    padding: 90px 6px;
-  }
-
-  .posters-swiper-card {
-    height: 420px;
-    min-width: 0;
-    max-width: calc(100vw - 24px);
-  }
-}
-
-/* Изображение */
-.x-card-img,
-.x-img {
-  height: 100%;
-}
-
-.x-card-img {
+.performance-card-container,
+.performance-img-container {
+  position: relative;
   display: block;
-}
-
-
-.x-img__img {
+  margin: 0 auto;
   height: 100%;
+  width: fit-content; /* Ширина блока = ширине картинки */
 }
 
-.image-placeholder {
-  width: 100%;
+.performance-img {
   height: 100%;
-  /* background: linear-gradient(45deg, #222, #333); */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
-/* Контент поверх картинки */
-.posters-swiper-card-content {
+
+.performance-content {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 30px 24px;
-  background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 30%);
-}
-
-.content-bottom-align {
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  padding: 30px 20px;
+  pointer-events: none;
+  
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.2) 15%,
+    rgba(0, 0, 0, 0) 40%
+  );
 }
 
-/* Элементы текста */
-.card-activestate-true {
-  font-family: second;
-  background-color: #8c020b;
+.text-line-1 {
+  margin-bottom: 15px;
+  text-shadow: 0 0 16px rgba(63, 58, 58, 0.5);
+}
+
+.performance-activestate-true,
+.performance-activestate-false {
+  font-family: Arial; /*'Times New Roman'; */
   color: #fff;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 4px 8px;
+  font-size: 1.3rem;
+  font-weight: 550;
   text-transform: uppercase;
   margin-bottom: 12px;
+  letter-spacing: 1px;
+  width: fit-content; 
 }
 
-.card-activestate-false {
-  font-family: second;
-  background-color: #2e2b2b;
+.performance-rate {
+  font-family: 'Times New Roman';
+  font-size: 1.3rem;
+  background: none;
   color: #fff;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
   margin-bottom: 12px;
+  margin-left: 10px;
+  border: 1px solid rgba(255, 255, 255, 1);
+  font-weight: 600;
+  padding: 3px 8px;
 }
 
-.card-title {
-  font-size: 2rem;
+.performance-activestate-true { background-color: #8c020b; border: 1px solid #8c020b;}
+.performance-activestate-false { background-color: #000; border: 1px solid #000}
+
+.performance-title {
+  font-family: main;
+  font-size: 4rem;
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 8px;
   color: #fff;
+  white-space: nowrap; /* В одну строку делает все */
+  text-shadow: 0 0 16px rgba(63, 58, 58, 0.2);
+  
 }
 
-.card-genre {
+/* отступ для дектсопа */
+.performance-title,
+.performance-activestate-true,
+.performance-activestate-false {
+  margin-left: -70px; 
+}
+
+.performance-director {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 16px rgba(63, 58, 58, 0.7);
 }
 
-/* Кастомная навигация */
+.performance-genre {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 16px rgba(63, 58, 58, 0.7);
+}
+
+@media (max-width: 768px) {
+  .carousel-container { padding: 60px 0 20px; }
+  
+  .carousel-title { font-size: clamp(2.4rem, 10vw, 3.8rem); }
+
+
+  .performance-swiper-card {
+    height: 400px; 
+    max-width: calc(100vw - 32px);
+  }
+
+  .atropos-performance {
+    width: 100% !important;
+  }
+
+  /* отмена отсупа декстопа, другая логика */
+  .performance-card-container,
+  .performance-img-container {
+    width: 100% !important; 
+    height: 100%;
+  }
+
+  .performance-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; 
+  }
+
+  .performance-content {
+    padding: 20px;
+    width: 100%;
+  }
+
+  /* текст выравнивается по левому краю экрана */
+  .performance-title,
+  .performance-activestate-true,
+  .performance-activestate-false,
+  .performance-genre {
+    margin-left: 0 !important; 
+    white-space: normal; /* разрешаем перенос */
+    max-width: 100%;
+  }
+
+  .performance-title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    line-height: 1.2;
+  }
+}
+
+
+
+/* навигация и пагинация */
+
 .swiper-controls-container {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 100px;
   margin-top: 30px;
   padding-bottom: 20px;
-  width: 100%;
+  width: min(30%, 880px);
+  margin-inline: auto;
+}
+
+@media (max-width: 768px) {
+  .swiper-controls-container {
+    gap: 12px;
+    width: 98%;
+  }
 }
 
 .swiper-controls-container .swiper-pagination {
-  position: static ;
+  position: static;
   transform: none !important;
+  justify-self: center;
 }
 
 .swiper-prev {
-  grid-column: 1;
-  justify-self: end;
+  justify-self: start;
 }
 
 .swiper-next {
-  grid-column: 3;
-  justify-self: start;
+  justify-self: end;
 }
 
 .custom-nav-btn {
@@ -183,33 +241,5 @@
   color: #fff;
 }
 
-.custom-pagination {
-  width: auto;
-}
-
-.carousel-status {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.carousel-status.error {
-  color: #d53541;
-}
-
-/* Стили пагинации Swiper */
-.swiper-pagination-bullet {
-  background: #000 !important;
-  opacity: 0.3;
-}
-.swiper-pagination-bullet-active {
-  background: #83060e !important;
-  opacity: 1;
-
-}
+.swiper-pagination-bullet { background: #000 !important; opacity: 0.3; }
+.swiper-pagination-bullet-active { background: #83060e !important; opacity: 1; }
