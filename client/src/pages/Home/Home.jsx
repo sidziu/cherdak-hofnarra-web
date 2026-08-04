@@ -19,7 +19,7 @@ import "atropos/css";
 
 import "./Carousel.css";
 
-import { useNavigate } from "react-router-dom"; // для навигации на страницу архива при клике на карточку прошедшего спектакля
+import { useNavigate, NavLink } from "react-router-dom"; // для навигации на страницу архива при клике на карточку прошедшего спектакля
 
 function Home() {
 
@@ -150,7 +150,10 @@ function Home() {
         {loading && <div className="carousel-status">Загрузка репертуара...</div>}
         {error && <div className="carousel-status error">Ошибка: {error}</div>}
 
-        <h1 className="carousel-title">Афиша</h1>
+
+        {/* <h1 className="carousel-title">Афиша</h1>\ */}
+        <li><NavLink to="/playbill" className="carousel-title-link">Афиша</NavLink></li>
+
 
         <div
         // Из-за конфлитка Atropos и Swiper, требуется ручная настройка остановки карусели при наведении

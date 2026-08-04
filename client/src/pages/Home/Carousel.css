@@ -4,12 +4,27 @@
   overflow: hidden;
 }
 
-.carousel-title {
+
+.carousel-title-link {
   font-family: 'main';
   font-size: 5rem;
   color: #000000;
-  text-align: center;
+
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+
+  display: inline-block; /* нужно для анимации подпрыгивания */
+  transition: color 0.2s ease, transform 0.2s ease;
+  text-decoration: none; /* убрать подчеркивание  */
+
+  /* Для отцентровки (text-align:; - не поможет с ссылкой) */
+  display: flex;
+  justify-content: center;
+
+}
+
+.carousel-title-link:hover {
+    color: #8b0000;
+    transform: translateY(-2px);
 }
 
 
