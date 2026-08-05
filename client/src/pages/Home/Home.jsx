@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import "./Home.css";
-import { API } from "../../api";
+import "./Home-css/Home.css";
+import { API } from "../../api/index.js";
 
 import logo from "../../assets/logotypes/new-logo-withouttext.png"; // Лого (пока не используется в JSX)
 import startBg from "../../assets/backgrounds-home/bg1.jpeg"; // Фон первого экрана
@@ -14,10 +14,11 @@ import Atropos from "atropos/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "atropos/css";
+import "atropos/css"
 
 
-import "./Carousel.css";
+import "./Home-css/Carousel.css";
+import "./Home-css/HomeAbout.css";
 
 import { useNavigate, NavLink } from "react-router-dom"; // для навигации на страницу архива при клике на карточку прошедшего спектакля
 
@@ -33,6 +34,7 @@ function Home() {
     const [bookingPerformanceId, setBookingPerformanceId] = useState(null);
 
     const [performances, setPerformances] = useState([]); // Данные о спектаклях с сервера
+    const [about, setAbout] = useState(""); // Текст About
     const [loading, setLoading] = useState(false); // Состояние загрузки
     const [error, setError] = useState(""); // Состояние ошибки
 
@@ -64,8 +66,15 @@ function Home() {
       try {
         setLoading(true);
         setError("");
-        const data = await API.getPerformances(controller.signal);
-        setPerformances(data);
+
+        const [carouselData, aboutText] = await Promise.all([
+          API.getPerformances(controller.signal),
+          API.getAboutText(controller.signal)
+        ]);
+
+        setPerformances(carouselData);
+        setAbout(aboutText);
+
       } catch (err) {
         if (err.name !== "AbortError") {
           setError(err.message);
@@ -110,7 +119,6 @@ function Home() {
     // Данные для карусели
 
     // Разделяем афишу на актуальные и прошедшие показы
-
     const activePerformances = performances.filter(p => p.performances.some((event) => event.activestate === true));
     const pastPerformances = performances.filter(p => p.performances.some((event) => event.activestate === false));
     // let - потому что мы будем изменять массив
@@ -152,8 +160,11 @@ function Home() {
 
 
         {/* <h1 className="carousel-title">Афиша</h1>\ */}
-        <li><NavLink to="/playbill" className="carousel-title-link">Афиша</NavLink></li>
+        <NavLink to="/playbill" className="carousel-title-link">Афиша</NavLink>
 
+        <div className="line-divider-container">
+          <h1 className="line-divider"></h1>
+        </div>
 
         <div
         // Из-за конфлитка Atropos и Swiper, требуется ручная настройка остановки карусели при наведении
@@ -286,6 +297,28 @@ function Home() {
           </Swiper>
         </div>
       </section>
+
+    <div className="home-about-container">
+
+    <NavLink to="/about" className="about-title-link">О нас</NavLink>
+
+    <h1 className="line-divider"></h1>
+
+    {loading && <p className="home-about-status">Загрузка информации...</p>}
+    {error && <p className="home-about-error">{error}</p>}
+
+    {!loading && !error && (
+                <>
+                {/* Блок описания студии */}
+                <div className="home-about-description-container">
+                  <p className="home-cherdak-opisanie">{about}</p>
+                </div>
+                </>)}
+    <NavLink  to="about" className="to-about-btn">
+      &nbsp;&nbsp;Актерский состав&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;Подробнее о нас&nbsp;&nbsp;
+    </NavLink>
+    </div>
+                    
 
       {/* Меню бронирования */}
       <BookingMenu

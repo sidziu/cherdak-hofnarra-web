@@ -1,0 +1,107 @@
+.home-about-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 20px 80px 20px; 
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+
+.about-title-link {
+  font-family: 'main';
+  font-size: 5rem;
+  color: #000000;
+
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+
+  display: inline-block; /* нужно для анимации подпрыгивания */
+  transition: color 0.2s ease, transform 0.2s ease;
+  text-decoration: none; /* убрать подчеркивание  */
+
+  /* Для отцентровки (text-align:; - не поможет с ссылкой) */
+  display: flex;
+  justify-content: center;
+
+}
+
+.about-title-link:hover {
+    color: #8b0000;
+    transform: translateY(-2px);
+}
+
+
+
+
+
+.home-about-status {
+    font-size: 1.2rem;
+    color: #9d9d9d;
+    font-family: Arial, sans-serif;
+}
+
+.home-about-error {
+    font-size: 1.2rem;
+    color: #f87171; /* Красный цвет ошибки из твоего CSS */
+    margin-top: 15px;
+}
+
+
+.home-about-description-container {
+    background-color: #ffffff;
+    /* Используем акцентный красный цвет для выделения */
+    border-left: 5px solid #8b0000; 
+    padding: 20px 30px;
+    margin-top: 30px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+
+    transition: all 0.3s ease;
+}
+
+.home-about-description-container:hover {
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.home-cherdak-opisanie {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-wrap; 
+    margin: 0;
+    color: #4b5563;
+    font-family: Arial, sans-serif;
+}
+
+.to-about-btn {
+    white-space: pre;
+
+    font-family: Arial;
+    margin-top: 30px;
+    margin-right: auto;
+    padding: 15px 35px;
+    background-color: #8b0000 !important;
+    color: #ffffff !important;
+    border: 2px solid #8b0000 !important;
+    /* border-radius: 30px;  */
+    border-radius: 0px; 
+    font-size: clamp(0.4rem, 4vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    text-decoration: none; /* убрать подчеркивание  */
+    
+    /* Для отцентровки (text-align:; - не поможет с ссылкой) */
+    display: flex;
+    justify-content: center;
+}
+
+.to-about-btn:hover {
+    transform: scale(1.02);
+    background-color: #a00000 !important;
+    border-color: #8b0000 !important;
+    /* transform: translateY(-3px); */
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}

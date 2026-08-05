@@ -1,10 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-//Объект API, в котором будут все функции для запросов к серверу
-
-
 // Функкия для конвертанции даты в удобный формат
-    const formatPlaybillDate = (isoString) => {
+const formatPlaybillDate = (isoString) => {
     if (!isoString) return "";
     const dateObj = new Date(isoString);
     return dateObj.toLocaleDateString("ru-RU", {
@@ -12,8 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
         month: "long",
         hour: "2-digit",
         minute: "2-digit",
-    })};
-
+    });
+};
 
 export const getPlaybill = async (signal) => {
 

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import "./About.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001"
+import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 
 function About() {
     const [supervisors, setSupervisors] = useState([]);
@@ -18,25 +18,12 @@ function About() {
                 setLoading(true);
                 setError("");
 
-                const [personsRes, supervisorsRes, aboutRes] = await Promise.all([
-                    fetch(`${API_URL}/api/persons`, { signal: controller.signal }),
-                    fetch(`${API_URL}/api/supervisors`, { signal: controller.signal }),
-                    fetch(`${API_URL}/api/about`, { signal: controller.signal })
-                ]);
 
-                if (!personsRes.ok) throw new Error("Не удалось загрузить актеров");
-                if (!supervisorsRes.ok) throw new Error("Не удалось загрузить руководителей");
-                if (!aboutRes.ok) throw new Error("Не удалось загрузить информацию о студии");
+                const { personsData, supervisorsData, aboutData } = await API.getAbout(controller.signal);
 
-                const [personsData, supervisorsData, aboutData] = await Promise.all([
-                    personsRes.json(),
-                    supervisorsRes.json(),
-                    aboutRes.json()
-                ]);
-
-                setPersons(personsData);
-                setSupervisors(supervisorsData);
-                setAbout(aboutData.text || aboutData); 
+                setPersons(personsData || []);
+                setSupervisors(supervisorsData || []);
+                setAbout(aboutData?.text || aboutData || ""); 
             } catch (err) {
                 if (err.name !== "AbortError") {
                     setError(err.message);
