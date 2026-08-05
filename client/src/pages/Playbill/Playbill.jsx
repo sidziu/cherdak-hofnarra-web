@@ -60,54 +60,54 @@ function Playbill() {
     };
 
     // Разделяем афишу на актуальные и прошедшие показы
-    const activePlays = playbill.filter(p => p.activestate);
-    const pastPlays = playbill.filter(p => !p.activestate);
+    const activeEvents = playbill.filter(p => p.activestate);
+    const pastEvents = playbill.filter(p => !p.activestate);
 
     // Функция для рендера карточки спектакля
-    const renderPlayCard = (play) => (
-        <div key={play.eventId} className="play-card">
+    const renderEventCard = (event) => (
+        <div key={event.eventId} className="event-card">
 
-            <div className="play-img-bg-container">
+            <div className="event-img-bg-container">
                 <img 
-                    src={play.image} 
-                    className="play-img-bg"
+                    src={event.image} 
+                    className="event-img-bg"
                     alt="" 
                 />
-                <div className="play-img-container">
+                <div className="event-img-container">
                     <img 
-                        src={play.image} 
-                        alt={play.title} 
-                        className="play-img" 
+                        src={event.image} 
+                        alt={event.title} 
+                        className="event-img" 
                     />
                 </div>
             </div>
 
-            <div className="play-info">
-                <div className="play-title-rating">
-                    <h2 className="play-card-title">{play.title}</h2>
-                    <p className="play-rating">{play.rating}</p>
+            <div className="event-info">
+                <div className="event-title-rating">
+                    <h2 className="event-card-title">{event.title}</h2>
+                    <p className="event-rating">{event.rating}</p>
                 </div>
 
-                <p className="play-genre"> <strong>Жанр:</strong> {play.genre}</p>
-                <p className="play-director"> <strong>Режиссёр:</strong> {play.director}</p>
-                <p className="play-description">{play.description}</p>
+                <p className="event-genre"> <strong>Жанр:</strong> {event.genre}</p>
+                <p className="event-director"> <strong>Режиссёр:</strong> {event.director}</p>
+                <p className="event-description">{event.description}</p>
 
-                <div className="play-event-info">
-                    <span>📍 {play.scene} </span>
-                    <span>⏱ {play.duration} мин. </span>
-                    <span className="play-date"> {play.date}</span>
+                <div className="event-details-info">
+                    <span>📍 {event.scene} </span>
+                    <span>⏱ {event.duration} мин. </span>
+                    <span className="play-date"> {event.date}</span>
                 </div>
 
-                {play.activestate ? (
+                {event.activestate ? (
                     <button 
                         className="booking-btn" 
-                        onClick={() => openBooking(play.eventId, play.performanceId)}
+                        onClick={() => openBooking(event.eventId, event.performanceId)}
                     >
                         Записаться на показ
                     </button>
                 ) : (
                     <NavLink
-                        to={`../archive/${play.performanceId}`}
+                        to={`../archive/${event.performanceId}`}
                         className="booking-btn disabled" disabled
                     >
                         &nbsp;&nbsp;&nbsp;&nbsp;Перейти в архив&nbsp;&nbsp;&nbsp;&nbsp;
@@ -131,16 +131,16 @@ function Playbill() {
                     <p className="playbill-status">В данный момент нет запланированных показов.</p>
                 )}
 
-                {activePlays.map((play) => renderPlayCard(play))}
+                {activeEvents.map((event) => renderEventCard(event))}
 
-                {pastPlays.length > 0 && (
-                    <div className="divider-line-container">
-                        <hr className="divider-line" />
-                        <h3 className="divider-line-tittle">Недавно прошедшие</h3>
+                {pastEvents.length > 0 && (
+                    <div className="events-divider-line-container">
+                        <hr className="events-divider-line" />
+                        <h3 className="events-divider-line-title">Недавно прошедшие</h3>
                     </div>
                 )}
 
-                {pastPlays.map((play) => renderPlayCard(play))}
+                {pastEvents.map((event) => renderEventCard(event))}
             </div>
 
             <BookingMenu

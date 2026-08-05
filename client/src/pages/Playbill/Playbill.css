@@ -11,10 +11,10 @@
 }
 
 .playbill-title {
-    font-family: "main", sans-serif;
+    font-family: "main";
     font-size: 4rem;
     font-weight: bold;
-    color: #1f2937;
+    color: #000000;
     margin-bottom: 40px;
 }
 
@@ -36,7 +36,7 @@
 }
 
 
-.play-card {
+.event-card {
     display: flex;
     background-color: #ffffff;
     border-radius: 0px;
@@ -45,7 +45,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.play-card:hover {
+.event-card:hover {
     transform: scale(1.005);
     /* transform: translateY(-4px); */
     
@@ -53,7 +53,7 @@
 }
 
 
-.play-img-container {
+.event-img-container {
     position: relative;
     width: 100%; 
     height: 100%;
@@ -62,15 +62,15 @@
 
 }
 
-.play-img-bg-container {
+.event-img-bg-container {
     position: relative;
-    width: 30%; /* Картинка занимает 30% ширины карточки */
+    width: 40%; /* Картинка занимает 30% ширины карточки */
     min-width: 250px;
     overflow: hidden;
 
 }
 
-.play-img-bg {
+.event-img-bg {
     position: absolute;
     filter: blur(13px) brightness(0.9);
     width: 100%;
@@ -78,7 +78,7 @@
     object-position: center;
 }
 
-.play-img  {
+.event-img  {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -87,7 +87,7 @@
 
 
 /* Описание спектакля */
-.play-info {
+.event-info {
     padding: 30px;
     width: 100%;
     display: flex;
@@ -95,14 +95,14 @@
     justify-content: space-between;
 }
 
-.play-title-rating {
+.event-title-rating {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
 }
 
-.play-card-title {
+.event-card-title {
     font-family: "main", sans-serif;
     font-size: 28px;
     color: #1f2937;
@@ -110,7 +110,7 @@
 }
 
 
-.play-rating {
+.event-rating {
     top: 15px;
     left: 15px;;
     color: #000000;
@@ -119,13 +119,13 @@
     font-weight: second;
 }
 
-.play-genre, .play-director {
+.event-genre, .play-director {
     font-size: 15px;
     color: #4b5563;
     margin-bottom: 8px;
 }
 
-.play-description {
+.event-description {
     width: 85%;
     font-size: 15px;
     line-height: 1.6;
@@ -134,7 +134,7 @@
 }
 
 /* Блок с датой, временем и залом */
-.play-event-info {
+.event-details-info {
     display: flex;
     gap: 20px;
     font-size: 14px;
@@ -144,9 +144,9 @@
     flex-wrap: wrap;
 }
 
-.play-date {
+.event-date {
     font-weight: bold;
-    color: #8b0000; /* Выделяем дату цветом занавеса */
+    color: #8b0000; 
 }
 
 /* Кнопка записи */
@@ -191,21 +191,21 @@
 
 /* для мобилок  */
 @media (max-width: 768px) {
-    .play-card {
-        flex-direction: column; /* Картинка сверху, текст снизу */
+    .event-card {
+        flex-direction: column; /* картинка сверху, текст снизу */
     }
     
-    .play-img-container {
+    .event-img-container {
         width: 100%;
         height: 300px;
     }
 
-    .play-img-bg-container {
+    .event-img-bg-container {
         width: 100%;
         height: 300px;
     }
     
-    .play-info {
+    .event-info {
         width: 100%;
     }
     
@@ -216,7 +216,7 @@
 }
 
 /* Разделитель между актуальными и прошедшими показами */
-.divider-line-container {
+.events-divider-line-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -224,15 +224,14 @@
     margin: 30px 0;
 }
 
-.divider-line {
+.events-divider-line {
     width: 60%;
     height: 2px;
     border: none;
     background: linear-gradient(90deg, rgba(139,0,0,0), #8b0000, rgba(139,0,0,0));
 }
 
-.divider-line-tittle {
-    margin: 0;
+.events-divider-line-title {
     font-size: 1rem;
     color: #000000;
     font-weight: 700;
