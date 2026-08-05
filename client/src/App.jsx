@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 // Импорты страниц
 import Admin from './pages/Admin/Admin.jsx'; 
@@ -12,9 +13,20 @@ import ArchiveDetail from './pages/ArchiveDetail/ArchiveDetail.jsx';
 import Header from './components/Header/Header.jsx'; 
 import Footer from './components/Footer/Footer.jsx';
 
+function ScrollToStart() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <>
+      <ScrollToStart />
       <Header />
       <main className="page">
         <Routes>
