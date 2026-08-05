@@ -20,7 +20,7 @@ import "atropos/css"
 import "./Home-css/Carousel.css";
 import "./Home-css/HomeAbout.css";
 
-import { useNavigate, NavLink } from "react-router-dom"; // для навигации на страницу архива при клике на карточку прошедшего спектакля
+import { useNavigate, NavLink } from "react-router-dom"; // роутинг
 
 function Home() {
 

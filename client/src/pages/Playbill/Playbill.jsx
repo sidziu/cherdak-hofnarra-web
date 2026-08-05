@@ -3,6 +3,7 @@ import "./Playbill.css";
 import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; 
+import { useNavigate, NavLink } from "react-router-dom"; // роутинг
 
 function Playbill() {
     const [playbill, setPlaybill] = useState([]);
@@ -105,10 +106,14 @@ function Playbill() {
                         Записаться на показ
                     </button>
                 ) : (
-                    <button className="booking-btn disabled" disabled>Спектакль прошёл</button>
+                    <NavLink
+                        to={`../archive/${play.performanceId}`}
+                        className="booking-btn disabled" disabled
+                    >
+                        &nbsp;&nbsp;&nbsp;&nbsp;Перейти в архив&nbsp;&nbsp;&nbsp;&nbsp;
+                    </NavLink>
                 )}
             </div>
-
         </div>
     );
 

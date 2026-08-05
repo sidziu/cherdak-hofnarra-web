@@ -39,15 +39,17 @@
 .play-card {
     display: flex;
     background-color: #ffffff;
-    border-radius: 16px;
+    border-radius: 0px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .play-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: scale(1.005);
+    /* transform: translateY(-4px); */
+    
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -147,13 +149,14 @@
 
 /* Кнопка записи */
 .booking-btn {
+    width: 100%;
     margin-top: 30px;
     margin-right: auto;
     padding: 15px 35px;
     background-color: #8b0000 !important;
     color: #ffffff !important;
     border: 2px solid #8b0000 !important;
-    border-radius: 30px;
+    border-radius: 0px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
@@ -167,17 +170,21 @@
 
 .booking-btn:hover {
     background-color: #a00000 !important;
-    border-color: #ffffff !important;
-    transform: translateY(-3px);
+    border-color: #a00000 !important;
+    
+    transform: scale(1.02);
+    /* transform: translateY(-3px); */
+    cursor: pointer;
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
 .booking-btn.disabled {
-    background-color: #534949 !important;
-    border-color: #7a0337 !important;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+
+    font-size: 1.1rem;
+    font-family: Arial;
+    text-decoration: none; /* убрать подчеркивание  */
 }
 
 /* для мобилок  */
