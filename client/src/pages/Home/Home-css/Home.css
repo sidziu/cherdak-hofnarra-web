@@ -31,13 +31,13 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding: 20px;
+    padding: 5px 5px 20px 0px;
     color: #ffffff;
     text-align: center;
     font-family: 'main';
 }
 
-.content-container {
+.overlay-content-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,7 +45,7 @@
     gap: 1px;
 }
 
-.title {
+.start-title {
     font-size: clamp(5rem, 15vw, 10rem);
     margin: 0;
     font-weight: 700;
@@ -53,7 +53,7 @@
     text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
 }
 
-.subtitle, .title-spbgasu {
+.start-subtitle, .title-spbgasu {
     font-size: 0.8rem;
     margin: 0;
     opacity: 0.9;

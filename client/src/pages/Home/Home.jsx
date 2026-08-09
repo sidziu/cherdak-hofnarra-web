@@ -143,9 +143,9 @@ function Home() {
       {/* Стартовый экран */}
       <div className="start-container" style={{ backgroundImage: `url(${startBg})` }}>
         <div className="overlay-container">
-          <div className="content-container">
-            <h1 className="title">Чердак Хофнарра</h1>
-            <p className="subtitle">Театральная студия</p>
+          <div className="overlay-content-container">
+            <h1 className="start-title">Чердак Хофнарра</h1>
+            <p className="start-subtitle">Театральная студия</p>
             <h1 className="title-spbgasu">СПбГАСУ</h1>
 
             {error && <h1 className="error-text">Ошибка загрузки: {error}</h1>}
@@ -185,12 +185,12 @@ function Home() {
               enabled: true,
               sticky: true, // доводчик до следующего слайда
               momentum: true, // "инерция"
-              momentumRatio: itsMobileWindow ? 0.5 : 1, // коэффициент силы инерции, для телефона и декстопа разная
+              momentumRatio: itsMobileWindow ? 0.1 : 0.5, // коэффициент силы инерции, для телефона и декстопа разная
               momentumBounce: false, // отключает "отскок" в конце списка
             }}
             mousewheel={{ // реакция на колесико/скролл на тачпаде
               forceToAxis: true,  // карусель будет реагировать только на горизонтальную прокрутнку
-              sensitivity: itsMobileWindow ? 0.5 : 1, // разная скорость прокрутки для мобил и декстопа
+              sensitivity: itsMobileWindow ? 0.25 : 1, // разная скорость прокрутки для мобил и декстопа
               releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
             }}
             grabCursor={true} // меняет вид курсора при наведении
