@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Archive.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 
 function Archive() {
     const [performances, setPerformances] = useState([]);
@@ -17,16 +17,9 @@ function Archive() {
                 setLoading(true);
                 setError("");
 
-                const response = await fetch(`${API_URL}/api/archive`, { 
-                    signal: controller.signal 
-                });
+                const response = await API.getArchive(controller.signal);
 
-                if (!response.ok) {
-                    throw new Error("Не удалось загрузить архив спектаклей");
-                }
-
-                const data = await response.json();
-                setPerformances(data);
+                setPerformances(response);
             } catch (err) {
                 if (err.name !== "AbortError") {
                     setError(err.message);
@@ -59,7 +52,7 @@ function Archive() {
                             
                             <div className="archive-img-container">
                                 <img 
-                                    src={`${API_URL}/images/events/${imageFilename}`} 
+                                    src={perf.imageUrl} 
                                     alt={perf.title} 
                                     className="archive-card-img"
                                     onError={(e) => {

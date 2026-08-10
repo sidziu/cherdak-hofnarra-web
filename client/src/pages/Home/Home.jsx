@@ -19,6 +19,8 @@ import "atropos/css"
 
 import "./Home-css/Carousel.css";
 import "./Home-css/HomeAbout.css";
+import "./Home-css/HomeArchive.css";
+
 
 import { useNavigate, NavLink } from "react-router-dom"; // роутинг
 
@@ -33,6 +35,7 @@ function Home() {
     const [bookingEventId, setBookingEventId] = useState(null);
     const [bookingPerformanceId, setBookingPerformanceId] = useState(null);
 
+    const [archive, setArchive] = useState([]);
     const [performances, setPerformances] = useState([]); // Данные о спектаклях с сервера
     const [about, setAbout] = useState(""); // Текст About
     const [loading, setLoading] = useState(false); // Состояние загрузки
@@ -67,13 +70,15 @@ function Home() {
         setLoading(true);
         setError("");
 
-        const [carouselData, aboutText] = await Promise.all([
+        const [carouselData, aboutText, archiveData] = await Promise.all([
           API.getPerformances(controller.signal),
-          API.getAboutText(controller.signal)
+          API.getAboutText(controller.signal),
+          API.getArchive(controller.signal)
         ]);
 
         setPerformances(carouselData);
         setAbout(aboutText);
+        setArchive(archiveData);
 
       } catch (err) {
         if (err.name !== "AbortError") {
@@ -298,27 +303,61 @@ function Home() {
         </div>
       </section>
 
-    <div className="home-about-container">
+      <div className="home-about-container">
 
-    <NavLink to="/about" className="about-title-link">О нас</NavLink>
+      <NavLink to="/about" className="about-title-link">О нас</NavLink>
 
-    <h1 className="line-divider"></h1>
+      <h1 className="line-divider"></h1>
 
-    {loading && <p className="home-about-status">Загрузка информации...</p>}
-    {error && <p className="home-about-error">{error}</p>}
+      {loading && <p className="home-about-status">Загрузка информации...</p>}
+      {error && <p className="home-about-error">{error}</p>}
 
-    {!loading && !error && (
-                <>
-                {/* Блок описания студии */}
-                <div className="home-about-description-container">
-                  <p className="home-cherdak-opisanie">{about}</p>
+      {!loading && !error && (
+        <>
+          {/* Блок описания студии */}
+          <div className="home-about-description-container">
+          <p className="home-cherdak-opisanie">{about}</p>
+          </div>
+        </>)}
+      <NavLink  to="about" className="to-about-btn">
+        &nbsp;&nbsp;Актерский состав&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;Подробнее о нас&nbsp;&nbsp;
+      </NavLink>
+      </div>
+
+      {/* Секция Архива */}
+      <section className="home-archive-section"> 
+        <NavLink to="/archive" className="home-archive-title">Архив спектаклей</NavLink>
+        <div className="line-divider-container">
+          <h1 className="line-divider"></h1>
+        </div>
+
+        {loading && <p className="home-about-status">Загрузка информации...</p>}
+        {error && <p className="home-about-error">{error}</p>}
+
+        {!loading && !error && (
+          <div className="home-archive-3d-container">
+            {archive.slice(0, 3).map((card, index) => (
+              <div 
+                key={card.id} 
+                className={`home-archive-card-container card-position-${index}`}
+                onClick={() => navigate(`/archive/${card.id}`)}
+              >
+                <div className="home-archive-card-content">
+                  <h3 className="home-archive-card-title">{card.title}</h3>
+                  {/* <p className="home-archive-card-subtitle"></p> */}
+                  
+                  <div className="home-photo-container">
+                    <img 
+                      src={card.photoUrls[0]}  
+                      className="home-archive-photo" 
+                    />
+                  </div>
                 </div>
-                </>)}
-    <NavLink  to="about" className="to-about-btn">
-      &nbsp;&nbsp;Актерский состав&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;Подробнее о нас&nbsp;&nbsp;
-    </NavLink>
-    </div>
-                    
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Меню бронирования */}
       <BookingMenu
