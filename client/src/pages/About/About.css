@@ -1,51 +1,56 @@
-/* --- [ ИЗМЕНЕНО: Добавлен padding-top: 130px для защиты от наезда Header-а. 
-       Применены цвета и шрифты из основного дизайна сайта ] --- */
 
 .about-container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 80%;
     margin: 0 auto;
-    /* 130px сверху не дадут хедеру перекрыть заголовок */
-    padding: 130px 40px 80px 40px; 
+    padding: 140px 0px 0px 0px; 
     box-sizing: border-box;
     background-color: #ffffff;
-    color: #1f2937;
+
 }
 
-/* Главный заголовок (Стиль как у playbill-head) */
 .about-us {
-    font-size: 3rem;
-    font-family: "main", sans-serif;
+    font-size: 2.5rem;
+    font-family: "main";
     color: #1f2937;
     margin-top: 0;
     margin-bottom: 30px;
     text-align: left;
     border-bottom: 2px solid #e5e7eb;
+    padding-top: 20px;
     padding-bottom: 15px;
 }
 
-/* Статусы */
 .about-status {
     font-size: 1.2rem;
     color: #9d9d9d;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 
 .about-error {
     font-size: 1.2rem;
-    color: #f87171; /* Красный цвет ошибки из твоего CSS */
+    color: #f87171;
     margin-top: 15px;
 }
 
-/* Блок с текстом "О нас" */
-.about-description-box {
+
+
+.about-description-container {
     background-color: #ffffff;
-    /* Используем акцентный красный цвет для выделения */
     border-left: 5px solid #8b0000; 
     padding: 20px 30px;
     margin-bottom: 60px;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+
+    transition: all 0.5s ease;
 }
+
+.about-description-container:hover {
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+    transform: scale(1.00);
+}
+
+
 
 .cherdak-opisanie {
     font-size: 1.1rem;
@@ -53,35 +58,38 @@
     white-space: pre-wrap; 
     margin: 0;
     color: #4b5563;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 
-/* Секции с людьми */
-.team-section {
+
+
+
+.team-container {
     margin-bottom: 70px;
 }
 
-.team-section-title {
+.team-title {
     font-size: 2.2rem;
-    font-family: "main", sans-serif;
-    color: #1f2937;
+    font-family: "main";
+    color: #000000;
     margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
 }
 
 /* Сетка карточек */
 .persons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 40px;
 }
 
-/* Карточка человека (Стилизована под .atropos-card) */
+
 .person-card {
-    background-color: #000000; /* Темный фон карточки как в афише */
-    color: #ffffff;
-    border-radius: 0px; /* Строгие углы по твоему дизайну */
+    background-color: #000000; 
+    /* background-color: #fff;  */
     overflow: hidden;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
@@ -91,11 +99,12 @@
     transform: translateY(-5px);
 }
 
-.person-photo-wrapper {
+.person-photo-container {
     width: 100%;
     aspect-ratio: 3 / 4; 
     overflow: hidden;
     background-color: #000000;
+    /* background-color: #fff; */
 }
 
 .person-photo {
@@ -105,13 +114,16 @@
     display: block;
     filter: brightness(0.9);
     transition: filter 0.3s ease;
+
+    /* border: 20px solid #000000;  */
+    /* box-sizing: border-box;  */
 }
 
 .person-card:hover .person-photo {
     filter: brightness(1); /* Высветляем фото при наведении */
 }
 
-/* Информация под фото */
+
 .person-info {
     padding: 24px;
     display: flex;
@@ -119,17 +131,20 @@
     flex-grow: 1;
 }
 
+
 .person-name {
     margin: 0 0 10px 0;
     font-size: 1.5rem;
-    font-family: "main", sans-serif;
-    color: #ffffff;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-family: "second";
+    color: #efe9e9;
+    /* color: #181616; */
+    font-weight: 700;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .person-role {
-    margin: 0 0 15px 0;
-    font-size: 0.95rem;
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
     color: #9d9d9d; 
     font-weight: 700;
     white-space: pre-wrap;
@@ -140,23 +155,34 @@
 .person-contact {
     margin: auto 0 0 0; 
     font-size: 0.9rem;
-    color: #9d9d9d; /* Серый цвет из твоего дизайна */
-    padding-top: 15px;
+    color: #9d9d9d;
+    padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     white-space: pre-wrap;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 
-/* Мобильная адаптация */
+
 @media (max-width: 768px) {
     .about-container {
-        padding: 100px 20px 60px 20px; 
+        padding: 120px 20px 60px 20px; 
+        max-width: 100%;
     }
     .about-us {
         font-size: 2.5rem;
     }
     .persons-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
+        grid-template-columns: minmax(100px, 100%);
+        gap: 25px;
     }
+    .person-card {
+        flex-direction: row;
+    }
+    .person-photo-container {
+        width: 50%;
+        border-left: 0px solid #000000;
+    }
+    .person-info {
+        width: 50%;
+}
 }

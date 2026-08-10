@@ -12,7 +12,7 @@
 
 .about-title-link {
   font-family: 'main';
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 15vw, 5rem);
   color: #000000;
 
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
@@ -105,4 +105,10 @@
     border-color: #8b0000 !important;
     /* transform: translateY(-3px); */
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .home-about-container {
+        width: 100%;
+    }
 }

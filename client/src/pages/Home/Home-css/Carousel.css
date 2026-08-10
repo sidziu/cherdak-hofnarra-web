@@ -7,7 +7,7 @@
 
 .carousel-title-link {
   font-family: 'main';
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 15vw, 5rem);
   color: #000000;
 
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);

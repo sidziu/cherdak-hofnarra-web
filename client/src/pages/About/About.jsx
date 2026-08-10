@@ -40,6 +40,21 @@ function About() {
         };
     }, []);
 
+    const renderCard = (person) => (
+        <div key={person.id} className="person-card">
+            <div className="person-photo-container">
+                <img src={person.imageUrl} alt={person.name} className="person-photo" />
+            </div>
+            <div className="person-info">
+                <h3 className="person-name">{person.name}</h3>
+                <p className="person-role">{person.role}</p>
+                    {person.contact_info && (
+                        <p className="person-contact">{person.contact_info}</p>
+                    )}
+             </div>
+        </div>
+    );
+
     return(
         <div className="about-container">
 
@@ -51,49 +66,32 @@ function About() {
             {!loading && !error && (
                 <>
                     {/* Блок описания студии */}
-                    <div className="about-description-box">
+                    <div className="about-description-container">
                         <p className="cherdak-opisanie">{about}</p>
                     </div>
                     
                     {/* Секция руководителей */}
-                    <div className="team-section">
-                        <h2 className="team-section-title">Руководство</h2>
+                    <div className="team-container">
+                        <h2 className="team-title">Руководство</h2>
                         <div className="persons-grid">
-                            {supervisors.map((supervisor) => (
-                                <div key={supervisor.id} className="person-card">
-                                    <div className="person-photo-wrapper">
-                                        <img src={supervisor.imageUrl} alt={supervisor.name} className="person-photo" />
-                                    </div>
-                                    <div className="person-info">
-                                        <h3 className="person-name">{supervisor.name}</h3>
-                                        <p className="person-role">{supervisor.role}</p>
-                                        {supervisor.contact_info && (
-                                            <p className="person-contact">{supervisor.contact_info}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+                            {supervisors.map((supervisor) => renderCard(supervisor))}
                         </div>
                     </div>
 
                     {/* Секция персоналий */}
-                    <div className="team-section">
-                        <h2 className="team-section-title">Рабочий состав</h2>
+                    <div className="team-container">
+                        <h2 className="team-title">Актерский состав</h2>
                         <div className="persons-grid">
-                            {persons.map((person) => (
-                                <div key={person.id} className="person-card">
-                                    <div className="person-photo-wrapper">
-                                        <img src={person.imageUrl} alt={person.name} className="person-photo" />
-                                    </div>
-                                    <div className="person-info">
-                                        <h3 className="person-name">{person.name}</h3>
-                                        <p className="person-role">{person.role}</p>
-                                        {person.contact_info && (
-                                            <p className="person-contact">{person.contact_info}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+                            {persons.map((actor) => renderCard(actor))}
+                        </div>
+                    </div>
+
+                    {/* Секция неактивных персоналий */}
+                    <div className="team-container">
+                        <h2 className="team-title">Бывшие участники</h2>
+                        <div className="persons-grid">
+                            {persons.map((actor) => renderCard(actor))}
+                            {/* {nonActivePersons.map((person) => renderCard(person))} */}
                         </div>
                     </div>
                 </>
