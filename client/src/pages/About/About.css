@@ -42,12 +42,12 @@
     margin-bottom: 60px;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
 
-    transition: all 0.5s ease;
+    transition: all 0.4s ease;
 }
 
 .about-description-container:hover {
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
-    transform: scale(1.00);
+    transform: scale(1.008);
 }
 
 
@@ -97,6 +97,7 @@
 
 .person-card:hover {
     transform: translateY(-5px);
+    /* transform: scale(1.01); */
 }
 
 .person-photo-container {
@@ -138,7 +139,7 @@
     font-family: "second";
     color: #efe9e9;
     /* color: #181616; */
-    font-weight: 700;
+    font-weight: 500;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
