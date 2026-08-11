@@ -10,23 +10,23 @@
 
 /* Заголовок */
 .home-archive-title {
-  font-family: 'main';
-  font-size: clamp(2.5rem, 15vw, 5rem);
-  color: #000000;
+    font-family: 'main';
+    font-size: clamp(2.5rem, 15vw, 5rem);
+    color: #000000;
+    text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
 
-  text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+    transition: color 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
 
-  display: inline-block; /* нужно для анимации подпрыгивания */
-  transition: color 0.2s ease, transform 0.2s ease;
-  text-decoration: none; /* убрать подчеркивание  */
 
-  display: flex;
-  justify-content: center;
-
+    display: block;         
+    width: 100%;            
+    text-align: center;    
+    margin: 0 auto;         
 }
 
 .home-archive-title:hover {
-    color: #8b0000;
+     color: #8b0000;
     transform: translateY(-2px);
 }
 
@@ -34,64 +34,63 @@
 
 /* контейнер 3д */
 .home-archive-3d-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: -30px; /* карточки перекрывают друг друга */
-  padding: 80px 20px;
-  perspective: 1200px; /* Глубина 3д */
-  perspective-origin: 50% 50%;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: -30px; /* карточки перекрывают друг друга */
+    padding: 80px 20px;
+    perspective: 1200px; /* Глубина 3д */
+    perspective-origin: 50% 50%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* карточка */
 .home-archive-card-container {
-  width: 320px;
-  padding: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  background: #ffffff; 
+    width: 320px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    background: #ffffff; 
   
-  /* Плавный переход при сбросе эффекта (отъезд назад) */
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+     /* Плавный переход при сбросе эффекта (отъезд назад) */
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
               box-shadow 0.9s ease,
-              z-index 0.3s ease;
+              z-index 0.25s ease;
   
-  will-change: transform;
-  margin-left:20px;
-  margin-right:20px;
+    will-change: transform;
+    margin-left:26px;
+    margin-right:26px;
 }
 
 /* начальный 3д накдлон*/
 
 /* левая карточка */
 .home-archive-card-container.card-position-0 {
-  transform: rotateX(15deg) rotateY(18deg) rotateZ(-8deg) translate3d(40px, 10px, -40px);
-  z-index: 1;
+    transform: rotateX(15deg) rotateY(18deg) rotateZ(-8deg) translate3d(40px, 10px, -40px);
+    z-index: 1;
 }
 
 /* центральная карточка */
-.home-archive-card-container.card-position-1 {
-  transform: rotateX(15deg) rotateY(0deg) translate3d(0, -15px, 40px);
-  z-index: 3;
+.home-archive-card-container.card-position-1 { 
+    transform: rotateX(15deg) rotateY(0deg) translate3d(0, -15px, 40px);
+    z-index: 3;
 }
 
 /* павая карточка */
 .home-archive-card-container.card-position-2 {
-  transform: rotateX(15deg) rotateY(-18deg) rotateZ(8deg) translate3d(-40px, 10px, -40px);
-  z-index: 2;
+    transform: rotateX(15deg) rotateY(-18deg) rotateZ(8deg) translate3d(-40px, 10px, -40px);
+    z-index: 2;
 }
 
-/* возврат в 2д/
+/* возврат в 2д*/
 
-/* При наведении на весь блок 3D-эффект отключается, карточки плавно выравниваются */
 .home-archive-3d-container:hover .home-archive-card-container{
-  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(0, 0, 0);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(0, 0, 0);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Дополнительно: конкретная карточка, на которую навели мышкой, слегка приподнимается */
+/* приподнять выбраннуб карточку */
 .home-archive-3d-container .home-archive-card-container:hover {
     transform: scale(1.07) translateY(-8px);
     /* transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(0, -10px, 20px) scale(1.02); */
@@ -101,13 +100,15 @@
 
 /* содержимое карточки */
 .home-archive-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align:center; 
 }
 
 .home-archive-card-title {
-    font-family: main;
+    font-family: second;
     font-size: 1.25rem;
     font-weight: 700;
     color: #1a1a1a;
@@ -115,19 +116,110 @@
 }
 
 .home-archive-card-subtitle {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
+    font-size: 0.9rem;
+     color: #666;
+    margin: 0;
 }
 
 .home-photo-container {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+     width: 100%;
+     height: 200px;
+     overflow: hidden;
 }
 
 .home-archive-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+}
+
+/* кнопка перехода в архив */
+.to-archive-btn {
+    white-space: pre;
+
+    font-family: Arial;
+    margin-top: 0px;
+    margin-right: auto;
+    padding: 15px 35px;
+    background-color: #8b0000 !important;
+    color: #ffffff !important;
+    border: 2px solid #8b0000 !important;
+    /* border-radius: 30px;  */
+    border-radius: 0px; 
+    font-size: clamp(0.4rem, 4vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    text-decoration: none; /* убрать подчеркивание  */
+    
+    /* Для отцентровки (text-align:; - не поможет с ссылкой) */
+    display: flex;
+    justify-content: center;
+}
+
+.to-archive-btn:hover {
+    transform: scale(1.02);
+    background-color: #a00000 !important;
+    border-color: #8b0000 !important;
+    /* transform: translateY(-3px); */
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+
+@media (max-width: 768px) {
+    .home-archive-section {
+        width: 100%;
+        margin-top: 35px;
+        padding: 0 16px 50px 16px;
+    }
+
+
+    .home-archive-3d-container {
+        flex-direction: column;
+        padding: 20px 0 80px 0; 
+        gap: 0px;
+    }
+
+    .home-archive-card-container {
+        width: 100%;
+        max-width: 380px; 
+        margin-left: auto;
+        margin-right: auto;
+        padding: 18px;
+        box-sizing: border-box;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .home-archive-card-container.card-position-0 {
+        margin-top: 0 !important;
+        transform: rotateX(10deg) scale(0.90) !important;
+        z-index: 1 !important;
+    }
+
+    .home-archive-card-container.card-position-1 {
+        margin-top: -210px !important; 
+        transform: rotateX(10deg) scale(0.98) !important;
+        z-index: 2 !important;
+    }
+
+    .home-archive-card-container.card-position-2 {
+        margin-top: -210px !important; 
+        transform: rotateX(10deg) scale(1.1) !important;
+        z-index: 3 !important;
+    }
+
+    .home-archive-3d-container:hover .home-archive-card-container {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .home-archive-card-container:active {
+        transform: none;
+        transition: none;
+    }
+
+    .home-photo-container {
+        height: 100%; 
+    }
 }

@@ -21,7 +21,6 @@ import "./Home-css/Carousel.css";
 import "./Home-css/HomeAbout.css";
 import "./Home-css/HomeArchive.css";
 
-
 import { useNavigate, NavLink } from "react-router-dom"; // роутинг
 
 function Home() {
@@ -340,23 +339,25 @@ function Home() {
               <div 
                 key={card.id} 
                 className={`home-archive-card-container card-position-${index}`}
-                onClick={() => navigate(`/archive/${card.id}`)}
+                onClick={!itsMobileWindow ? () => navigate(`/archive/${card.id}`) : () => navigate(`/archive`)}
               >
-                <div className="home-archive-card-content">
-                  <h3 className="home-archive-card-title">{card.title}</h3>
-                  {/* <p className="home-archive-card-subtitle"></p> */}
-                  
-                  <div className="home-photo-container">
+                <div className="home-photo-container">
                     <img 
                       src={card.photoUrls[0]}  
                       className="home-archive-photo" 
                     />
                   </div>
+                <div className="home-archive-card-content">
+                  <h3 className="home-archive-card-title">{card.title}</h3>
+                  {/* <p className="home-archive-card-subtitle"></p> */}
                 </div>
               </div>
             ))}
           </div>
         )}
+        <NavLink  to="archive" className="to-archive-btn">
+          &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Перейти в архив спектаклей &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+        </NavLink>
       </section>
 
       {/* Меню бронирования */}

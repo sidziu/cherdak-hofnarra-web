@@ -1,3 +1,7 @@
+.carousel-swiper-wrapper {
+  min-height: 480px;  
+}
+
 .carousel-container {
   background-color: #ffffff;
   padding: 100px 0;

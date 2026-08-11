@@ -13,8 +13,7 @@
   font-style: normal;
 }
 
-
-/* Cброс отступов */
+/* Сброс отступов */
 * {
   margin: 0;
   padding: 0;
@@ -26,8 +25,8 @@ html, body {
   width: 100%;
   min-height: 100vh; 
   background-color: #ffffff; 
-  overflow-x: hidden;
-  
+  /*hidden, чтобы работал animation-timeline */
+  overflow-x: clip; 
 }
 
 /* Ограничение контейнера React */
@@ -37,4 +36,43 @@ html, body {
 }
 
 
+
+/* ЗАГОТОВКА ЛОГИКИ АНИМАЦИИ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ !!!!!!
+  (НЕУСТАНОВЛЕНА ПОЛНАЯ ЛОГИКА В АРХИТЕКТУРЕ,
+  НЕПОНЯТЕН ВОПРОС ОПТИМИЗАЦИИ,
+  ВОЗМОЖНОСТЬ РЕШИТЬ ЗАДАЧУ ИНАЧЕ) */
+
+
+/* Логика плавного появления элементов при скролле*/
+
+/* Появление */
+/* @keyframes scroll-appear {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
+
+/*Применяем анимацию к секциям и карточкам */
+/* section,
+.home-archive-section,
+.home-about-container,
+.carousel-container,
+.home-archive-card-wrapper {
+  animation: scroll-appear linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 35%;
+} */
+
+/* Исключения */
+/* .start-container,
+.start-container * {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+} */
 
