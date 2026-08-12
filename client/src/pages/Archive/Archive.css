@@ -1,24 +1,23 @@
 .archive-container {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 80%;
     margin: 0 auto;
     padding: 120px 40px 60px 40px;
     box-sizing: border-box;
     background-color: #ffffff;
-    color: #1f2937;
-    text-align: left;
+    color: #000000;
+    text-align: center;
 }
 
 .archive-title {
-    font-family: "main", sans-serif;
+    font-family: "main";
     font-size: 50px;
     margin-bottom: 40px;
-    border-bottom: 2px solid #1f2937;
     padding-bottom: 15px;
+    text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
 }
 
 .archive-status, .archive-error {
-    font-family: "second", serif;
+    font-family: "second";
     font-size: 20px;
     text-align: center;
     padding: 40px 0;
@@ -30,32 +29,47 @@
 
 .archive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     width: 100%;
     margin-top: 20px;
+    justify-content: center; 
+}
+
+.archive-grid > * {
+    max-width: 320px; 
+    width: 100%;
+    justify-self: center; 
 }
 
 .archive-card {
+    max-width: 360px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #e5e7eb;
-    background-color: #f9fafb;
+    background-color: #ffffff;
     box-sizing: border-box;
-    border-radius: 0; /* Строгий ровный угол */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+
+    transition: all 0.3s;
+
+    text-decoration: none;
+    cursor: default;
+}
+
+.archive-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02)
 }
 
 .archive-img-container {
     width: 100%;
-    height: 240px;
-    overflow: hidden;
+    height: 320px;
 }
 
 .archive-card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 0;
     transition: filter 0.3s ease;
 }
 
@@ -73,7 +87,7 @@
 }
 
 .archive-card-genre {
-    font-family: "second", serif;
+    font-family: "second";
     font-size: 14px;
     text-transform: uppercase;
     color: #8b0000;
@@ -82,35 +96,42 @@
 }
 
 .archive-card-title {
-    font-family: "main", sans-serif;
+    font-family: "main";
     font-size: 28px;
     margin: 0;
     color: #1f2937;
 }
 
 .archive-card-director {
-    font-family: "second", serif;
+    font-family: "second";
     font-size: 18px;
-    color: #4b5563;
+    color: #634b4b;
     margin: 0 0 15px 0;
 }
 
-.archive-more-btn {
+.archive-detail-btn {
     display: inline-block;
     width: 100%;
     padding: 12px;
-    background-color: #1f2937;
+    background-color: #000;
     color: #ffffff;
     text-decoration: none;
     text-align: center;
-    font-family: "second", serif;
+    font-family: "Arial";
     font-size: 16px;
     font-weight: bold;
     box-sizing: border-box;
     border-radius: 0;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-.archive-more-btn:hover {
-    background-color: #8b0000;
+.archive-detail-btn:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .archive-container {
+        max-width: 100%;
+        text-align: center;
+}
 }

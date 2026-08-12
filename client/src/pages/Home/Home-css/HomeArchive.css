@@ -48,6 +48,7 @@
 /* карточка */
 .home-archive-card-container {
     width: 320px;
+    min-width: 290px;
     padding: 24px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
     cursor: pointer;
@@ -178,15 +179,14 @@
 
     .home-archive-3d-container {
         flex-direction: column;
-        padding: 20px 0 80px 0; 
+        padding: 20px 20px 80px 20px; 
         gap: 0px;
     }
 
     .home-archive-card-container {
         width: 100%;
         max-width: 380px; 
-        margin-left: auto;
-        margin-right: auto;
+
         padding: 18px;
         box-sizing: border-box;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
