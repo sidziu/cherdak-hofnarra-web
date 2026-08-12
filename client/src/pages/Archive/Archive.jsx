@@ -41,6 +41,9 @@ function Archive() {
     return (
         <div className="archive-container">
             <h1 className="archive-title">Прошедшие спектакли</h1>
+            <div className="line-divider-container">
+                <h1 className="line-divider"></h1>
+            </div>
 
             {loading && <p className="archive-status">Загрузка архивных материалов...</p>}
             {error && <p className="archive-error">{error}</p>}

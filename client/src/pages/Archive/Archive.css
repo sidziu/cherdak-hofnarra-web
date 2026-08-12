@@ -9,11 +9,15 @@
 }
 
 .archive-title {
+    margin-top: 40px;
     font-family: "main";
     font-size: 50px;
-    margin-bottom: 40px;
-    padding-bottom: 15px;
+    padding-bottom: 0px;
     text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+}
+
+.line-divider {
+    border-bottom: 2px solid #e5e7eb;
 }
 
 .archive-status, .archive-error {
@@ -32,7 +36,7 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 40px;
     justify-content: center; 
 }
 
@@ -46,9 +50,9 @@
     max-width: 360px;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #f7f6f6;
     box-sizing: border-box;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 18px rgba(0, 0, 0, 0.2);
 
     transition: all 0.3s;
 
@@ -57,7 +61,7 @@
 }
 
 .archive-card:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: scale(1.02)
 }
 
@@ -135,3 +139,4 @@
         text-align: center;
 }
 }
+

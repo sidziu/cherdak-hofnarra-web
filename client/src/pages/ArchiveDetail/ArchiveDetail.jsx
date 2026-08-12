@@ -2,15 +2,19 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./ArchiveDetail.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+import errorImage from "../../assets/logotypes/logo-meow-red-withbg.png";
+import { API } from '../../api';
 
 function ArchiveDetail() {
-    const { id } = useParams(); // Извлекаем динамический ID из URL страницы
+    const { id } = useParams();
 
     const [performance, setPerformance] = useState(null);
-    const [pastEvents, setPastEvents] = useState([]);
+    const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // Стейт для индекса открытой фотографии (null- просмотр закрыт)
+    const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -20,34 +24,23 @@ function ArchiveDetail() {
                 setLoading(true);
                 setError("");
 
-                // Параллельно запрашиваем архивные спектакли и общие спектакли (где лежат сеансы)
-                const [archiveRes, perfRes] = await Promise.all([
-                    fetch(`${API_URL}/api/archive`, { signal: controller.signal }),
-                    fetch(`${API_URL}/api/performances`, { signal: controller.signal })
+                const [archivesData, perfsData] = await Promise.all([
+                    API.getArchive(controller.signal),
+                    API.getPerformances(controller.signal)
                 ]);
 
-                if (!archiveRes.ok) throw new Error("Не удалось загрузить информацию о спектакле");
-                if (!perfRes.ok) throw new Error("Не удалось загрузить сеансы из пути performances");
-                
-                const [archiveData, perfData] = await Promise.all([
-                    archiveRes.json(),
-                    perfRes.json()
-                ]);
-
-                // Ищем описание спектакля в архиве
-                const foundPerf = archiveData.find(p => String(p.id) === String(id));
-                if (!foundPerf) {
+                const archiveData = archivesData.find(p => String(p.id) === String(id));
+                if (!archiveData) {
                     throw new Error("Спектакль не найден в архиве");
                 }
 
-                // Ищем этот же спектакль в массиве performances, чтобы забрать оттуда его сеансы
-                const matchedPerf = perfData.find(p => String(p.id) === String(id));
-                const filteredEvents = matchedPerf && Array.isArray(matchedPerf.performances)
-                    ? matchedPerf.performances
+                const foundPerf = perfsData.find(p => String(p.id) === String(id));
+                const eventsData = foundPerf && Array.isArray(foundPerf.performances)
+                    ? foundPerf.performances
                     : [];
 
-                setPerformance(foundPerf);
-                setPastEvents(filteredEvents);
+                setPerformance(archiveData);
+                setEvents(eventsData);
             } catch (err) {
                 if (err.name !== "AbortError") {
                     setError(err.message);
@@ -64,7 +57,36 @@ function ArchiveDetail() {
         };
     }, [id]);
 
-    // Перевод времнни
+    // Логика клавиш для фото (Esc для закрытия, стрелки для навигации)
+    useEffect(() => {
+        if (selectedPhotoIndex === null) return;
+
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setSelectedPhotoIndex(null);
+            } else if (event.key === "ArrowRight") {
+                handleNextPhoto();
+            } else if (event.key === "ArrowLeft") {
+                handlePrevPhoto();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [selectedPhotoIndex]);
+
+    const handleNextPhoto = () => {
+        setSelectedPhotoIndex((prev) => 
+            prev === performance.photoUrls.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const handlePrevPhoto = () => {
+        setSelectedPhotoIndex((prev) => 
+            prev === 0 ? performance.photoUrls.length - 1 : prev - 1
+        );
+    };
+
     const formatDate = (isoString) => {
         const date = new Date(isoString);
         return date.toLocaleDateString("ru-RU", {
@@ -80,66 +102,63 @@ function ArchiveDetail() {
     if (error) return <div className="detail-status error">{error} <br /><br /><Link to="/archive" className="back-link">Вернуться в архив</Link></div>;
     if (!performance) return null;
 
-    const imageFilename = performance.image || (performance.imageUrl ? performance.imageUrl.split("/").pop() : "");
-
     return (
-        <div className="archive-detail-container">
+        <div className="archive-detail-section">
             
             <Link to="/archive" className="back-link">← Вернуться в архив</Link>
 
-            <div className="detail-main-grid">
-                
-                <div className="detail-image-wrapper">
+            <div className="detail-performance-container">
+                <div className="detail-image-container">
                     <img 
-                        src={`${API_URL}/images/events/${imageFilename}`} 
+                        src={performance.imageUrl} 
                         alt={performance.title} 
                         className="detail-poster"
-                        onError={(e) => {
-                            e.target.src = "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=600";
-                        }}
+                        onError={(e) => { e.target.src = errorImage; }}
                     />
                 </div>
 
-                <div className="detail-info-wrapper">
-                    <div className="detail-header-row">
+                <div className="detail-performance-info-container">
+                    <div className="detail-header">
                         <span className="detail-genre">{performance.genre}</span>
                         <span className="detail-rating">{performance.rating}</span>
                     </div>
 
                     <h1 className="detail-title">{performance.title}</h1>
-                    <p className="detail-director"><strong>Режиссёр-постановщик:</strong> {performance.director}</p>
+                    <p className="detail-director"><strong>Режиссёр:</strong> {performance.director}</p>
                     <p className="detail-duration"><strong>Продолжительность:</strong> {performance.duration} мин.</p>
-                    
+
                     <p className="detail-description">{performance.description}</p>
                 </div>
-
             </div>
 
-            {/* БЛОК 2: АРХИВНЫЕ ПОКАЗЫ (ИЗВЛЕЧЕННЫЕ ИЗ ПУТИ PERFORMANCES) */}
-            <div className="detail-block-section">
-                <h2 className="section-subtitle">Прошедшие показы</h2>
-                {pastEvents.length === 0 ? (
+            {/* Прошедшие показы */}
+            <div className="detail-events-section">
+                <h2 className="detail-events-title">Прошедшие показы</h2>
+                <h1 className="line-divider"></h1>
+                {events.length === 0 ? (
                     <p className="no-data">Информация о датах показов в архиве уточняется.</p>
                 ) : (
-                    <ul className="past-events-list">
-                        {pastEvents.map(event => (
-                            <li key={event.eventID} className="past-event-item">
-                                <span className="event-date"> {formatDate(event.date)}</span>
-                                <span className="event-scene">{event.scene}</span>
+                    <ul className="detail-events-list">
+                        {events.map(event => (
+                            <li key={event.eventID} className="past-event">
+                                <span className="past-event-date"> {formatDate(event.date)}</span>
+                                <span className="past-event-scene">{event.scene}</span>
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
 
-            <div className="detail-block-section">
-                <h2 className="section-subtitle">Видеозапись выступления</h2>
+            {/* Видео */}
+            <div className="detail-videos-section">
+                <h2 className="detail-events-title">Видеозаписи выступления</h2>
+                <h1 className="line-divider"></h1>
                 {performance.videos && performance.videos.length > 0 ? (
-                    <div className="videos-grid" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                        {performance.videos.map((vidUrl, index) => (
-                            <div key={index} className="video-player-container" style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden" }}>
+                    <div className="detail-videos-container">
+                        {performance.videos.map((videoUrl, index) => (
+                            <div key={index} className="archive-video-player-container">
                                 <iframe 
-                                    src={vidUrl} 
+                                    src={videoUrl} 
                                     title={`Видеозапись спектакля ${performance.title} - Часть ${index + 1}`}
                                     frameBorder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -150,28 +169,54 @@ function ArchiveDetail() {
                         ))}
                     </div>
                 ) : (
-                    <div className="video-placeholder">
-                        <p>Видеозапись данного спектакля готовится к публикации и будет добавлена позже.</p>
+                    <div className="archive-video-placeholder">
+                        <p>Видеозапись данного спектакля остутствует или будет добавлена позже.</p>
                     </div>
                 )}
             </div>
 
-            <div className="detail-block-section">
-                <h2 className="section-subtitle">Фотогалерея</h2>
+            {/* Фотогалерея */}
+            <div className="detail-videos-section">
+                <h2 className="detail-events-title">Фотогалерея</h2>
+                <h1 className="line-divider"></h1>
                 {performance.photoUrls && performance.photoUrls.length > 0 ? (
-                    <div className="photos-grid">
+                    <div className="archive-photos-container">
                         {performance.photoUrls.map((url, index) => (
-                            <div key={index} className="photo-item">
+                            <div 
+                                key={index} 
+                                className="photo-item" 
+                                onClick={() => setSelectedPhotoIndex(index)}
+                            >
                                 <img src={url} alt={`Кадр из спектакля ${index + 1}`} />
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <div className="photos-placeholder">
-                        <p className="no-data">Кадры с показов будут опубликованы в ближайшее время.</p>
+                    <div className="archive-photos-placeholder">
+                        <p className="no-data">Кадры с данного спектакля остутствуют или будут добавлены позже</p>
                     </div>
                 )}
             </div>
+
+            {/* Просмотр фото bigscreen */}
+            {/* Метод e.stopPropagation - для того чтоб не работа onClick оверлэя  */}
+            {selectedPhotoIndex !== null && (
+                <div className="view-photo-overlay" onClick={() => setSelectedPhotoIndex(null)}>
+                    <button className="view-photo-close" onClick={() => setSelectedPhotoIndex(null)}>&times;</button>
+                    
+                    <button className="view-photo-nav prev" onClick={(e) => { e.stopPropagation(); handlePrevPhoto(); }}>&#10094;</button>
+                    
+                    <div className="view-photo-content" onClick={(e) => e.stopPropagation()}>
+                        <img 
+                            src={performance.photoUrls[selectedPhotoIndex]} 
+                            alt="Просмотр фото" 
+                            className="view-photo-image"
+                        />
+                    </div>
+
+                    <button className="view-photo-nav next" onClick={(e) => { e.stopPropagation(); handleNextPhoto(); }}>&#10095;</button>
+                </div>
+            )}
 
         </div>
     );
