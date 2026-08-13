@@ -93,7 +93,7 @@ function Playbill() {
                 <p className="event-description">{event.description}</p>
 
                 <div className="event-details-info">
-                    <span>📍 {event.scene} </span>
+                    <span> {event.scene} </span>
                     <span>⏱ {event.duration} мин. </span>
                     <span className="play-date"> {event.date}</span>
                 </div>
@@ -121,6 +121,7 @@ function Playbill() {
     return (
         <div className="playbill-container">
             <h1 className="playbill-title">Афиша</h1>
+            <h1 className="line-divider" ></h1>
 
             {/* Логика c &&: Если loading = true => Показать "...." | Если = false => То ничего не показывать */}
             {loading && <p className="playbill-status">Загрузка актуальных спектаклей...</p>}

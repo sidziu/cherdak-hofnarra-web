@@ -58,7 +58,7 @@ function About() {
     return(
         <div className="about-container">
 
-            <h1 className="about-us">О нас</h1>
+            <h1 className="about-us">О нашей студии</h1>
 
             {loading && <p className="about-status">Загрузка информации...</p>}
             {error && <p className="about-error">{error}</p>}
