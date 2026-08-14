@@ -1,47 +1,63 @@
 
-
-// ДЕЯТЕЛЬНОСТЬ НЕЙРОСЕТИ
-
-
 import React from "react";
 import { NavLink } from "react-router-dom"; // Для переходов по страницам
-import "./Sidebar.css"; // Подключаем стили, которые создадим на следующем шаге
+import "./Sidebar.css"; 
 import gasuLogo from "../../assets/logotypes/gasu-logo-chb.png";
+import { useState, useEffect } from "react";
 
-// В скобках мы принимаем два "пропса" (настройки) от родителя (шапки):
-// isOpen - открыто меню сейчас или нет (true/false)
-// onClose - функция, которая закроет меню при клике на крестик или мимо меню
+
 function Sidebar({ isOpen, onClose }) {
+    useEffect(() => {
+            if (isOpen) {
+    
+                // При открытом окне, кнопка escape закрывает sidebar
+                const handleKeyDown = (event) => {
+                if (event.key === "Escape") {
+                    onClose();
+                }};
+                window.addEventListener("keydown", handleKeyDown);
+                return () => window.removeEventListener("keydown", handleKeyDown);
+            }
+            
+        }, [isOpen]);
+
     return (
         <>
-            {/* 1. БЭКДРОП (ТЕМНЫЙ ФОН) 
-                Если isOpen = true, добавляем класс "open" и фон появляется.
-                onClick={onClose} означает, что если кликнуть по темному фону мимо меню, оно закроется. 
-            */}
             <div 
-                className={`sidebar-backdrop ${isOpen ? "open" : ""}`} 
+                className={`sidebar-background ${isOpen ? "open" : ""}`} 
                 onClick={onClose}
             ></div>
 
-            {/* 2. САМА ВЫЕЗЖАЮЩАЯ ПАНЕЛЬ
-                Опять же, если isOpen = true, панель выезжает (добавляется класс "open")
-            */}
+
             <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
                 
-                {/* Кнопка-крестик для закрытия */}
-                <button className="sidebar-close-btn" onClick={onClose}>
-                    &times; {/* Спецсимвол красивого крестика в HTML */}
-                </button>
-                
-                {/* Навигация с вашими ссылками */}
-                <nav className="sidebar-nav">
-                    {/* При клике на любую ссылку мы вызываем onClose, чтобы меню само закрылось после перехода */}
+                <div className="sidebar-header">
+                    <h1 className="sidebar-big-title">Меню</h1>
+                    <button className="sidebar-close-btn" onClick={onClose}>
+                       ➔
+                    </button>
+                </div>
+
+                <h1 className="line-divider"></h1>
+
+                <nav className="sidebar-navigation-container">
                     <NavLink to="/" className="sidebar-link" onClick={onClose}>Главная</NavLink>
                     <NavLink to="/about" className="sidebar-link" onClick={onClose}>О нас</NavLink>
                     <NavLink to="/playbill" className="sidebar-link" onClick={onClose}>Афиша</NavLink>
                     <NavLink to="/archive" className="sidebar-link" onClick={onClose}>Архив</NavLink>
                 </nav>
 
+                <h1 className="line-divider"></h1>
+
+                <h1 className="sidebar-title">Связь с нами</h1> 
+                <div className="sidebar-contact-us">
+                    <p className="sidebar-contact-h1">Почта:</p>
+                    <p className="sidebar-contact-h3">sidziu418may@gmail.com</p>
+                    <p className="sidebar-contact-h1">Telegram:</p>
+                    <p className="sidebar-contact-h3">@sidziu<br/>@dadzc</p>
+                </div>
+
+                <h1 className="line-divider"></h1>
                 <div className="sidebar-footer-link">
                     <a
                         href="https://www.spbgasu.ru/"

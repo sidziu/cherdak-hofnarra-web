@@ -98,16 +98,21 @@
 
 .path-link:hover { 
     color: #8b0000; 
-    transform: scale(1.04); 
+    /* transform: scale(1.04); */
+    /* transform: translateY(-2px); */
 }
 
 .path-link.active.reload-link:hover { 
     color: #8b0000;               
-    transform: scale(1.04); 
+    /* transform: scale(1.04);  */
+    /* transform: translateY(-2px); */
 }
 
 .path-link.gray { 
     color: #9ca3af; 
+}
+.path-link.gray:hover { 
+    color: #8b0000; 
 }
 
 .path-separator { 
@@ -160,7 +165,9 @@
     cursor: pointer; 
     margin-bottom: 8px; /* твоя правка */
     transition: color 0.2s ease, transform 0.2s ease;
-    padding-left: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-decoration: none;
 }
 
 .button-menu:hover { 

@@ -24,6 +24,7 @@ function Header() {
 
     // Состояние для показа шапки при наведении у верхней части страницы (home)
     const [hoverHeader, setHoverHeader] = useState(false);
+    
 
     // Отслеживание скролла
     useEffect(() => {
@@ -88,8 +89,6 @@ function Header() {
         pathItems = [
             { path: "/", label: "Главная", isCurrent: false }
         ];
-
-        // И дальше докидываем текущую страницу по твоей логике
         if (location.pathname === "/about") {
             pathItems.push({ path: "/about", label: "О нас", isCurrent: true });
         } else if (location.pathname === "/playbill") {
@@ -175,7 +174,7 @@ function Header() {
                     >
                         Афиша
                     </NavLink>
-                    <button className="button-menu" onClick={() => setIsMenuOpen(true)}>☰</button>
+                    <NavLink className="button-menu" onClick={() => setIsMenuOpen(true)}>☰</NavLink>
                 </div>
                 
 
