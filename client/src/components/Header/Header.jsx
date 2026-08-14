@@ -24,6 +24,11 @@ function Header() {
 
     // Состояние для показа шапки при наведении у верхней части страницы (home)
     const [hoverHeader, setHoverHeader] = useState(false);
+
+    const [itsMobileWindow, setItsMobileWindow] = useState(() =>
+    //typeof - возвращает тип переменной | Если мобила => то true, нет false
+        typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+    );
     
 
     // Отслеживание скролла
@@ -79,6 +84,7 @@ function Header() {
     // навигацияв
     let pathItems = [];
 
+
     if (isHomePage) {
         pathItems = [
             { path: "/archive", label: "Архив", isCurrent: false },
@@ -97,8 +103,15 @@ function Header() {
             pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
         } else if (location.pathname.startsWith("/archive/")) {
             pathItems.push({ path: "/archive", label: "Архив", isCurrent: false });
-            pathItems.push({ path: location.pathname, label: location.state?.title || "Спектакль", isCurrent: true });
-        }
+            const displayLabel = itsMobileWindow 
+            ? "Спектакль" 
+            : (location.state?.title || "Спектакль");
+
+        pathItems.push({ 
+            path: location.pathname, 
+            label: displayLabel, 
+            isCurrent: true
+        })}
     }
 
     return (

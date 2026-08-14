@@ -40,7 +40,7 @@ function Archive() {
 
     return (
         <div className="archive-container">
-            <h1 className="archive-title">Прошедшие спектакли</h1>
+            <h1 className="archive-title">Архивные постановки</h1>
             <div className="line-divider-container">
                 <h1 className="line-divider"></h1>
             </div>

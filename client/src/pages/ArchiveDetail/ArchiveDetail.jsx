@@ -126,7 +126,7 @@ function ArchiveDetail() {
                     <h1 className="detail-title">{performance.title}</h1>
                     <p className="detail-director"><strong>Режиссёр:</strong> {performance.director}</p>
                     <p className="detail-duration"><strong>Продолжительность:</strong> {performance.duration} мин.</p>
-
+                    <h1 className="line-divider"></h1>
                     <p className="detail-description">{performance.description}</p>
                 </div>
             </div>

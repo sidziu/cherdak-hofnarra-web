@@ -31,7 +31,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding: 5px 5px 20px 0px;
+    padding: 5px 5px 20px 5px;
     color: #ffffff;
     text-align: center;
     font-family: 'main';
@@ -46,10 +46,10 @@
 }
 
 .start-title {
-    font-size: clamp(5rem, 15vw, 10rem);
-    margin: 0;
+    font-size: clamp(4.8rem, 15vw, 10rem);
     font-weight: 700;
     line-height: 1;
+    padding: 0px 0px 0px 0px;
     text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
 }
 
@@ -68,7 +68,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 2000;
+    z-index: 1000;
     pointer-events: none;
     display: flex;
 }

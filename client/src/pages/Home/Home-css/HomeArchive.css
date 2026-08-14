@@ -11,7 +11,7 @@
 /* Заголовок */
 .home-archive-title {
     font-family: 'main';
-    font-size: clamp(2.5rem, 15vw, 5rem);
+    font-size: clamp(2rem, 13vw, 5rem);
     color: #000000;
     text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
 
@@ -109,7 +109,7 @@
 }
 
 .home-archive-card-title {
-    font-family: second;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.25rem;
     font-weight: 700;
     color: #1a1a1a;
@@ -147,7 +147,7 @@
     border: 2px solid #8b0000 !important;
     /* border-radius: 30px;  */
     border-radius: 0px; 
-    font-size: clamp(0.4rem, 4vw, 1.1rem);
+    font-size: clamp(1.2rem, 4vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -199,13 +199,13 @@
     }
 
     .home-archive-card-container.card-position-1 {
-        margin-top: -210px !important; 
+        margin-top: -200px !important; 
         transform: rotateX(10deg) scale(0.98) !important;
         z-index: 2 !important;
     }
 
     .home-archive-card-container.card-position-2 {
-        margin-top: -210px !important; 
+        margin-top: -190px !important; 
         transform: rotateX(10deg) scale(1.1) !important;
         z-index: 3 !important;
     }
@@ -222,4 +222,5 @@
     .home-photo-container {
         height: 100%; 
     }
+    
 }

@@ -12,7 +12,7 @@
     display: inline-block;
     color: #1f2937;
     text-decoration: none;
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 30px;
@@ -57,7 +57,7 @@
 }
 
 .detail-genre {
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
@@ -66,9 +66,9 @@
 }
 
 .detail-rating {
-    border: 1px solid #1f2937;
+    border: 1px solid #000000;
     padding: 2px 8px;
-    font-family: "second";
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: bold;
     border-radius: 0;
@@ -82,12 +82,12 @@
 }
 
 .detail-director, .detail-duration {
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
 }
 
 .detail-description {
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
     line-height: 1.6;
     color: #4b5563;
@@ -104,10 +104,10 @@
 }
 
 .detail-events-title{
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 2.5rem;
     margin-bottom: 5px;
-    font-weight: 1000;
+    font-weight: 800;
     /* text-align: center; */
 }
 
@@ -122,8 +122,8 @@
 .past-event {
     display: flex;
     gap: 30px;
-    font-family: "second";
-    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2rem;
     background-color: #fbf9f9;
     padding: 15px 25px;
     border: 1px solid #ebe5e5;
@@ -179,7 +179,7 @@
     border: 1px dashed #dbd1d1;
     padding: 40px;
     text-align: center;
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
     color: #6b7280;
 }
@@ -221,14 +221,6 @@
     color: #8b0000;
 }
 
-@media (max-width: 768px) {
-    .detail-performance-container {
-        max-width: 100%;
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-}
-
 /* Просмотр фото */
 .view-photo-overlay {
     position: fixed;
@@ -264,7 +256,7 @@
     background: none;
     border: none;
     color: white;
-    font-size: 50px;
+    font-size: 3rem;
     cursor: pointer;
     padding: 20px;
     transition: color 0.3s;
@@ -293,4 +285,39 @@
 
 .view-photo-close:hover {
     color: #8b0000;
+}
+
+
+
+@media (max-width: 768px) {
+    .detail-performance-container {
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .past-event {
+        font-size: 0.8rem;
+    }
+    .detail-events-title {
+        font-size: 2rem;
+    }
+    .archive-photos-container {
+        gap: 0px;
+    }  
+
+    .view-photo-content {
+        max-width: 75%; 
+        max-height: 90%;
+    }
+
+    .view-photo-nav {
+        padding: 10px;
+    }
+    .view-photo-nav {
+        font-size: 3rem;
+    }
+
+    .prev { left: 0px; }
+    .next { right: 0px; }
+
 }

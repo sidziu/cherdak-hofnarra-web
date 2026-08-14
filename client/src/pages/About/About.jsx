@@ -84,8 +84,9 @@ function About() {
                         <div className="persons-grid">
                             {persons.map((actor) => renderCard(actor))}
                         </div>
+                        <h1 className="line-divider"></h1>
                     </div>
-
+        
                     {/* Секция неактивных персоналий */}
                     <div className="team-container">
                         <h2 className="team-title">Бывшие участники</h2>

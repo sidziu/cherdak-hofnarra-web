@@ -79,6 +79,12 @@ function Home() {
         setAbout(aboutText);
         setArchive(archiveData);
 
+        // setTimeout(() => {
+        //   if (swiperRef.current) {
+        //     swiperRef.current.update();
+        //   }
+        // }, 100);
+
       } catch (err) {
         if (err.name !== "AbortError") {
           setError(err.message);
@@ -130,8 +136,8 @@ function Home() {
 
 
   // Склеиваем массив сам с собой, чтоб корректно работал loop при малом количестве спектаклей
-  if (carouselItems.length > 0 && carouselItems.length < 5) {
-    while (carouselItems.length < 8) {
+  if (carouselItems.length > 0 && carouselItems.length < 8) {
+    while (carouselItems.length < 16) {
       carouselItems = carouselItems.concat(carouselItems);
     }
   }
@@ -176,15 +182,22 @@ function Home() {
           onMouseEnter={() => swiperRef.current?.autoplay?.stop()}
           onMouseLeave={() => swiperRef.current?.autoplay?.start()}
         >
+          {!loading && carouselItems.length > 8 ? (
           <Swiper
             // key заставляет Swiper переинициализироваться при изменении количества данных
             key={carouselItems.length}
+
+            // observer={true}             // Следит за изменениями в самом Swiper
+            // observeParents={true}      // Следит за изменениями в родителях 
+            // resizeObserver={true}       // Использует современный ResizeObserver яхзпока
+
             modules={[Navigation, Pagination, Autoplay, FreeMode, Mousewheel]}
             slidesPerView="auto"
-            spaceBetween={100}
+            spaceBetween={80}
             centeredSlides={true}
             loop={true}
-            //-
+            loopedSlides = {6}
+            // touchStartPreventDefault={false}
             freeMode={{ // свободный скролл карусели
               enabled: true,
               sticky: true, // доводчик до следующего слайда
@@ -198,7 +211,7 @@ function Home() {
               releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
             }}
             grabCursor={true} // меняет вид курсора при наведении
-            speed={500} // время до доводчика
+            speed={400} // время до доводчика
 
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
@@ -294,11 +307,14 @@ function Home() {
 
             {/* Навигация */}
             <div className="swiper-controls-container">
-              <button className="swiper-prev custom-nav-btn">←</button>
+              <button className="swiper-prev custom-nav-btn">&#8592;</button>
               <div className="swiper-pagination"></div>
-              <button className="swiper-next custom-nav-btn">→</button>
+              <button className="swiper-next custom-nav-btn">&#8594;</button>
             </div>
           </Swiper>
+          ) : (
+            !loading && !error && <div className="carousel-status">Нет доступных спектаклей</div>
+          )}
         </div>
       </section>
 
@@ -318,9 +334,15 @@ function Home() {
           <p className="home-cherdak-opisanie">{about}</p>
           </div>
         </>)}
-      <NavLink  to="about" className="to-about-btn">
-        &nbsp;&nbsp;Актерский состав&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;Подробнее о нас&nbsp;&nbsp;
-      </NavLink>
+        {itsMobileWindow ? (
+          <NavLink  to="about" className="to-about-btn">
+          Подробнее о нас
+          </NavLink>
+        ) : (
+          <NavLink  to="about" className="to-about-btn">
+          &nbsp;&nbsp;Актерский состав&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;Подробнее о нас&nbsp;&nbsp;
+          </NavLink>
+        )}
       </div>
 
       {/* Секция Архива */}

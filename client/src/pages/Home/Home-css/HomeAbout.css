@@ -12,7 +12,7 @@
 
 .about-title-link {
   font-family: 'main';
-  font-size: clamp(2.5rem, 15vw, 5rem);
+  font-size: clamp(2rem, 15vw, 5rem);
   color: #000000;
 
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
@@ -86,7 +86,7 @@
     border: 2px solid #8b0000 !important;
     /* border-radius: 30px;  */
     border-radius: 0px; 
-    font-size: clamp(0.4rem, 4vw, 1.1rem);
+    font-size: clamp(1.2rem, 4vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -110,5 +110,8 @@
 @media (max-width: 768px) {
     .home-about-container {
         width: 100%;
+    }
+    .to-about-btn {
+        text-wrap: pre-wrap;
     }
 }

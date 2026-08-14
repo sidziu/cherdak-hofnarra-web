@@ -11,7 +11,7 @@
 
 .about-us {
     font-size: 2.5rem;
-    font-family: "second";
+    font-family: "Arial";
     color: #000000;
     margin-top: 0;
     margin-bottom: 30px;
@@ -24,7 +24,7 @@
 .about-status {
     font-size: 1.2rem;
     color: #9d9d9d;
-    font-family: Arial;
+    font-family: "Arial";
 }
 
 .about-error {
@@ -70,7 +70,7 @@
 
 .team-title {
     font-size: 2.5rem;
-    font-family: "second";
+    font-family: "Arial";
     color: #000000;
     margin-bottom: 30px;
     padding-bottom: 15px;
@@ -89,7 +89,7 @@
     background-color: #000000; 
     /* background-color: #fff;  */
     overflow: hidden;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
@@ -127,6 +127,7 @@
 
 
 .person-info {
+    font-family: 'Times New Roman', Times, serif;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -140,7 +141,7 @@
 .person-name {
     margin: 0 0 10px 0;
     font-size: 1.5rem;
-    font-family: "second";
+    /* font-family: "second"; */
     color: #efe9e9;
     /* color: #181616; */
     font-weight: 500;
@@ -174,10 +175,10 @@
         max-width: 100%;
     }
     .about-us {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
     .team-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
     .persons-grid {
         grid-template-columns: minmax(100px, 100%);
@@ -186,12 +187,28 @@
     .person-card {
         flex-direction: row;
         text-align: left;
-    }
+        }
     .person-photo-container {
         width: 50%;
         border-left: 0px solid #000000;
     }
     .person-info {
         width: 50%;
-}
+        justify-content: start;
+        text-align: left;
+        padding:20px;
+    }
+    .person-name {
+    font-size: 1.15rem;
+    }
+
+    .person-role {
+        font-size: 0.7rem;
+    }
+    
+    .person-contact {
+       font-size: 0.7rem;
+    }
+
+
 }
