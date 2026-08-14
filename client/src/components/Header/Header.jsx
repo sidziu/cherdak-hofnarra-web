@@ -118,7 +118,7 @@ function Header() {
                         />
                     </NavLink>
 
-                    <h1 className="header-title">Чердак Хофнарра</h1>
+                    <h1 className="header-title">Чердак<br/>&nbsp;Хофнарра</h1>
                 </div>
                 
                 
