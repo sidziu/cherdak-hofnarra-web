@@ -3,7 +3,7 @@
     width: 100%;
     max-width: 80%;
     margin: 0 auto;
-    padding: 140px 0px 0px 0px; 
+    padding: 100px 0px 0px 0px; 
     box-sizing: border-box;
     background-color: #ffffff;
 
@@ -69,7 +69,7 @@
 }
 
 .team-title {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-family: "second";
     color: #000000;
     margin-bottom: 30px;
@@ -93,6 +93,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    text-align: center;
 }
 
 .person-card:hover {
@@ -130,6 +131,9 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+
+    justify-content: center;
+    text-align: center;   
 }
 
 
@@ -158,7 +162,7 @@
     font-size: 0.9rem;
     color: #9d9d9d;
     padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(188, 187, 187, 0.25);
     white-space: pre-wrap;
     font-family: Arial;
 }
@@ -170,7 +174,10 @@
         max-width: 100%;
     }
     .about-us {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+    }
+    .team-title {
+        font-size: 2.2rem;
     }
     .persons-grid {
         grid-template-columns: minmax(100px, 100%);
@@ -178,6 +185,7 @@
     }
     .person-card {
         flex-direction: row;
+        text-align: left;
     }
     .person-photo-container {
         width: 50%;
