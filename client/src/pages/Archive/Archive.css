@@ -114,6 +114,7 @@
 }
 
 .archive-detail-btn {
+    border: none;
     display: inline-block;
     width: 100%;
     padding: 12px;

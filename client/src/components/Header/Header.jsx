@@ -1,10 +1,8 @@
-// ИЗМЕНЕНО ДЕЯТЕЛЬНОСТЬЮ ПУТЁМ ДЕЯТЕЛЬНОСТИ НЕЙРОСЕТИ
 import { useState, useEffect } from "react"; 
 import "./Header.css"; 
 import { NavLink, useLocation } from "react-router-dom";
 
-// Импорт логотипов
-// * Импорт с точками запомнить.
+
 import logoDefault from "../../assets/logotypes/new-logo-withouttext.png"; // Обычный
 import logoHover from "../../assets/logotypes/new-logo.png"; // При наведении
 
@@ -14,8 +12,9 @@ function Header() {
     const location = useLocation(); 
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
-    // Инициализируем состояние скролла динамически при монтировании
+    // Инициализируем состояние скролла
     const [isScrolled, setIsScrolled] = useState(() => {
+        //                современный вид         для старых бразуеров
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         return scrollTop > 50;
     });
@@ -23,8 +22,8 @@ function Header() {
     // Состояние для анимации логотипа
     const [isLogoHovered, setIsLogoHovered] = useState(false);
 
-    // НОВОЕ: состояние для показа шапки при наведении у верхней части страницы
-    const [isHoveringTop, setIsHoveringTop] = useState(false);
+    // Состояние для показа шапки при наведении у верхней части страницы (home)
+    const [hoverHeader, setHoverHeader] = useState(false);
 
     // Отслеживание скролла
     useEffect(() => {
@@ -47,19 +46,19 @@ function Header() {
         return null;
     }
 
-    // НОВОЕ: на главной странице шапка показывается при прокрутке или при наведении у верхней границы
+    // Для главной, анимация выдвижения и скрытия плашки при скролле
     useEffect(() => {
         if (location.pathname !== "/") {
-            setIsHoveringTop(false);
+            setHoverHeader(false);
             return;
         }
 
         const handleMouseMove = (event) => {
-            setIsHoveringTop(event.clientY < 100);
+            setHoverHeader(event.clientY < 100);
         };
 
         const handleMouseLeave = () => {
-            setIsHoveringTop(false);
+            setHoverHeader(false);
         };
 
         window.addEventListener("mousemove", handleMouseMove);
@@ -72,60 +71,79 @@ function Header() {
     }, [location.pathname]);
 
     const isHomePage = location.pathname === "/";
-    const isVisible = isHomePage ? isScrolled || isHoveringTop : true;
+    // Плашку видно если это...
+    const isVisible = !isHomePage || isScrolled || hoverHeader;
 
-    // Сборка хлебных крошек
-    const breadcrumbItems = [
-        { path: "/", label: "Главная", isCurrent: location.pathname === "/" }
-    ];
 
-    if (location.pathname === "/about") {
-        breadcrumbItems.push({ path: "/about", label: "О нас", isCurrent: true });
-    } else if (location.pathname === "/playbill") {
-        breadcrumbItems.push({ path: "/playbill", label: "Афиша", isCurrent: true });
-    } else if (location.pathname === "/archive") {
-        breadcrumbItems.push({ path: "/archive", label: "Архив", isCurrent: true });
-    } else if (location.pathname.startsWith("/archive/")) {
-        breadcrumbItems.push({ path: "/archive", label: "Архив", isCurrent: false });
-        breadcrumbItems.push({ path: location.pathname, label: location.state?.title || "Спектакль", isCurrent: true });
+    // навигацияв
+    let pathItems = [];
+
+    if (isHomePage) {
+        pathItems = [
+            { path: "/archive", label: "Архив", isCurrent: false },
+            { path: "/", label: "Главная", isCurrent: true },
+            { path: "/about", label: "О нас", isCurrent: false }
+        ];
+    } else {
+        pathItems = [
+            { path: "/", label: "Главная", isCurrent: false }
+        ];
+
+        // И дальше докидываем текущую страницу по твоей логике
+        if (location.pathname === "/about") {
+            pathItems.push({ path: "/about", label: "О нас", isCurrent: true });
+        } else if (location.pathname === "/playbill") {
+            pathItems.push({ path: "/playbill", label: "Афиша", isCurrent: true });
+        } else if (location.pathname === "/archive") {
+            pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
+        } else if (location.pathname.startsWith("/archive/")) {
+            pathItems.push({ path: "/archive", label: "Архив", isCurrent: false });
+            pathItems.push({ path: location.pathname, label: location.state?.title || "Спектакль", isCurrent: true });
+        }
     }
 
     return (
         <>
             <div className={`header-container ${isVisible ? "visible" : "hidden"}`}>
+                <div className="left-container">
+                    <NavLink 
+                        to="/" 
+                        className="logo-link"
+                     >
+                        <img 
+                            src={isLogoHovered ? logoHover : logoDefault} 
+                            alt="Логотип" 
+                            className="logo" 
+                            onMouseEnter={() => setIsLogoHovered(true)}
+                            onMouseLeave={() => setIsLogoHovered(false)}
+                        />
+                    </NavLink>
+
+                    <h1 className="header-title">Чердак Хофнарра</h1>
+                </div>
                 
-                {/* ОБЕРНУЛИ ЛОГОТИП В ССЫЛКУ */}
-                <NavLink 
-                    to="/" 
-                    className="logo-link"
-                >
-                    <img 
-                        src={isLogoHovered ? logoHover : logoDefault} 
-                        alt="Логотип" 
-                        className="logo" 
-                        onMouseEnter={() => setIsLogoHovered(true)}
-                        onMouseLeave={() => setIsLogoHovered(false)}
-                    />
-                </NavLink>
                 
-                <div className="breadcrumb-container">
-                    {breadcrumbItems.map((item, index) => {
+                <div className="path-navigation-container">
+                    {pathItems.map((item, index) => {
                         const isActive = item.isCurrent;
-                        const isGray = index < breadcrumbItems.length - 1;
-                        const shouldRenderLink = !isActive || item.path === "/";
+                        const isGray = index < pathItems.length - 1;
+                        const isLink = !isActive || item.path === "/";
                         
                         // Определяем, кликаем ли мы по ссылке "Главная", находясь на Главной
                         const isHomeLinkOnHomePage = item.path === "/" && isHomePage;
 
                         return (
-                            <div key={`${item.path}-${item.label}`} className="breadcrumb-item">
-                                {index > 0 && <span className="breadcrumb-separator">.</span>}
+                            
+                            <div key={`${item.path}-${item.label}`} 
+                                className={`path-item ${isActive ? "mobile-visible" : "mobile-hidden"}`}
+                            
+                            >
+                                {index > 0 && <p className="path-separator gray">•</p>}
                                 
                                 {isHomeLinkOnHomePage ? (
-                                    /* ИСПРАВЛЕНО: Добавили класс reload-link */
                                     <a
                                         href="/"
-                                        className="breadcrumb-link active reload-link"
+                                        className="path-link active reload-link"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             window.location.reload(); // Перезапуск страницы
@@ -133,26 +151,36 @@ function Header() {
                                     >
                                         {item.label}
                                     </a>
-                                ) : shouldRenderLink ? (
+                                ) : isLink ? (
                                     /* Обычные переходы между страницами */
                                     <NavLink
                                         to={item.path}
-                                        className={`breadcrumb-link${isGray ? " gray" : ""}`}
+                                        className={`path-link${isGray ? " gray" : ""}`}
                                         end={item.path === "/"}
                                     >
                                         {item.label}
                                     </NavLink>
                                 ) : (
-                                    <span className="breadcrumb-link active">{item.label}</span>
+                                    <span className="path-link active">{item.label}</span>
                                 )}
                             </div>
                         );
                     })}
                 </div>
-                
-                <h1 className="three-palki" onClick={() => setIsMenuOpen(true)}>☰</h1>
-            </div>
 
+                <div className="right-container" >
+                    <NavLink 
+                        to='/playbill'
+                        className="playbill-button"
+                    >
+                        Афиша
+                    </NavLink>
+                    <button className="button-menu" onClick={() => setIsMenuOpen(true)}>☰</button>
+                </div>
+                
+
+            
+            </div>
             <Sidebar 
                 isOpen={isMenuOpen} 
                 onClose={() => setIsMenuOpen(false)} 
@@ -162,25 +190,3 @@ function Header() {
 }
 
 export default Header;
-//Подгрзука при открытии сайта
-    // useEffect(() => {
-    //     const handleScroll = () => {
-
-    //         // Получение высоты прокрутки
-    //         const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-        
-
-    //         // Если прокрутка больше чем 50px — плашка выезжает
-    //         if (scrollTop > 50) {
-    //             setIsVisible(true);
-    //         } else {
-    //             setIsVisible(false);
-    //         }
-    //     };
-
-    //     window.addEventListener("scroll", handleScroll);
-
-    //     return () => {
-    //         window.removeEventListener("scroll", handleScroll);
-    //     };
-    // }, []);

@@ -50,7 +50,10 @@ function Archive() {
 
             <div className="archive-grid">
                 {performances.map((perf) => { return (
-                    <Link  to={`/archive/${perf.id}`}  key={perf.id} className="archive-card">
+                    <Link  className="archive-card"
+                        to={`/archive/${perf.id}`} 
+                        state={{ title: perf.title }} // для шапки 
+                        key={perf.id} >
                          <div className="archive-img-container">
                             <img 
                                 src={perf.imageUrl} 
@@ -67,13 +70,13 @@ function Archive() {
                             <h2 className="archive-card-title">{perf.title}</h2>
                             <p className="archive-card-director">Режиссёр: {perf.director}</p>
                                 
-                            <Link 
+                            <button
                                 to={`/archive/${perf.id}`} 
-                                state={{ title: perf.title }}
+                                state={{ title: perf.title }} // для шапки 
                                 className="archive-detail-btn"
                             >
                                 Подробнее: запись, фото
-                            </Link>
+                            </button>
                         </div>
 
                     </Link>

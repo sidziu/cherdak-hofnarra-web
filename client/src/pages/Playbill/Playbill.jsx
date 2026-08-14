@@ -108,6 +108,7 @@ function Playbill() {
                 ) : (
                     <NavLink
                         to={`../archive/${event.performanceId}`}
+                        state={{ title: event.title }}
                         className="booking-btn disabled" disabled
                     >
                         &nbsp;&nbsp;&nbsp;&nbsp;Перейти в архив&nbsp;&nbsp;&nbsp;&nbsp;

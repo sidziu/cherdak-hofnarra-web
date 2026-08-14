@@ -192,12 +192,13 @@
 
 .photo-item {
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .photo-item:hover {
-    transform: scale(1.02);
+    /* transform: scale(1.02); */
+    transform: translateY(-4px);
 }
 
 .photo-item img {
@@ -287,6 +288,9 @@
     font-size: 60px;
     cursor: pointer;
     line-height: 1;
+    transition: color 0.3s;
 }
 
-
+.view-photo-close:hover {
+    color: #8b0000;
+}

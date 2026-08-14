@@ -1,124 +1,211 @@
 .header-container { 
     /* Расположение */ 
-    position: fixed;      /* ИСПРАВЛЕНО: Фиксируем плашку на экране */
-    width: 100%; 
-    height: 100px;
+    position: fixed;      /* фиксируем плашку на экране */
+    top: 0;
     left: 0;
+    width: 100%; 
+    height: 85px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
+    padding: 0 20px;
     box-sizing: border-box;
     z-index: 1000;        /* Плашка всегда поверх остального */
 
     /* Оформление */
-    background-color: rgba(255, 255, 255, 0.95); /* Полупрозрачный белый */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);    /* Тень снизу */
+    background-color: rgba(255, 255, 255, 0.95); 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);    
 
-    /* Настройка плавности выезда */
-    transition: top 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out;
 }
 
-/* Прячем плашку */ 
+/* прячем */
 .header-container.hidden { 
-    top: -120px; 
+    transform: translateY(-100%); 
 }
 
-/* Показываем плашку */ 
+/* показываем плашку */ 
 .header-container.visible { 
-    top: 0; 
+    transform: translateY(0); 
 }
 
-/* Наш логотип  */ 
-.logo { 
-    width: 70px;         
-    height: auto;         
-    transition: transform 0.2s ease; 
+.left-container {
+    flex: 1; 
+    display: flex; 
+    align-items: center;  
+    justify-content: flex-start; /* прижимает всё левому краю */
+    gap: 0px;  
+    margin-bottom: 25px;
 }
 
-/* Прыжок вверх при наведении */ 
-.logo:hover { 
-    transform: translateY(-5px); 
+.header-title{
+    font-family: second;
+    margin-top: 20px;
+    /* margin-bottom: 3px; */
+    margin-left: 10px;
+    padding-bottom: 2px;
+    border-bottom: 3px solid #000000;
 }
 
-/* Ссылка-обертка */ 
 .logo-link { 
     text-decoration: none; 
-    display: flex;
-    align-items: center;  /* Чтобы логотип стоял ровно по центру */ 
 }
 
-/* Контейнер для нашего заголовка (ИСПРАВЛЕНО) */ 
-.breadcrumb-container { 
-    font-family: "main", sans-serif; 
-    font-size: 35px; 
-    margin-left: 20px; 
-    margin-right: auto;
-    margin-top: 30px;     /* Сохраняем твой старый отступ */ 
+.logo { 
+    margin-top:20px;
+    width: 58px;         
+    height: auto;         
+    transition: all 0.4s ease; 
+}
+
+.logo:hover { 
+    transform: translateY(-2px);
+}
+
+.logo:active {
+    transform: scale(0.80); 
+}
+
+
+.path-navigation-container { 
+    flex: 0 0 auto; /* :\ не растет и не сжимается, занимает только свое место */
     display: flex; 
-    align-items: center;  /* Выравниваем текст по одной линии */ 
-    gap: 8px;             /* Небольшой пробел в хлебных крошках */ 
+    justify-content: center;
+    align-items: center;  
+    gap: 8px;             
+    font-family: "Arial", sans-serif; 
+    text-transform: uppercase;
+    font-size: 1.2rem; 
 }
 
-/* Сами ссылки (Главная, О нас, Афиша) (ИСПРАВЛЕНО) */ 
-.breadcrumb-link { 
+.path-item {
+    display: flex;
+    align-items: center;
+}
+
+.path-link { 
     color: #9ca3af;
     text-decoration: none; 
     font-weight: bold; 
-    display: inline-block; /* ИСПРАВЛЕНО: Обязательно для анимации сдвига */ 
+    display: inline-block; 
     transition: color 0.2s ease, transform 0.2s ease; 
 }
 
-.breadcrumb-link.active { 
-    color: #1f2937; 
+.path-link.active { 
+    color: #000000; 
 }
 
-.breadcrumb-link:hover { 
+.path-link:hover { 
     color: #8b0000; 
-    transform: translateY(-5px); 
+    transform: scale(1.04); 
 }
 
-.breadcrumb-link.active:hover { 
-    color: #1f2937; 
-    transform: none; 
+.path-link.active.reload-link:hover { 
+    color: #8b0000;               
+    transform: scale(1.04); 
 }
 
-.breadcrumb-link.gray { 
+.path-link.gray { 
     color: #9ca3af; 
 }
 
-.breadcrumb-link.gray:hover { 
-    color: #8b0000; 
-    transform: translateY(-5px); 
-}
-
-/* Точка-разделитель в хлебных крошках (ИСПРАВЛЕНО) */ 
-.breadcrumb-separator { 
-    color: #1f2937;
+.path-separator { 
+    color: #000000;
     font-weight: bold; 
     cursor: default; 
-    display: inline-block; /* ИСПРАВЛЕНО: Чтобы заработал сдвиг вверх */ 
-    transform: translateY(-8px); /* Поднимаем точку вверх на середину букв */ 
+    display: inline-block; 
+    margin-right: 8px; 
+    background: none;
+    border: none;
 }
 
-/* Кнопка меню бургер (ИСПРАВЛЕНО) */ 
-.three-palki { 
-    font-size: 50px; 
-    margin-top: 0px;      /* Убрали margin-top: 20px, который пихал её вниз */ 
-    transform: translateY(-4px); /* Слегка приподняли для идеального центра */ 
-    color: #1f2937; 
+.path-separator.gray { 
+    color: #9ca3af;
+}
+
+
+.right-container { 
+    flex: 1; 
+    display: flex; 
+    align-items: center;  
+    justify-content: flex-end; /* прижимает всё к правому краю */
+    gap: 8px;             
+}
+
+.playbill-button {
+    font-family: "Arial";
+    text-transform: uppercase;
+    padding: 10px 25px 10px 15px;
+    font-size: 1.2rem; 
+    font-weight: 550;
+    color: #000000; 
+    border-right: 2px solid #000000;
+    text-decoration: none;
     cursor: pointer; 
-    transition: color 0.2s ease, transform 0.2s ease; 
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Легкий интерактив при наведении на бургер */ 
-.three-palki:hover { 
-    color: #8b0000;       /* Становится красным при наведении */ 
-    transform: translateY(-7px); /* Слегка подпрыгивает вверх */ 
+.playbill-button:hover { 
+    color: #8b0000;   
 }
 
-.breadcrumb-link.active.reload-link:hover { 
-    color: #8b0000;               /* Становится красным при наведении */
-    transform: translateY(-5px);  /* Подпрыгивает на 5px вверх */
+.button-menu { 
+    display: flex;
+    font-size: 50px; 
+    font-weight: 550;
+    color: #000000; 
+    background: none;
+    border: none;
+    cursor: pointer; 
+    margin-bottom: 8px; /* твоя правка */
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding-left: 10px;
+}
+
+.button-menu:hover { 
+    color: #8b0000;       
+}
+
+.button-menu:active { 
+    transform: scale(0.90);       
+}
+
+
+@media (max-width: 768px) {
+    /* убираем название театра */
+    .header-title {
+        display: none;
+    }
+
+    /* убираем кнопку Афиша */
+    .playbill-button {
+        display: none;
+    }
+
+    /* убираем разделители */
+    .path-separator {
+        display: none;
+    }
+
+    /* cкрываем неактивные пункты навигации */
+    .path-item.mobile-hidden {
+        display: none;
+    }
+
+
+    .left-container {
+        margin-bottom: 0;
+    }
+    .logo {
+        margin-top: 0;
+    }
+
+ 
+
+    .path-link {
+        font-size: 1.2rem;
+        margin-left: 8px;
+        margin-top: 5px;
+    }
 }

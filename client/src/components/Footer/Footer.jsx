@@ -4,7 +4,7 @@ import { NavLink, useLocation } from "react-router-dom"; // добавил useLo
 
 import meowLogo from "../../assets/logotypes/logo-myau-darkred-white.png"; 
 import brickLogo from "../../assets/logotypes/brick-logo-white.png";
-import newLogo from "../../assets/logotypes/new-logo-white.png"; 
+import cherdakLogo from "../../assets/logotypes/logo-white.png"; 
 
 function Footer() {
     const location = useLocation();
@@ -61,7 +61,7 @@ function Footer() {
                         </a>
                     </div>
                     <img 
-                        src={newLogo} 
+                        src={cherdakLogo} 
                         alt="Логотип студии" 
                         className="social-logo" 
                     />

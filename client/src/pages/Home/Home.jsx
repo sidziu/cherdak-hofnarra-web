@@ -339,7 +339,7 @@ function Home() {
               <div 
                 key={card.id} 
                 className={`home-archive-card-container card-position-${index}`}
-                onClick={!itsMobileWindow ? () => navigate(`/archive/${card.id}`) : () => navigate(`/archive`)}
+                onClick={!itsMobileWindow ? () => navigate(`/archive/${card.id}`,{state: { title: card.title }}) : () => navigate(`/archive`)}
               >
                 <div className="home-photo-container">
                     <img 
