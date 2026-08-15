@@ -2,9 +2,9 @@ import './Footer.css';
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom"; // добавил useLocation для корректной проверки
 
-import meowLogo from "../../assets/logotypes/logo-myau-darkred-white.png"; 
-import brickLogo from "../../assets/logotypes/brick-logo-white.png";
-import cherdakLogo from "../../assets/logotypes/logo-white.png"; 
+import meowLogo from "../../assets/logotypes/logo-myau-darkred-white.webp"; 
+import brickLogo from "../../assets/logotypes/brick-logo-white.webp";
+import cherdakLogo from "../../assets/logotypes/logo-white.webp"; 
 
 function Footer() {
     const location = useLocation();

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Archive.css";
 
-import errorImage from "../../assets/logotypes/logo-meow-red-withbg.png";
+import errorImage from "../../assets/logotypes/logo-meow-red-withbg.webp";
 
 import { API } from '../../api'; // Импортируем обьект API с функциями для запросов на сервер
 

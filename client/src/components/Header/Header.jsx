@@ -3,8 +3,8 @@ import "./Header.css";
 import { NavLink, useLocation } from "react-router-dom";
 
 
-import logoDefault from "../../assets/logotypes/new-logo-withouttext.png"; // Обычный
-import logoHover from "../../assets/logotypes/new-logo.png"; // При наведении
+import logoDefault from "../../assets/logotypes/new-logo-withouttext.webp"; // Обычный
+import logoHover from "../../assets/logotypes/new-logo.webp"; // При наведении
 
 import Sidebar from "../Sidebar/Sidebar.jsx";
 

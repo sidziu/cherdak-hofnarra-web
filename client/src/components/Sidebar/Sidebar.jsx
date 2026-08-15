@@ -2,7 +2,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom"; // Для переходов по страницам
 import "./Sidebar.css"; 
-import gasuLogo from "../../assets/logotypes/gasu-logo-chb.png";
+import gasuLogo from "../../assets/logotypes/gasu-logo-chb.webp";
 import { useState, useEffect } from "react";
 
 

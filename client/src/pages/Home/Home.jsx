@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./Home-css/Home.css";
 import { API } from "../../api/index.js";
 
-import logo from "../../assets/logotypes/new-logo-withouttext.png"; // Лого (пока не используется в JSX)
-import startBg from "../../assets/backgrounds-home/bg1.jpeg"; // Фон первого экрана
+import logo from "../../assets/logotypes/new-logo-withouttext.webp"; // Лого (пока не используется в JSX)
+import startBg from "../../assets/backgrounds-home/bg1.webp"; // Фон первого экрана
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; // Компонент модалки записи
 
 // Swiper и Atropos для карусели
@@ -196,7 +196,6 @@ function Home() {
             spaceBetween={80}
             centeredSlides={true}
             loop={true}
-            loopedSlides = {6}
             // touchStartPreventDefault={false}
             freeMode={{ // свободный скролл карусели
               enabled: true,
@@ -211,7 +210,7 @@ function Home() {
               releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
             }}
             grabCursor={true} // меняет вид курсора при наведении
-            speed={400} // время до доводчика
+            // speed={400} // время до доводчика
 
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
@@ -271,16 +270,16 @@ function Home() {
                       <div className="performance-content">
                         <div className="text-line-1">
                         {hasActivePerformance ? (
-                          <span className="performance-activestate-true" data-atropos-offset="2">
+                          <span className="performance-activestate-true" data-atropos-offset="5">
                             Премьера
                           </span>
                         ) : (
-                          <span className="performance-activestate-false" data-atropos-offset="2">
-                            Прошёл
+                          <span className="performance-activestate-false" data-atropos-offset="5">
+                            Архивный
                           </span>
                         )}
 
-                        <span className="performance-rate" data-atropos-offset="2">
+                        <span className="performance-rate" data-atropos-offset="6">
                           {item.rating}
                         </span>
                         </div>

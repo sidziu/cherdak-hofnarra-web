@@ -150,15 +150,15 @@
 }
 .sidebar-contact-h1 {
     margin-top:20px;
-    font-family: "second";
-    color: #4a4a4a;
-    font-weight:400;
+    font-family: 'Times New Roman', Times, serif;
+    color: #555454;
+    font-weight:510;
     /* text-transform: uppercase; */
     font-size: 1rem;
 }
 .sidebar-contact-h3 {
     margin-top:0px;
-    font-family: "second";
+    font-family: 'Times New Roman', Times, serif;
     color: #5b595c;
     font-size: 1rem;
     font-weight:200;

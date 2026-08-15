@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./ArchiveDetail.css";
 
-import errorImage from "../../assets/logotypes/logo-meow-red-withbg.png";
+import errorImage from "../../assets/logotypes/logo-meow-red-withbg.webp";
 import { API } from '../../api';
 
 function ArchiveDetail() {

@@ -104,10 +104,10 @@
   color: #fff;
   padding: 4px 8px;
   font-size: 1.3rem;
-  font-weight: 550;
+  font-weight: 650;
   text-transform: uppercase;
   margin-bottom: 12px;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
   width: fit-content; 
 }
 
@@ -228,7 +228,7 @@
   .performance-rate {
     margin-left: 0 !important;
     font-size: 0.9rem !important;
-    padding: 2px 6px;
+    padding: 4px 6px 2px 6px;
   }
 
   .performance-director,
