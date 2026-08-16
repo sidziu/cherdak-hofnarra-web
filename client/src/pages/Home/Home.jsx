@@ -46,6 +46,9 @@ function Home() {
         typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
     );
 
+    // Стейт для развертывания и сворачивания текст на мобилах
+    const [isAboutExpanded, setIsAboutExpanded] = useState(false); 
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -335,7 +338,20 @@ function Home() {
         <>
           {/* Блок описания студии */}
           <div className="home-about-description-container">
-          <p className="home-cherdak-opisanie">{about}</p>
+            <p className="home-cherdak-opisanie">
+              {itsMobileWindow && !isAboutExpanded && about.length > 150
+              ? `${about.slice(0, 150)}`
+              : about}
+    
+              {itsMobileWindow && about.length > 150 && (
+                <span 
+                  className="about-read-more" 
+                  onClick={() => setIsAboutExpanded(!isAboutExpanded)}
+                >
+                 {isAboutExpanded ? " ...свернуть" : " ...развернуть"}
+                 </span>
+              )}
+            </p>
           </div>
         </>)}
         {itsMobileWindow ? (

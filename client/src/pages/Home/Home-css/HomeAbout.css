@@ -74,6 +74,22 @@
     font-family: Arial, sans-serif;
 }
 
+.about-read-more {
+  display: inline-block;
+  color: #8b0000; 
+  font-weight: bold;
+  margin-left: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+  /* увеличим область клика для мобилок */
+  padding: 5px 0;
+}
+
+/* плавное развертывание */
+.home-cherdak-opisanie {
+  transition: all 0.9s ease;
+}
+
 .to-about-btn {
     white-space: pre;
 

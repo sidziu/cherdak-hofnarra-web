@@ -113,6 +113,7 @@
 
 
 .event-rating {
+    font-family: 'Times New Roman', Times, serif;
     top: 15px;
     left: 15px;;
     color: #000000;
@@ -121,19 +122,38 @@
     font-weight: second;
 }
 
-.event-genre, .play-director {
+.event-genre, .event-director {
+    font-family: 'Times New Roman', Times, serif;
     font-size: 15px;
     color: #000000;
     margin-bottom: 8px;
 }
 
 .event-description {
+    font-family: 'Times New Roman', Times, serif;
     width: 85%;
     font-size: 15px;
     line-height: 1.6;
     color: #6b7280;
     margin-bottom: 20px;
 }
+.event-description-read-more {
+  display: inline-block;
+  color: #8b0000; 
+  font-weight: bold;
+  margin-left: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+  /* увеличим область клика для мобилок */
+  padding: 5px 0;
+}
+
+/* плавное развертывание */
+.event-description {
+  transition: all 0.9s ease;
+}
+
+
 
 /* Блок с датой, временем и залом */
 .event-details-info {

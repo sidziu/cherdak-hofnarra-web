@@ -15,6 +15,15 @@ function ArchiveDetail() {
 
     // Стейт для индекса открытой фотографии (null- просмотр закрыт)
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+    
+    // Стейт для развертывания и сворачивания текст на мобилах
+    const [isTextExpanded, setIsTextExpanded] = useState(false); 
+
+    // Для скоролла карусели на мобильных устройствах
+    const [itsMobileWindow, setItsMobileWindow] = useState(() =>
+    //typeof - возвращает тип переменной | Если мобила => то true, нет false
+        typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+    );
 
     useEffect(() => {
         const controller = new AbortController();
@@ -127,7 +136,20 @@ function ArchiveDetail() {
                     <p className="detail-director"><strong>Режиссёр:</strong> {performance.director}</p>
                     <p className="detail-duration"><strong>Продолжительность:</strong> {performance.duration} мин.</p>
                     <h1 className="line-divider"></h1>
-                    <p className="detail-description">{performance.description}</p>
+                    <p className="detail-description">
+                        {itsMobileWindow && !isTextExpanded && performance.description.length > 150
+                        ? `${performance.description.slice(0, 150)}`
+                        : performance.description}
+    
+                        {itsMobileWindow && performance.description.length > 150 && (
+                        <span 
+                            className="detail-description-read-more" 
+                            onClick={() => setIsTextExpanded(!isTextExpanded)}
+                        >
+                            {isTextExpanded ? " ...свернуть" : " ...развернуть"}
+                        </span>
+                        )}
+                    </p>
                 </div>
             </div>
 
