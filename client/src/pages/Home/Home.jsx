@@ -249,12 +249,11 @@ function Home() {
                 <SwiperSlide key={`${item.id}-${index}`} className="performances-swiper-slide">
                   <Atropos
                     className="atropos-performance"
-                    activeOffset={50} // Сила наклона
+                    activeOffset={50} // увеличивает зону взаимодействия с карточкой
                     // highlight={false} // Подсветка карточки при наведении (тень)
+                    // alwaysRenderEmbed={false}
                     shadow={false}
                     onClick={handleCardClick}
-
-
                   >
                     <div
                       className="performance-swiper-card"
@@ -306,9 +305,15 @@ function Home() {
 
             {/* Навигация */}
             <div className="swiper-controls-container">
-              <button className="swiper-prev custom-nav-btn">&#8592;</button>
+              {!itsMobileWindow ? 
+                <button className="swiper-prev custom-nav-btn">&#8592;</button>
+              : ("")
+              }
               <div className="swiper-pagination"></div>
-              <button className="swiper-next custom-nav-btn">&#8594;</button>
+              {!itsMobileWindow ? 
+                <button className="swiper-prev custom-nav-btn">&#8594;</button>
+              : ("")
+              }
             </div>
           </Swiper>
           ) : (

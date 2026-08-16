@@ -108,6 +108,9 @@ function Header() {
             pathItems.push({path: "/archive", label: "Архив", isCurrent: false});
             pathItems.push({path: "/", label: "Главная", isCurrent: false});
             pathItems.push({path: "/about", label: "О нас", isCurrent: false})
+            {itsMobileWindow ? 
+                pathItems.push({path: "/playbill", label: "Афиша", isCurrent: true}) 
+                : ""}
         } else if (location.pathname === "/archive") {
             // pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
             pathItems.push({path: "/archive", label: "Архив", isCurrent: true});
@@ -198,7 +201,12 @@ function Header() {
                                         {item.label}
                                     </NavLink>
                                 ) : (
-                                    <span className="path-link active">{item.label}</span>
+                                    <span 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.location.reload(); // Перезапуск страницы
+                                        }}
+                                        className="path-link active">{item.label}</span>
                                 )}
                             </div>
                         );

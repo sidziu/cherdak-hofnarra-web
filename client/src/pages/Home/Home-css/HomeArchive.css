@@ -147,7 +147,7 @@
     border: 2px solid #8b0000 !important;
     /* border-radius: 30px;  */
     border-radius: 0px; 
-    font-size: clamp(1.2rem, 4vw, 1.1rem);
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;

@@ -9,7 +9,7 @@
 }
 
 .archive-title {
-    margin-top: 30px;
+    margin-top: 3rem;
     font-family: "main";
     font-size: 50px;
     padding-bottom: 0px;
@@ -104,6 +104,7 @@
     font-size: 28px;
     margin: 0;
     color: #1f2937;
+    text-align: start;
 }
 
 .archive-card-director {
@@ -124,11 +125,12 @@
     text-decoration: none;
     text-align: center;
     font-family: "Arial";
-    font-size: 16px;
+    font-size: 1.1rem;
     font-weight: bold;
     box-sizing: border-box;
     border-radius: 0;
     transition: all 0.3s ease;
+    cursor:pointer;
 }
 
 .archive-detail-btn:hover {
@@ -136,22 +138,43 @@
 }
 
 @media (max-width: 768px) {
-    .archive-container {
-        max-width: 70%;
-        /* text-align: center; */
+    .archive-container { 
+        max-width: 80%;
+        width: 80%;
+        padding: 60px 0px 40px 0px; 
     }
-
+    
+    .archive-grid {
+        grid-template-columns: 1fr; 
+        gap: 30px; 
+        justify-items: center;
+    }
+   
+    .archive-grid > *, 
     .archive-card {
-    max-width: 300px;
+        max-width: 100%; 
+        width: 100%;
     }
 
-    .archive-card-img {
-        max-height: 300px;
+    .archive-img-container {
+        height: auto;
+        aspect-ratio: 1 / 1; 
+    }
+
+    .archive-card:hover .archive-card-img {
+        filter: brightness(1); 
     }
 
     .archive-card-info {
-        padding: 5px 20px 20px 20px;
+        padding: 20px;
+    }
+
+    .archive-title {
+        font-size: 2.4rem; /* Чуть уменьшаем заголовок для мобильных */
+    }
+
+    .archive-detail-btn {
+        font-size: 0.95rem;
     }
 }
-
 
