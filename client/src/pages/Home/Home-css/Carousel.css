@@ -2,6 +2,12 @@
   min-height: 480px;  
 }
 
+.atropos-performance {
+  /* Разрешаем браузеру обрабатывать вертикальный скролл 
+  Чтобы на телефонах atrops не мешал скорллу */
+  touch-action: pan-y !important;
+}
+
 .carousel-container {
   background-color: #ffffff;
   padding: 100px 0;
@@ -157,6 +163,64 @@
   text-shadow: 0 0 16px rgba(63, 58, 58, 0.7);
 }
 
+
+
+/* навигация и пагинация */
+
+.swiper-controls-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  margin-top: 30px;
+  padding-bottom: 20px;
+  width: min(30%, 880px);
+  margin-inline: auto;
+}
+
+
+.swiper-controls-container .swiper-pagination {
+  position: static;
+  transform: none !important;
+  justify-self: center;
+}
+
+.swiper-prev {
+  justify-self: start;
+}
+
+.swiper-next {
+  justify-self: end;
+}
+
+.custom-nav-btn {
+  font-family: "Arial" bold;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #000000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;;
+}
+
+.custom-nav-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.custom-nav-btn:active {
+  background: #000;
+  color: #fff;
+}
+
+.swiper-pagination-bullet { background: #000 !important; opacity: 0.3; }
+.swiper-pagination-bullet-active { background: #83060e !important; opacity: 1; }
+
+
 @media (max-width: 768px) {
   /* Чтобы карточки разной высоты центрировались друг относительно друга по вертикали */
   .posters-swiper .swiper-wrapper {
@@ -244,65 +308,8 @@
 
   /* Навигация (кнопки под каруселью) */
   .swiper-controls-container {
-    width: 90%;
+    width: 96%;
     margin-top: 20px;
   }
+
 }
-
-
-/* навигация и пагинация */
-
-.swiper-controls-container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  margin-top: 30px;
-  padding-bottom: 20px;
-  width: min(30%, 880px);
-  margin-inline: auto;
-}
-
-@media (max-width: 768px) {
-  .swiper-controls-container {
-    gap: 12px;
-    width: 98%;
-  }
-  
-}
-
-.swiper-controls-container .swiper-pagination {
-  position: static;
-  transform: none !important;
-  justify-self: center;
-}
-
-.swiper-prev {
-  justify-self: start;
-}
-
-.swiper-next {
-  justify-self: end;
-}
-
-.custom-nav-btn {
-  font-family: "Arial" bold;
-  background: none;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  color: #000000;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.3s;;
-}
-
-.custom-nav-btn:hover {
-  background: #000;
-  color: #fff;
-}
-
-.swiper-pagination-bullet { background: #000 !important; opacity: 0.3; }
-.swiper-pagination-bullet-active { background: #83060e !important; opacity: 1; }

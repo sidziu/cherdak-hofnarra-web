@@ -48,6 +48,7 @@
     width: fit-content;
     text-wrap: pre-wrap;
     text-align: center;
+    cursor:default;
     
 
     position: relative; 

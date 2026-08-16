@@ -256,7 +256,7 @@ function Home() {
 
 
                   >
-                    <a
+                    <div
                       className="performance-swiper-card"
                       // target="_blank" // Открывать в новой вкладке.
                       // rel="noopener noreferrer" // Это для безопасноти (читать подробнее в инете), использовать в связке с _blank
@@ -298,7 +298,7 @@ function Home() {
                         </div>
 
                       </div>
-                    </a>
+                    </div>
                   </Atropos>
                 </SwiperSlide>
               );

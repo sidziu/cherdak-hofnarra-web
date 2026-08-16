@@ -93,33 +93,56 @@ function Header() {
         ];
     } else {
         pathItems = [
-            { path: "/", label: "Главная", isCurrent: false }
+            // { path: "/", label: "Главная", isCurrent: false }
+            // { path: "/archive", label: "Архив", isCurrent: false },
+            // { path: "/", label: "Главная", isCurrent: true },
+            // { path: "/about", label: "О нас", isCurrent: false }
         ];
         if (location.pathname === "/about") {
-            pathItems.push({ path: "/about", label: "О нас", isCurrent: true });
+            // pathItems.push({ path: "/about", label: "О нас", isCurrent: true });
+            pathItems.push({path: "/archive", label: "Архив", isCurrent: false});
+            pathItems.push({path: "/", label: "Главная", isCurrent: false});
+            pathItems.push({path: "/about", label: "О нас", isCurrent: true});
         } else if (location.pathname === "/playbill") {
-            pathItems.push({ path: "/playbill", label: "Афиша", isCurrent: true });
+            // pathItems.push({ path: "/playbill", label: "Афиша", isCurrent: true });
+            pathItems.push({path: "/archive", label: "Архив", isCurrent: false});
+            pathItems.push({path: "/", label: "Главная", isCurrent: false});
+            pathItems.push({path: "/about", label: "О нас", isCurrent: false})
         } else if (location.pathname === "/archive") {
-            pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
+            // pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
+            pathItems.push({path: "/archive", label: "Архив", isCurrent: true});
+            pathItems.push({path: "/", label: "Главная", isCurrent: false});
+            pathItems.push({path: "/about", label: "О нас ", isCurrent: false})
         } else if (location.pathname.startsWith("/archive/")) {
-            pathItems.push({ path: "/archive", label: "Архив", isCurrent: false });
-            const displayLabel = itsMobileWindow 
-            ? "Спектакль" 
-            : (location.state?.title || "Спектакль");
+            // pathItems.push({ path: "/archive", label: "Архив", isCurrent: true });
+            pathItems.push({path: "/archive", label: "Архив", isCurrent: true});
+            pathItems.push({path: "/", label: "Главная", isCurrent: false});
+            pathItems.push({path: "/about", label: "О нас", isCurrent: false})
+        //     const displayLabel = itsMobileWindow 
+        //     ? "Спектакль" 
+        //     : (location.state?.title || "Спектакль");
 
-        pathItems.push({ 
-            path: location.pathname, 
-            label: displayLabel, 
-            isCurrent: true
-        })}
+        // pathItems.push({ 
+        //     path: location.pathname, 
+        //     label: displayLabel, 
+        //     isCurrent: true
+        // })
     }
-
+    }
+    
     return (
         <>
             <div className={`header-container ${isVisible ? "visible" : "hidden"}`}>
                 <div className="left-container">
+                    {/* { isHomePage ?  */}
                     <NavLink 
-                        to="/" 
+                        to="/"
+                        className="path-link active reload-link"
+                        onClick={(e) => {
+                            !isHomePage ? none :
+                            e.preventDefault()
+                            window.location.reload() // Перезапуск страницы
+                        }}
                         className="logo-link"
                      >
                         <img 
@@ -138,7 +161,8 @@ function Header() {
                 <div className="path-navigation-container">
                     {pathItems.map((item, index) => {
                         const isActive = item.isCurrent;
-                        const isGray = index < pathItems.length - 1;
+                        // const isGray = index < pathItems.length - 1;
+                        const isGray = !index.isCurrent
                         const isLink = !isActive || item.path === "/";
                         
                         // Определяем, кликаем ли мы по ссылке "Главная", находясь на Главной
@@ -150,7 +174,8 @@ function Header() {
                                 className={`path-item ${isActive ? "mobile-visible" : "mobile-hidden"}`}
                             
                             >
-                                {index > 0 && <p className="path-separator gray">•</p>}
+                                {/* { index > 0 && <p className="path-separator gray">•</p>} */}
+                                { index > 0 && <p className="path-separator gray"></p>}
                                 
                                 {isHomeLinkOnHomePage ? (
                                     <a
