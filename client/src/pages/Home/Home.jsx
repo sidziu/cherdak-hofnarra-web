@@ -193,7 +193,7 @@ function Home() {
             // observer={true}             // Следит за изменениями в самом Swiper
             // observeParents={true}      // Следит за изменениями в родителях 
             // resizeObserver={true}       // Использует современный ResizeObserver яхзпока
-
+            
             modules={[Navigation, Pagination, Autoplay, FreeMode, Mousewheel]}
             slidesPerView="auto"
             spaceBetween={80}
@@ -210,7 +210,7 @@ function Home() {
             mousewheel={{ // реакция на колесико/скролл на тачпаде
               forceToAxis: true,  // карусель будет реагировать только на горизонтальную прокрутнку
               sensitivity: itsMobileWindow ? 0.25 : 1, // разная скорость прокрутки для мобил и декстопа
-              releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
+              //releaseOnEdges: true, // если карусель закончилась, страница начнет скроллиться дальше (она не кончится)))
             }}
             grabCursor={true} // меняет вид курсора при наведении
             // speed={400} // время до доводчика
@@ -249,7 +249,7 @@ function Home() {
 
               return (
                 // Так как мы дублируем массив, то ключи могут повторяться, поэтому приклеиваем "-" и индекс
-                <SwiperSlide key={`${item.id}-${index}`} className="performances-swiper-slide">
+                <SwiperSlide key={`${item.id}-${index}`} virtualIndex={index} className="performances-swiper-slide">
                   <Atropos
                     className="atropos-performance"
                     activeOffset={50} // увеличивает зону взаимодействия с карточкой
@@ -314,7 +314,7 @@ function Home() {
               }
               <div className="swiper-pagination"></div>
               {!itsMobileWindow ? 
-                <button className="swiper-prev custom-nav-btn">&#8594;</button>
+                <button className="swiper-next custom-nav-btn">&#8594;</button>
               : ("")
               }
             </div>

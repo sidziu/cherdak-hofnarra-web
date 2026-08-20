@@ -43,6 +43,10 @@
   max-width: 100%;
   padding: 20px 10px;
   margin-top: 30px;
+
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;  /*заранее говорит браузеру, что элемент будет двигаться, и выделяет под него память видеокарты*/
 }
 
 
