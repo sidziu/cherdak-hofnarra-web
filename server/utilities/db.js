@@ -71,7 +71,7 @@ async function writeJsonFile(fileName, data) {
     const filePath = path.join(dataDirPath, fileName);
 
     try {
-        await fs.mkdir(dataDirPath, { recursive: true });
+        fs.mkdir(dataDirPath, { recursive: true });
         logger.info(`Файл обновлён: ${filePath}`)
 
         dbCache[fileName] = {
@@ -79,7 +79,7 @@ async function writeJsonFile(fileName, data) {
             lastAccessed: Date.now()
         };
 
-        await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+        fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
     
     } catch (error) {
         logger.error(`Ошибка записи файла ${fileName}:`, error);

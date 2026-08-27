@@ -100,7 +100,7 @@ router.post("/", async function (request, response) {
         };
 
         registrations.push(newGuest);
-        await writeJsonFile("registrations.json", registrations);
+        writeJsonFile("registrations.json", registrations);
 
         response.status(201).json({
             message: "Вы успешно записались на показ!",
