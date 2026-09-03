@@ -6,6 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "test:query": "npx tsx test-query.ts",
     "exampleadmin": "node create-admin.js 1234",
     "contract:emit": "prisma contract emit"
   },
