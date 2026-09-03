@@ -8,18 +8,19 @@
 
 ## Установка и запуск
 
-Серверная часть
+### Backend
+Необходимо предварительно ввести URL PostgreSQL в .env. База данных уже должна быть создана.
+
 ```bash
-cd server
 node create-admin.js [password]
-npm i
+npx prisma@latest db update
+npx prisma@latest db sign
 npm run start
 ```
 
-Клиентская часть 
+### Frontend
 ```bash
 cd client
 npm i
-npm install swiper atropos
 npm run dev
 ```

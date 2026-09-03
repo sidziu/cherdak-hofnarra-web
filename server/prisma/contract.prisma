@@ -1,0 +1,66 @@
+// use prisma-next
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+
+model Archive {
+  selfId      Uuid     @id(map: "Archive_pkey") @default(dbgenerated("gen_random_uuid()"))
+  title       String
+  genre       String?
+  director    String?
+  description String
+  duration    Int
+  rating      String
+  image       String
+  videos      String[] @default([]) @noCheck(elementNotNull)
+  actors      Uuid[]   @default([]) @noCheck(elementNotNull)
+}
+
+model Performance {
+  selfId      Uuid    @id(map: "Performance_pkey") @default(dbgenerated("gen_random_uuid()"))
+  title       String
+  genre       String?
+  director    String?
+  description String?
+  duration    Int
+  rating      String
+  image       String
+  events      Event[]
+}
+
+model Event {
+  selfId        Uuid           @id(map: "Event_pkey") @default(dbgenerated("gen_random_uuid()"))
+  performanceId Uuid
+  activeState   Boolean
+  scene         String
+  date          Timestamp(3)
+  registrations Registration[]
+  performance   Performance    @relation(fields: [performanceId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "Event_performanceId_fkey")
+
+  @@index([performanceId], map: "Event_performanceId_idx")
+}
+
+model Person {
+  selfId   Uuid     @id(map: "Person_pkey") @default(dbgenerated("gen_random_uuid()"))
+  isActive Boolean?
+  name     String
+  role     String?
+  image    String
+}
+
+model Registration {
+  selfId      Uuid    @id(map: "Registration_pkey") @default(dbgenerated("gen_random_uuid()"))
+  eventId     Uuid
+  name        String
+  email       String?
+  phoneNumber String?
+  event       Event   @relation(fields: [eventId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "Registration_eventId_fkey")
+
+  @@index([eventId], map: "Registration_eventId_idx")
+}
+
+model Supervisor {
+  selfId      Uuid    @id(map: "Supervisor_pkey") @default(dbgenerated("gen_random_uuid()"))
+  name        String  @unique(map: "Supervisor_name_key")
+  role        String?
+  contactInfo String?
+  image       String?
+}

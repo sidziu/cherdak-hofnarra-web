@@ -1,9 +1,6 @@
 node_modules
 logs
 data/admin.json
-
-
-# добавил, хз пока зачем.
 .DS_Store
 dist
 dist-ssr

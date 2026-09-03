@@ -3,16 +3,18 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "exampleadmin": "node create-admin.js 1234"
+    "exampleadmin": "node create-admin.js 1234",
+    "contract:emit": "prisma contract emit"
   },
   "keywords": [],
   "author": "Bychkov D.V",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@prisma/orm-postgres": "^8.0.0-rc.8",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -20,5 +22,12 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.2.0",
     "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "^0.2.3",
+    "@types/node": "^26.4.1",
+    "prisma": "^8.0.0-rc.10",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
   }
 }
