@@ -1,17 +1,17 @@
 {
-  "name": "server",
+  "name": "cherdak-hofnarra-server",
   "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "exampleadmin": "node create-admin.js 1234"
   },
   "keywords": [],
-  "author": "Meow",
+  "author": "Bychkov D.V",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",

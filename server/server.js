@@ -1,15 +1,27 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const fsSync = require("fs")
-const multer = require("multer");
+// -- DEPENDENCIES --
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import path from "path";
+import fsSync from "fs";
+import multer from "multer";
 
-const logger = require("./utilities/logger");
+import authRouter from "./routes/auth.js";
+import supervisorsRouter from "./routes/supervisors.js";
+import personsRouter from "./routes/persons.js";
+import aboutRouter from "./routes/about.js";
+import performancesRouter from "./routes/performances.js";
+import archiveRouter from "./routes/archive.js";
+import eventsRouter from "./routes/events.js";
+import guestsRouter from "./routes/guests.js";
 
-const app = express();
+import logger from "./utilities/logger.js";
+
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
+const __dirname = import.meta.dirname;
+
+const app = express();
 
 // -- MIDDLEWARE --
 app.use(cors());
@@ -33,14 +45,14 @@ app.use((request, response, next) => {
 
 // ROUTES
 app.get("/", (request, response) => response.send("200"))
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/supervisors", require("./routes/supervisors"));
-app.use("/api/persons", require("./routes/persons"));
-app.use("/api/about", require("./routes/about"));
-app.use("/api/performances", require("./routes/performances"));
-app.use("/api/archive", require("./routes/archive"));
-app.use("/api/events", require("./routes/events"));
-app.use("/api/guests", require("./routes/guests"));
+app.use("/api/auth", authRouter);
+app.use("/api/supervisors", supervisorsRouter);
+app.use("/api/persons", personsRouter);
+app.use("/api/about", aboutRouter);
+app.use("/api/performances", performancesRouter);
+app.use("/api/archive", archiveRouter);
+app.use("/api/events", eventsRouter);
+app.use("/api/guests", guestsRouter);
 
 // -- ОБРАБОТЧИК ОШИБОК MULTER --
 app.use((err, request, response, next) => {

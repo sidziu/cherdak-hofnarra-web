@@ -1,11 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { readJsonFile } = require("../utilities/db");
-const logger = require("../utilities/logger");
+import "dotenv/config";
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-require("dotenv").config();
+import logger from "../utilities/logger.js";
+import { readJsonFile } from "../utilities/db.js";
+
+const router = express.Router();
+
 const SECRET_KEY = process.env.JWT_SECRET || "default_secret";
 
 router.post("/login", async (req, res) => {
@@ -48,4 +50,4 @@ router.post("/login", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

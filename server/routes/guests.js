@@ -1,17 +1,18 @@
-const express = require("express");
+import express from "express";
+import fs from "fs/promises";
+import path from "path";
+
+import logger from "../utilities/logger.js";
+import { readJsonFile, writeJsonFile } from "../utilities/db.js";
+import { createUploader } from "../utilities/uploader.js";
+import authMiddleware from "../utilities/authMiddleware.js";
+
+const __dirname = import.meta.dirname;
+
 const router = express.Router();
 
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 const PORT = process.env.PORT || 3001;
-
-const logger = require("../utilities/logger");
-
-const fs = require("fs").promises
-const path = require("path")
-const { readJsonFile, writeJsonFile } = require("../utilities/db");
-const createUploader = require("../utilities/uploader");
-
-const authMiddleware = require("../utilities/authMiddleware");
 
 // Удалить конкретного гостя по его ID
 router.delete("/:individual_ID", authMiddleware, async function (request, response) {
@@ -113,4 +114,4 @@ router.post("/", async function (request, response) {
     }
 });
 
-module.exports = router
+export default router;

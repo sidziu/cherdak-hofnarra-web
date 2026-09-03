@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
-const logger = require("./logger");
-require("dotenv").config();
+import "dotenv/config";
+import jwt from "jsonwebtoken";
+import logger from "./logger.js";
 
 const SECRET_KEY = process.env.JWT_SECRET || "default_secret";
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     // Клиент должен присылать заголовок: Authorization: Bearer <token>
     const authHeader = req.headers.authorization;
 

@@ -1,8 +1,10 @@
 // --- [ ИЗМЕНЕНО: Фабрика Multer вынесена в отдельный модуль. Обновлен путь к папке public ] ---
-const multer = require("multer");
-const path = require("path");
-const fsSync = require("fs");
-const logger = require("./logger");
+import multer from "multer";
+import path from "path";
+import fsSync from "fs";
+
+import logger from "./logger.js";
+const __dirname = import.meta.dirname;
 
 function createUploader(subfolderPath, allowedExtensions) {
     const destPath = path.join(__dirname, "..", "public", subfolderPath);    
@@ -35,4 +37,4 @@ function createUploader(subfolderPath, allowedExtensions) {
     });
 }
 
-module.exports = createUploader;
+export { createUploader };

@@ -1,5 +1,5 @@
-const fsSync = require("fs"); 
-const winston = require("winston");
+import fsSync from "fs";
+import winston from "winston";
 
 if (!fsSync.existsSync("logs")) {
     fsSync.mkdirSync("logs", { recursive: true });
@@ -21,4 +21,4 @@ const logger = winston.createLogger({
     ]
 });
 
-module.exports = logger;
+export default logger;

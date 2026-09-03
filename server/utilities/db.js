@@ -1,7 +1,10 @@
-const fs = require("fs").promises;
-const path = require("path");
-const v8 = require("v8");
-const logger = require("./logger");
+import fs from "fs/promises";
+import path from "path";
+import v8 from "v8";
+
+import logger from "./logger.js";
+
+const __dirname = import.meta.dirname;
 
 const dbCache = {};
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 минут неактивности
@@ -87,4 +90,4 @@ async function writeJsonFile(fileName, data) {
     }
 }
 
-module.exports = { readJsonFile, writeJsonFile };
+export { readJsonFile, writeJsonFile };
