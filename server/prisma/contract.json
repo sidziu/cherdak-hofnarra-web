@@ -371,6 +371,13 @@
                   "kind": "scalar"
                 }
               },
+              "orderNo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
               "role": {
                 "nullable": true,
                 "type": {
@@ -397,6 +404,9 @@
                 },
                 "name": {
                   "column": "name"
+                },
+                "orderNo": {
+                  "column": "orderNo"
                 },
                 "role": {
                   "column": "role"
@@ -509,6 +519,13 @@
                   "kind": "scalar"
                 }
               },
+              "orderNo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
               "role": {
                 "nullable": true,
                 "type": {
@@ -535,6 +552,9 @@
                 },
                 "name": {
                   "column": "name"
+                },
+                "orderNo": {
+                  "column": "orderNo"
                 },
                 "role": {
                   "column": "role"
@@ -786,6 +806,15 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "orderNo": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
                 "role": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -898,6 +927,15 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "orderNo": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
                 "role": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -936,7 +974,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "94967fa7c195046b459a39cff9510489a6cdbc601642b4a7a3d3c784db6ab44e"
+    "storageHash": "88591d5d2a097cb30ab6be1799f27c393ec084e0e777fce546c176c283b732f7"
   },
   "capabilities": {
     "postgres": {

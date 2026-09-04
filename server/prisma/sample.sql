@@ -1,6 +1,7 @@
 -- 1. Supervisor
 CREATE TABLE "Supervisor" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "orderNo" SERIAL,
     "name" TEXT NOT NULL,
     "role" TEXT,
     "contactInfo" TEXT,
@@ -69,6 +70,7 @@ CREATE TABLE "Archive" (
 
 CREATE TABLE "Person" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "orderNo" SERIAL,
     "isActive" BOOLEAN,
     "name" TEXT NOT NULL,
     "role" TEXT,

@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'94967fa7c195046b459a39cff9510489a6cdbc601642b4a7a3d3c784db6ab44e'>;
+  StorageHashBase<'88591d5d2a097cb30ab6be1799f27c393ec084e0e777fce546c176c283b732f7'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -271,6 +271,7 @@ export type FieldOutputTypes = {
     };
     readonly Person: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly orderNo: CodecTypes['pg/int4@1']['output'];
       readonly isActive: CodecTypes['pg/bool@1']['output'] | null;
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly role: CodecTypes['pg/text@1']['output'] | null;
@@ -285,6 +286,7 @@ export type FieldOutputTypes = {
     };
     readonly Supervisor: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly orderNo: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly role: CodecTypes['pg/text@1']['output'] | null;
       readonly contactInfo: CodecTypes['pg/text@1']['output'] | null;
@@ -325,6 +327,7 @@ export type FieldInputTypes = {
     };
     readonly Person: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly orderNo: CodecTypes['pg/int4@1']['input'];
       readonly isActive: CodecTypes['pg/bool@1']['input'] | null;
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly role: CodecTypes['pg/text@1']['input'] | null;
@@ -339,6 +342,7 @@ export type FieldInputTypes = {
     };
     readonly Supervisor: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly orderNo: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly role: CodecTypes['pg/text@1']['input'] | null;
       readonly contactInfo: CodecTypes['pg/text@1']['input'] | null;
@@ -381,6 +385,7 @@ export type StorageColumnTypes = {
       readonly image: CodecTypes['pg/text@1']['output'];
       readonly isActive: CodecTypes['pg/bool@1']['output'] | null;
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly orderNo: CodecTypes['pg/int4@1']['output'];
       readonly role: CodecTypes['pg/text@1']['output'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
     };
@@ -395,6 +400,7 @@ export type StorageColumnTypes = {
       readonly contactInfo: CodecTypes['pg/text@1']['output'] | null;
       readonly image: CodecTypes['pg/text@1']['output'] | null;
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly orderNo: CodecTypes['pg/int4@1']['output'];
       readonly role: CodecTypes['pg/text@1']['output'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
     };
@@ -435,6 +441,7 @@ export type StorageColumnInputTypes = {
       readonly image: CodecTypes['pg/text@1']['input'];
       readonly isActive: CodecTypes['pg/bool@1']['input'] | null;
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly orderNo: CodecTypes['pg/int4@1']['input'];
       readonly role: CodecTypes['pg/text@1']['input'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
     };
@@ -449,6 +456,7 @@ export type StorageColumnInputTypes = {
       readonly contactInfo: CodecTypes['pg/text@1']['input'] | null;
       readonly image: CodecTypes['pg/text@1']['input'] | null;
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly orderNo: CodecTypes['pg/int4@1']['input'];
       readonly role: CodecTypes['pg/text@1']['input'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
     };
@@ -666,6 +674,15 @@ type ContractBase = Omit<
                     readonly expression: 'gen_random_uuid()';
                   };
                 };
+                readonly orderNo: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                };
                 readonly isActive: {
                   readonly nativeType: 'bool';
                   readonly codecId: 'pg/bool@1';
@@ -761,6 +778,15 @@ type ContractBase = Omit<
                   readonly default: {
                     readonly kind: 'function';
                     readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly orderNo: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
                   };
                 };
                 readonly name: {
@@ -1020,6 +1046,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly orderNo: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly isActive: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
@@ -1043,6 +1073,7 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly selfId: { readonly column: 'selfId' };
+                readonly orderNo: { readonly column: 'orderNo' };
                 readonly isActive: { readonly column: 'isActive' };
                 readonly name: { readonly column: 'name' };
                 readonly role: { readonly column: 'role' };
@@ -1104,6 +1135,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly orderNo: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1127,6 +1162,7 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly selfId: { readonly column: 'selfId' };
+                readonly orderNo: { readonly column: 'orderNo' };
                 readonly name: { readonly column: 'name' };
                 readonly role: { readonly column: 'role' };
                 readonly contactInfo: { readonly column: 'contactInfo' };
