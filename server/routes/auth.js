@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import logger from "../utilities/logger.js";
-import { readJsonFile } from "../utilities/db.js";
+import { readJsonFile } from "../utilities/json_io.js";
 
 const router = express.Router();
 

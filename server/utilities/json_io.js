@@ -6,6 +6,8 @@ import logger from "./logger.js";
 
 const __dirname = import.meta.dirname;
 
+// -- JSON --
+
 const dbCache = {};
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 минут неактивности
 
