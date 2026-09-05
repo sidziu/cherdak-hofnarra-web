@@ -6,9 +6,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test:query": "npx tsx test-query.ts",
-    "exampleadmin": "node create-admin.cjs admin",
-    "contract:emit": "prisma contract emit"
+    "create_admin": "node scripts/create-admin.cjs",
+    "test:query": "npx tsx scripts/test-query.ts",
+    "contract:emit": "npx prisma contract emit"
   },
   "keywords": [],
   "author": "Bychkov D.V",

@@ -15,7 +15,7 @@ const adminData = {
     passwordHash: bcrypt.hashSync(PASSWORD, 10) 
 };
 
-const dirPath = path.join(__dirname, "data");
+const dirPath = path.join(__dirname, "..", "data");
 if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
 }
