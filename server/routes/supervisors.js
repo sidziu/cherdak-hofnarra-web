@@ -20,10 +20,15 @@ const uploadSupervisor = createUploader("images/supervisors", [".png", ".jpg", "
 // Получить массив руководителей
 router.get("/", async function(request, response) {
     try {
-        const supervisors = await readJsonFile("supervisors.json", []);
+        const supervisors = await db.orm.public.Supervisor.orderBy((s) => s.orderNo.asc()).all();
 
         const supervisorsWithUrls = supervisors.map(supervisor => ({
-            ...supervisor,
+            id: supervisor.selfId,
+            orderNo: supervisor.orderNo,
+            name: supervisor.name,
+            role: supervisor.role,
+            contact_info: supervisor.contactInfo,
+            image: supervisor.image,
             imageUrl: `${SERVER_URL}/images/supervisors/${supervisor.image}`
         }));
 
@@ -50,19 +55,12 @@ router.post("/", authMiddleware, uploadSupervisor.single("image"), async functio
             });
         }
 
-        const supervisors = await readJsonFile("supervisors.json", []);
-
-        const newSupervisor = {
-            id: Date.now() + Math.floor(Math.random() * 1000), 
+        const newSupervisor = await db.orm.public.Supervisor.create({
             name: name.trim(),
             role: role.trim(),
-            contact_info: contact_info.trim(),
+            contactInfo: contact_info.trim(),
             image: file.filename
-        };
-
-        supervisors.push(newSupervisor);
-
-        await writeJsonFile("supervisors.json", supervisors);
+        })
 
         response.status(201).json({
             message: "Руководитель успешно добавлен!",
@@ -81,18 +79,16 @@ router.post("/", authMiddleware, uploadSupervisor.single("image"), async functio
 // Удалить руководителя по ID
 router.delete("/:id", authMiddleware, async function (request, response) {
     try {
-        const id = parseInt(request.params.id);
-        const supervisors = await readJsonFile("supervisors.json", []);
+        const id = request.params.id;
 
-        const supervisorToDelete = supervisors.find(supervisor => supervisor.id === id);
+        const supervisorToDelete = await db.orm.public.Supervisor
+        .where({ selfId: id })
+        .select('selfId', 'image')
+        .first();
 
         if (!supervisorToDelete) {
             return response.status(404).json({ message: "Руководитель с указанным ID не найден." });
         }
-
-        const updatedSupervisors = supervisors.filter(supervisor => supervisor.id !== id);
-
-        await writeJsonFile("supervisors.json", updatedSupervisors);
 
         const imagePath = path.join(__dirname, "..", "public", "images", "supervisors", supervisorToDelete.image);
         try {
@@ -100,6 +96,8 @@ router.delete("/:id", authMiddleware, async function (request, response) {
         } catch (fileError) {
             logger.warn(`Файл изображения не был найден на диске для удаления: ${imagePath}`);
         }
+
+        await db.orm.public.Supervisor.where({ selfId: id }).delete();
 
         response.json({ message: "Запись руководителя и его портрет успешно удалены." });
 
@@ -109,7 +107,7 @@ router.delete("/:id", authMiddleware, async function (request, response) {
     }
 });
 
-// Поменять местами руководителей
+// Поменять порядок отображения руководителей
 router.patch("/swap", authMiddleware, async function (request, response) {
     try {
         const { id1, id2 } = request.body;
@@ -118,24 +116,43 @@ router.patch("/swap", authMiddleware, async function (request, response) {
             return response.status(400).json({ message: "Необходимо передать id1 и id2." });
         }
 
-        const supervisors = await readJsonFile("supervisors.json", []);
+        await db.transaction(async (tx) => {
+            const supervisor1 = await tx.orm.public.Supervisor
+                .where({ selfId: id1 })
+                .select("selfId", "orderNo")
+                .first();
 
-        const index1 = supervisors.findIndex(supervisor => supervisor.id === parseInt(id1));
-        const index2 = supervisors.findIndex(supervisor => supervisor.id === parseInt(id2));
+            const supervisor2 = await tx.orm.public.Supervisor
+                .where({ selfId: id2 })
+                .select("selfId", "orderNo")
+                .first();
 
-        if (index1 === -1 || index2 === -1) {
-            return response.status(404).json({ message: "Один или оба руководителя не найдены." });
-        }
+            if (!supervisor1 || !supervisor2) {
+                throw new Error("Один или оба руководителя не найдены.");
+            }
 
-        const temp = supervisors[index1];
-        supervisors[index1] = supervisors[index2];
-        supervisors[index2] = temp;
+            if (supervisor1.selfId === supervisor2.selfId) {
+                return;
+            }
 
-        await writeJsonFile("supervisors.json", supervisors);
+            const tempOrderNo = supervisor1.orderNo;
 
-        response.json({ message: "Порядок руководителей успешно изменен." });
+            await tx.orm.public.Supervisor
+                .where({ selfId: id1 })
+                .update({ orderNo: supervisor2.orderNo });
+
+            await tx.orm.public.Supervisor
+                .where({ selfId: id2 })
+                .update({ orderNo: tempOrderNo });
+        });
+
+        response.json({ message: "Порядок руководителей успешно изменён." });
 
     } catch (error) {
+        if (error.message === "Один или оба руководителя не найдены.") {
+            return response.status(404).json({ message: error.message });
+        }
+
         logger.error("Ошибка при смене позиций руководителей:", error);
         response.status(500).json({ message: "Ошибка сервера при смене позиций." });
     }
