@@ -12,9 +12,10 @@
 Необходимо предварительно ввести URL PostgreSQL в .env. База данных уже должна быть создана, но пустой.
 
 ```bash
-node create-admin.js [password]
-npx prisma@latest db update
-npx prisma@latest db sign
+cd server
+npm run create_admin -- <your_password>
+npx prisma db update
+npx prisma db sign
 npm run start
 ```
 
