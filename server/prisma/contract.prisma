@@ -10,7 +10,9 @@ model Archive {
   duration    Int
   rating      String
   image       String
+  mainImage    String?
   videos      String[] @default([]) @noCheck(elementNotNull)
+  photos      String[] @default([]) @noCheck(elementNotNull)
   actors      Uuid[]   @default([]) @noCheck(elementNotNull)
 }
 

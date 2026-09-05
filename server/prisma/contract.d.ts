@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'304f09049cf9a6333feb51b70ab854d2e402593a302908e91155d690ff0cc8a0'>;
+  StorageHashBase<'1de0e49644c6ede23be918bac96863fbccd2044f8fecc925cf3f60fa63382477'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -249,7 +249,9 @@ export type FieldOutputTypes = {
       readonly duration: CodecTypes['pg/int4@1']['output'];
       readonly rating: CodecTypes['pg/text@1']['output'];
       readonly image: CodecTypes['pg/text@1']['output'];
+      readonly mainImage: CodecTypes['pg/text@1']['output'] | null;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['output']>;
     };
     readonly Event: {
@@ -306,7 +308,9 @@ export type FieldInputTypes = {
       readonly duration: CodecTypes['pg/int4@1']['input'];
       readonly rating: CodecTypes['pg/text@1']['input'];
       readonly image: CodecTypes['pg/text@1']['input'];
+      readonly mainImage: CodecTypes['pg/text@1']['input'] | null;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['input']>;
     };
     readonly Event: {
@@ -361,6 +365,8 @@ export type StorageColumnTypes = {
       readonly duration: CodecTypes['pg/int4@1']['output'];
       readonly genre: CodecTypes['pg/text@1']['output'] | null;
       readonly image: CodecTypes['pg/text@1']['output'];
+      readonly mainImage: CodecTypes['pg/text@1']['output'] | null;
+      readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly rating: CodecTypes['pg/text@1']['output'];
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
       readonly title: CodecTypes['pg/text@1']['output'];
@@ -418,6 +424,8 @@ export type StorageColumnInputTypes = {
       readonly duration: CodecTypes['pg/int4@1']['input'];
       readonly genre: CodecTypes['pg/text@1']['input'] | null;
       readonly image: CodecTypes['pg/text@1']['input'];
+      readonly mainImage: CodecTypes['pg/text@1']['input'] | null;
+      readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly rating: CodecTypes['pg/text@1']['input'];
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
       readonly title: CodecTypes['pg/text@1']['input'];
@@ -530,7 +538,21 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly mainImage: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
                 readonly videos: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', readonly []>;
+                  };
+                };
+                readonly photos: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -902,7 +924,16 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly mainImage: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly videos: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+                readonly many: true;
+              };
+              readonly photos: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
                 readonly many: true;
@@ -926,7 +957,9 @@ type ContractBase = Omit<
                 readonly duration: { readonly column: 'duration' };
                 readonly rating: { readonly column: 'rating' };
                 readonly image: { readonly column: 'image' };
+                readonly mainImage: { readonly column: 'mainImage' };
                 readonly videos: { readonly column: 'videos' };
+                readonly photos: { readonly column: 'photos' };
                 readonly actors: { readonly column: 'actors' };
               };
             };

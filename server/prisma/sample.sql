@@ -62,7 +62,9 @@ CREATE TABLE "Archive" (
     "duration" INTEGER NOT NULL,
     "rating" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "mainImage" TEXT,
     "videos" TEXT[] NOT NULL DEFAULT '{}',
+    "photos" TEXT[] NOT NULL DEFAULT '{}',
     "actors" UUID[] NOT NULL DEFAULT '{}',
 
     CONSTRAINT "Archive_pkey" PRIMARY KEY ("selfId")

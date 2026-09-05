@@ -78,6 +78,21 @@
                   "kind": "scalar"
                 }
               },
+              "mainImage": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "photos": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "rating": {
                 "nullable": false,
                 "type": {
@@ -128,6 +143,12 @@
                 },
                 "image": {
                   "column": "image"
+                },
+                "mainImage": {
+                  "column": "mainImage"
+                },
+                "photos": {
+                  "column": "photos"
                 },
                 "rating": {
                   "column": "rating"
@@ -626,6 +647,24 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "mainImage": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "photos": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "noCheck": [
+                    "elementNotNull"
+                  ],
+                  "nullable": false
+                },
                 "rating": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -997,7 +1036,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "304f09049cf9a6333feb51b70ab854d2e402593a302908e91155d690ff0cc8a0"
+    "storageHash": "1de0e49644c6ede23be918bac96863fbccd2044f8fecc925cf3f60fa63382477"
   },
   "capabilities": {
     "postgres": {
