@@ -350,6 +350,13 @@
           },
           "Person": {
             "fields": {
+              "contactInfo": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "image": {
                 "nullable": false,
                 "type": {
@@ -358,7 +365,7 @@
                 }
               },
               "isActive": {
-                "nullable": true,
+                "nullable": false,
                 "type": {
                   "codecId": "pg/bool@1",
                   "kind": "scalar"
@@ -396,6 +403,9 @@
             "relations": {},
             "storage": {
               "fields": {
+                "contactInfo": {
+                  "column": "contactInfo"
+                },
                 "image": {
                   "column": "image"
                 },
@@ -663,6 +673,10 @@
               "columns": {
                 "activeState": {
                   "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
                   "nativeType": "bool",
                   "nullable": false
                 },
@@ -791,6 +805,11 @@
             },
             "person": {
               "columns": {
+                "contactInfo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "image": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -798,8 +817,12 @@
                 },
                 "isActive": {
                   "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
                   "nativeType": "bool",
-                  "nullable": true
+                  "nullable": false
                 },
                 "name": {
                   "codecId": "pg/text@1",
@@ -974,7 +997,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "88591d5d2a097cb30ab6be1799f27c393ec084e0e777fce546c176c283b732f7"
+    "storageHash": "304f09049cf9a6333feb51b70ab854d2e402593a302908e91155d690ff0cc8a0"
   },
   "capabilities": {
     "postgres": {

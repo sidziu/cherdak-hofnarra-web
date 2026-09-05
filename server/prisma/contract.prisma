@@ -29,7 +29,7 @@ model Performance {
 model Event {
   selfId        Uuid           @id(map: "Event_pkey") @default(dbgenerated("gen_random_uuid()"))
   performanceId Uuid
-  activeState   Boolean
+  activeState   Boolean        @default(true)
   scene         String
   date          Timestamp(3)
   registrations Registration[]
@@ -39,12 +39,13 @@ model Event {
 }
 
 model Person {
-  selfId   Uuid     @id(map: "Person_pkey") @default(dbgenerated("gen_random_uuid()"))
-  orderNo  Int      @default(autoincrement())
-  isActive Boolean?
-  name     String
-  role     String?
-  image    String
+  selfId      Uuid    @id(map: "Person_pkey") @default(dbgenerated("gen_random_uuid()"))
+  orderNo     Int     @default(autoincrement())
+  contactInfo String?
+  isActive    Boolean @default(true)
+  name        String
+  role        String?
+  image       String
 }
 
 model Registration {

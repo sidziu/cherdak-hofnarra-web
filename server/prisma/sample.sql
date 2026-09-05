@@ -29,7 +29,7 @@ CREATE TABLE "Performance" (
 CREATE TABLE "Event" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
     "performanceId" UUID NOT NULL,
-    "activeState" BOOLEAN NOT NULL,
+    "activeState" BOOLEAN DEFAULT TRUE NOT NULL,
     "scene" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
 
@@ -71,7 +71,8 @@ CREATE TABLE "Archive" (
 CREATE TABLE "Person" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
     "orderNo" SERIAL,
-    "isActive" BOOLEAN,
+    "contactInfo" TEXT,
+    "isActive" BOOLEAN DEFAULT TRUE NOT NULL,
     "name" TEXT NOT NULL,
     "role" TEXT,
     "image" TEXT NOT NULL,
