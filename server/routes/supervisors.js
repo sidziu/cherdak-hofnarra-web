@@ -42,10 +42,10 @@ router.get("/", async function(request, response) {
 
 // Добавить руководителя
 router.post("/", authMiddleware, uploadSupervisor.single("image"), async function (request, response) {
+    const { name, role, contact_info } = request.body;
+    const file = request.file;
+    
     try {
-        const { name, role, contact_info } = request.body;
-        const file = request.file;
-
         if (!name?.trim() || !role?.trim() || !contact_info?.trim() || !file) {
             if (file) {
                 await fs.unlink(file.path);
@@ -73,6 +73,10 @@ router.post("/", authMiddleware, uploadSupervisor.single("image"), async functio
     } catch (error) {
         logger.error("Ошибка при сохранении руководителя:", error);
         response.status(500).json({ message: "Ошибка сервера при сохранении данных" });
+        
+        if(file){
+            await fs.unlink(file);
+        }
     }
 });
 
