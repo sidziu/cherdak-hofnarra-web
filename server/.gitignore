@@ -1,8 +1,10 @@
 node_modules
 logs
 data/admin.json
-.DS_Store
 dist
 dist-ssr
 *.local
+public
+
 .env
+.DS_Store
