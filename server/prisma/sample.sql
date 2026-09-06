@@ -31,7 +31,7 @@ CREATE TABLE "Event" (
     "performanceId" UUID NOT NULL,
     "activeState" BOOLEAN DEFAULT TRUE NOT NULL,
     "scene" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
+    "date" TIMESTAMP(0) NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("selfId"),
     CONSTRAINT "Event_performanceId_fkey" FOREIGN KEY ("performanceId") REFERENCES "Performance"("selfId") ON DELETE CASCADE ON UPDATE CASCADE

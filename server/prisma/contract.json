@@ -179,10 +179,10 @@
               "date": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/timestamp-temporal@1",
+                  "codecId": "pg/timestamp-string@1",
                   "kind": "scalar",
                   "typeParams": {
-                    "precision": 3
+                    "precision": 0
                   }
                 }
               },
@@ -720,11 +720,11 @@
                   "nullable": false
                 },
                 "date": {
-                  "codecId": "pg/timestamp-temporal@1",
+                  "codecId": "pg/timestamp-string@1",
                   "nativeType": "timestamp",
                   "nullable": false,
                   "typeParams": {
-                    "precision": 3
+                    "precision": 0
                   }
                 },
                 "performanceId": {
@@ -1036,7 +1036,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "1de0e49644c6ede23be918bac96863fbccd2044f8fecc925cf3f60fa63382477"
+    "storageHash": "897538a655ce5687dd32f2aae8bc831bf7940a50df5c5d68704a34c0aff0e4d1"
   },
   "capabilities": {
     "postgres": {

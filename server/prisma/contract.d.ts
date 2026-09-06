@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1de0e49644c6ede23be918bac96863fbccd2044f8fecc925cf3f60fa63382477'>;
+  StorageHashBase<'897538a655ce5687dd32f2aae8bc831bf7940a50df5c5d68704a34c0aff0e4d1'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -259,7 +259,7 @@ export type FieldOutputTypes = {
       readonly performanceId: CodecTypes['pg/uuid@1']['output'];
       readonly activeState: CodecTypes['pg/bool@1']['output'];
       readonly scene: CodecTypes['pg/text@1']['output'];
-      readonly date: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly date: TimestampString<0>;
     };
     readonly Performance: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
@@ -318,7 +318,7 @@ export type FieldInputTypes = {
       readonly performanceId: CodecTypes['pg/uuid@1']['input'];
       readonly activeState: CodecTypes['pg/bool@1']['input'];
       readonly scene: CodecTypes['pg/text@1']['input'];
-      readonly date: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
     };
     readonly Performance: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
@@ -374,7 +374,7 @@ export type StorageColumnTypes = {
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['output'];
-      readonly date: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly date: TimestampString<0>;
       readonly performanceId: CodecTypes['pg/uuid@1']['output'];
       readonly scene: CodecTypes['pg/text@1']['output'];
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
@@ -433,7 +433,7 @@ export type StorageColumnInputTypes = {
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['input'];
-      readonly date: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
       readonly performanceId: CodecTypes['pg/uuid@1']['input'];
       readonly scene: CodecTypes['pg/text@1']['input'];
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
@@ -608,9 +608,9 @@ type ContractBase = Omit<
                 };
                 readonly date: {
                   readonly nativeType: 'timestamp';
-                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly codecId: 'pg/timestamp-string@1';
                   readonly nullable: false;
-                  readonly typeParams: { readonly precision: 3 };
+                  readonly typeParams: { readonly precision: 0 };
                 };
               };
               primaryKey: { readonly columns: readonly ['selfId']; readonly name: 'Event_pkey' };
@@ -986,8 +986,8 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamp-temporal@1';
-                  readonly typeParams: { readonly precision: 3 };
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly typeParams: { readonly precision: 0 };
                 };
               };
             };

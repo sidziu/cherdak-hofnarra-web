@@ -33,7 +33,7 @@ model Event {
   performanceId Uuid
   activeState   Boolean        @default(true)
   scene         String
-  date          Timestamp(3)
+  date          TimestampString(0)
   registrations Registration[]
   performance   Performance    @relation(fields: [performanceId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "Event_performanceId_fkey")
 
