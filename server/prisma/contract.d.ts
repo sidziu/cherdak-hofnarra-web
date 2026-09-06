@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'897538a655ce5687dd32f2aae8bc831bf7940a50df5c5d68704a34c0aff0e4d1'>;
+  StorageHashBase<'223f631607c5ef5c843ab2a7eb74e358cd7ad4d597a05197a95ff794967d5a75'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -284,6 +284,8 @@ export type FieldOutputTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
       readonly eventId: CodecTypes['pg/uuid@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly surname: CodecTypes['pg/text@1']['output'];
+      readonly middleName: CodecTypes['pg/text@1']['output'] | null;
       readonly email: CodecTypes['pg/text@1']['output'] | null;
       readonly phoneNumber: CodecTypes['pg/text@1']['output'] | null;
     };
@@ -343,6 +345,8 @@ export type FieldInputTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
       readonly eventId: CodecTypes['pg/uuid@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly surname: CodecTypes['pg/text@1']['input'];
+      readonly middleName: CodecTypes['pg/text@1']['input'] | null;
       readonly email: CodecTypes['pg/text@1']['input'] | null;
       readonly phoneNumber: CodecTypes['pg/text@1']['input'] | null;
     };
@@ -401,9 +405,11 @@ export type StorageColumnTypes = {
     readonly registration: {
       readonly email: CodecTypes['pg/text@1']['output'] | null;
       readonly eventId: CodecTypes['pg/uuid@1']['output'];
+      readonly middleName: CodecTypes['pg/text@1']['output'] | null;
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly phoneNumber: CodecTypes['pg/text@1']['output'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly surname: CodecTypes['pg/text@1']['output'];
     };
     readonly supervisor: {
       readonly contactInfo: CodecTypes['pg/text@1']['output'] | null;
@@ -460,9 +466,11 @@ export type StorageColumnInputTypes = {
     readonly registration: {
       readonly email: CodecTypes['pg/text@1']['input'] | null;
       readonly eventId: CodecTypes['pg/uuid@1']['input'];
+      readonly middleName: CodecTypes['pg/text@1']['input'] | null;
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly phoneNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly surname: CodecTypes['pg/text@1']['input'];
     };
     readonly supervisor: {
       readonly contactInfo: CodecTypes['pg/text@1']['input'] | null;
@@ -768,6 +776,16 @@ type ContractBase = Omit<
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                };
+                readonly surname: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly middleName: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
                 };
                 readonly email: {
                   readonly nativeType: 'text';
@@ -1150,6 +1168,14 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly surname: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly middleName: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly email: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1179,6 +1205,8 @@ type ContractBase = Omit<
                 readonly selfId: { readonly column: 'selfId' };
                 readonly eventId: { readonly column: 'eventId' };
                 readonly name: { readonly column: 'name' };
+                readonly surname: { readonly column: 'surname' };
+                readonly middleName: { readonly column: 'middleName' };
                 readonly email: { readonly column: 'email' };
                 readonly phoneNumber: { readonly column: 'phoneNumber' };
               };

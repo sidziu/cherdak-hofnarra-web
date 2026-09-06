@@ -466,6 +466,13 @@
                   "kind": "scalar"
                 }
               },
+              "middleName": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "name": {
                 "nullable": false,
                 "type": {
@@ -484,6 +491,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "surname": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               }
@@ -513,6 +527,9 @@
                 "eventId": {
                   "column": "eventId"
                 },
+                "middleName": {
+                  "column": "middleName"
+                },
                 "name": {
                   "column": "name"
                 },
@@ -521,6 +538,9 @@
                 },
                 "selfId": {
                   "column": "selfId"
+                },
+                "surname": {
+                  "column": "surname"
                 }
               },
               "namespaceId": "public",
@@ -914,6 +934,11 @@
                   "nativeType": "uuid",
                   "nullable": false
                 },
+                "middleName": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "name": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -931,6 +956,11 @@
                     "kind": "function"
                   },
                   "nativeType": "uuid",
+                  "nullable": false
+                },
+                "surname": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
                   "nullable": false
                 }
               },
@@ -1036,7 +1066,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "897538a655ce5687dd32f2aae8bc831bf7940a50df5c5d68704a34c0aff0e4d1"
+    "storageHash": "223f631607c5ef5c843ab2a7eb74e358cd7ad4d597a05197a95ff794967d5a75"
   },
   "capabilities": {
     "postgres": {

@@ -54,6 +54,8 @@ model Registration {
   selfId      Uuid    @id(map: "Registration_pkey") @default(dbgenerated("gen_random_uuid()"))
   eventId     Uuid
   name        String
+  surname     String
+  middleName  String?
   email       String?
   phoneNumber String?
   event       Event   @relation(fields: [eventId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "Registration_eventId_fkey")
