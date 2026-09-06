@@ -17,52 +17,55 @@ const PORT = process.env.PORT || 3001;
 
 const uploadEvent = createUploader("images/events", [".png", ".jpg", ".jpeg", ".webp"]);
 
-// Получить список событий
+// Получить список событий (спектакли) и связанных с ним постановок (время спектакля)
 router.get("/", async function(request, response) {
     try {
-        const events = await readJsonFile("events.json", []);
-        const performances = await readJsonFile("performances.json", []);
-
         const now = new Date();
-        let hasChanges = false;
 
-        const checkedEvents = events.map(event => {
-            if (event.activestate === true && new Date(event.date) < now) {
-                hasChanges = true;
-                return { ...event, activestate: false };
-            }
-            return event;
-        });
+        // Деактивация просроченных ивентов
+        const deactivatedCount = await db.orm.public.Event
+            .where({ activeState: true })
+            .where( (e) => e.date.lt(now) )
+            .updateAndCount({ activeState: false });
 
-        if (hasChanges) {
-            logger.info("Обнаружены устаревшие показы. Переведены в неактивное состояние.");
-            await writeJsonFile("events.json", checkedEvents);
+        if (deactivatedCount > 0) {
+            logger.info(
+                `Обнаружены устаревшие показы. ${deactivatedCount} переведено в неактивное состояние.`
+            );
         }
 
-        const groupedData = performances.map(perf => {
-            const perfEvents = checkedEvents.filter(e => e.performanceReferenceID === perf.id);
+        const performances = await db.orm.public.Performance
+            .select(
+                "selfId",
+                "title",
+                "genre",
+                "director",
+                "description",
+                "duration",
+                "rating",
+                "image"
+            )
+            .include('events')
+            .all();
 
-            perfEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            const mappedEvents = perfEvents.map(e => ({
-                activestate: e.activestate,
-                eventID: e.eventID,
+        const groupedData = performances.map(perf => ({
+            id: perf.selfId,
+            title: perf.title,
+            genre: perf.genre,
+            director: perf.director,
+            description: perf.description,
+            duration: perf.duration,
+            rating: perf.rating,
+            imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
+            performances: perf.events.map(e => ({
+                eventID: e.selfId,
+                activeState: e.activeState,
                 scene: e.scene,
-                date: e.date
-            }));
-
-            return {
-                id: perf.id,
-                title: perf.title,
-                genre: perf.genre,
-                director: perf.director,
-                description: perf.description,
-                duration: perf.duration,
-                rating: perf.rating,
-                imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
-                performances: mappedEvents
-            };
-        });
+                // преобразование к ISO 8601
+                // исходная строка: YYYY-MM-DD HH:MM:SS.SSS
+                date: new Date(e.date.replace(' ', 'T') + 'Z') 
+            }))
+        }));
 
         response.json(groupedData);
 
@@ -74,9 +77,10 @@ router.get("/", async function(request, response) {
 
 // Добавить спектакль
 router.post("/", authMiddleware, uploadEvent.single("image"), async function (request, response) {
+    const file = request.file;
+
     try {
-        const { title, genre, director, description, duration, rating } = request.body;
-        const file = request.file;
+        const { title, genre, director, description, duration, rating } = request.body;        
 
         const parsedDuration = parseInt(duration, 10);
 
@@ -88,10 +92,7 @@ router.post("/", authMiddleware, uploadEvent.single("image"), async function (re
             return response.status(400).json({ message: "Необходимо заполнить все поля спектакля и загрузить постер." });
         }
 
-        const performances = await readJsonFile("performances.json", []);
-
-        const newPerformance = {
-            id: Date.now() + Math.floor(Math.random() * 1000),
+        const newPerformance = await db.orm.public.Performance.create({
             title: title.trim(),
             genre: genre.trim(),
             director: director.trim(),
@@ -99,56 +100,47 @@ router.post("/", authMiddleware, uploadEvent.single("image"), async function (re
             duration: parsedDuration,
             rating: rating.trim(),
             image: file.filename
-        };
-
-        performances.push(newPerformance);
-        await writeJsonFile("performances.json", performances);
+        })
 
         response.status(201).json({ message: "Спектакль добавлен!", performance: newPerformance });
     } catch (error) {
         logger.error("Ошибка при сохранении спектакля:", error);
         response.status(500).json({ message: "Ошибка сервера при сохранении спектакля." });
+
+        if(file){
+            await fs.unlink(file.path);
+        }
     }
 });
 
 // Удаление спектакля
 router.delete("/:id", authMiddleware, async function (request, response) {
     try {
-        const id = parseInt(request.params.id);
+        const id = request.params.id;
         
-        const perfData = await readJsonFile("performances.json", []);
+        const perfToDelete = await db.orm.public.Performance
+            .where({ selfId: id })
+            .select('selfId', 'image')
+            .first();
+        if (!perfToDelete){
+            return response.status(404).json({ message: "Спектакль с указанным ID не найден." });
+        }
         
-        const perfToDelete = perfData.find(p => p.id === id);
-        if (!perfToDelete) return response.status(404).json({ message: "Спектакль не найден." });
+        const isUsedInArchive = await db.orm.public.Archive
+            .where({ image: perfToDelete.image })
+            .first();
 
-        // Проверка на использование фотографии в архиве и других спектаклях перед удалением с диска
-        const archiveData = await readJsonFile("archive.json", []);
-        
-        const isUsedInArchive = archiveData.some(item => item.image === perfToDelete.image);
-        const isUsedInOtherPerformances = perfData.some(p => p.id !== id && p.image === perfToDelete.image);
-
-        if (!isUsedInArchive && !isUsedInOtherPerformances) {
+        if (!isUsedInArchive) {
             try {
                 await fs.unlink(path.join(__dirname, "..", "public", "images", "events", perfToDelete.image));
             } catch (e) { 
                 logger.warn("Картинка спектакля не найдена для удаления."); 
             }
         } else {
-            logger.info(`Постер ${perfToDelete.image} не удален с диска, так как используется в других записях.`);
+            logger.info(`Постер ${perfToDelete.image} не удален с диска, так как используется в архиве.`);
         }
 
-        const updatedPerfs = perfData.filter(p => p.id !== id);
-        await writeJsonFile("performances.json", updatedPerfs);
-
-        // Каскадное удаление. Удаляем все события (показы), привязанные к этому спектаклю
-        let eventsData = await readJsonFile("events.json", []);
-        const initialLength = eventsData.length;
-        eventsData = eventsData.filter(e => e.performanceReferenceID !== id);
-        
-        if (eventsData.length !== initialLength) {
-            await writeJsonFile("events.json", eventsData);
-            logger.info(`Удалены зависимые события для спектакля ID: ${id}`);
-        }
+        await db.orm.public.Performance.where({ selfId: id }).delete();
 
         response.json({ message: "Спектакль и все его показы удалены." });
     } catch (error) {
@@ -157,7 +149,7 @@ router.delete("/:id", authMiddleware, async function (request, response) {
     }
 });
 
-// Копирование спектакля в архив
+// Копирование спектакля в архив (DEPRECATED)
 router.post("/:id/archive", authMiddleware, async function (request, response) {
     try {
         const id = parseInt(request.params.id);
