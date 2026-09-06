@@ -163,6 +163,7 @@ router.patch("/swap", authMiddleware, async function (request, response) {
     }
 });
 
+// Переключить активность актёра
 router.patch("/switch/:id", async function (request, response) {
     try {
         const id = request.params.id;
