@@ -1,4 +1,3 @@
-// --- [ ИЗМЕНЕНО: Фабрика Multer вынесена в отдельный модуль. Обновлен путь к папке public ] ---
 import multer from "multer";
 import path from "path";
 import fsSync from "fs";
@@ -6,6 +5,7 @@ import fsSync from "fs";
 import logger from "./logger.js";
 const __dirname = import.meta.dirname;
 
+// TODO: закрыть уязвимость с неограниченным размером файла
 function createUploader(subfolderPath, allowedExtensions) {
     const destPath = path.join(__dirname, "..", "public", subfolderPath);    
     logger.info(`Инициализация Multer по пути ${destPath}`);    

@@ -36,7 +36,6 @@ setInterval(() => {
     }
 }, 5 * 60 * 1000).unref();
 
-// Путь к data теперь на уровень выше (..)
 const dataDirPath = path.join(__dirname, "..", "data");
 
 async function readJsonFile(fileName, defaultValue = []) {
