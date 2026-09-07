@@ -149,42 +149,43 @@ router.delete("/:id", authMiddleware, async function (request, response) {
     }
 });
 
-// Копирование спектакля в архив (DEPRECATED)
+// Копирование спектакля в архив
 router.post("/:id/archive", authMiddleware, async function (request, response) {
     try {
-        const id = parseInt(request.params.id);
+        let responseMessage = 'Спектакль скопирован в архив.\n';
+        const id = request.params.id;
 
-        const perfData = await readJsonFile("performances.json", []);
-
-        const perfIndex = perfData.findIndex(p => p.id === id);
-        if (perfIndex === -1) {
+        const performanceToArchive = await db.orm.public.Performance
+            .where({ selfId: id })
+            .first();
+        if (!performanceToArchive) {
             return response.status(404).json({ message: "Спектакль не найден в базе данных афиши." });
         }
 
-        const performanceToArchive = perfData[perfIndex];
-
-        const archive = await readJsonFile("archive.json", []);
-
-        // Проверяем, нет ли его уже в архиве
-        if (archive.some(item => item.id === id)) {
-            return response.status(400).json({ message: "Этот спектакль уже находится в архиве." });
+        // Проверяем, есть ли одноимённый спектакль в архиве
+        const isArchived = await db.orm.public.Archive
+            .where((a) => a.title.ilike(performanceToArchive.title))
+            .first();
+        if (isArchived) {
+            responseMessage += 'Внимание: в архиве сейчас находится не менее 2-х копий этого спектакля.';
         }
 
-        const archivedPerformance = {
-            ...performanceToArchive,
-            videos: [],
-            photos: [],
-            actors: []
-        };
-
-        archive.push(archivedPerformance);
-        await writeJsonFile("archive.json", archive);
+        const archivedPerformance = await db.orm.public.Archive.create({
+            title: performanceToArchive.title,
+            genre: performanceToArchive.genre,
+            director: performanceToArchive.director,
+            description: performanceToArchive.description,
+            duration: performanceToArchive.duration,
+            rating: performanceToArchive.rating,
+            image: performanceToArchive.image,
+        });
 
         logger.info(`Спектакль ID: ${id} скопирован в архив.`);
 
         response.status(201).json({ 
-            message: "Спектакль успешно добавлен в архив!", 
-            archivedPerformance 
+            message: responseMessage,
+            isArchived: Boolean(isArchived),
+            archivedPerformance: archivedPerformance 
         });
 
     } catch (error) {
