@@ -30,18 +30,12 @@ router.post("/", authMiddleware, async function (request, response) {
             return response.status(400).json({ message: "Неверный формат даты." });
         }
 
-        const events = await readJsonFile("events.json", []);
-
-        const newEvent = {
-            eventID: Date.now() + Math.floor(Math.random() * 1000),
-            performanceReferenceID: parseInt(performanceReferenceID, 10),
-            activestate: isActive,
-            scene: scene.trim(),
-            date: new Date(date).toISOString()
-        };
-
-        events.push(newEvent);
-        await writeJsonFile("events.json", events);
+        const newEvent = db.orm.public.Event.create({
+            performanceId: performanceReferenceID,
+            activeState: isActive,
+            scene: scene,
+            date: new Date(date).toISOString(),
+        })
 
         response.status(201).json({ message: "Дата показа успешно добавлена в афишу!", event: newEvent });
 
@@ -54,19 +48,22 @@ router.post("/", authMiddleware, async function (request, response) {
 // Переключить состояние activestate у конкретного показа
 router.patch("/:id/toggle-active", authMiddleware, async function (request, response) {
     try {
-        const id = parseInt(request.params.id);
-        const events = await readJsonFile("events.json", []);
+        const id = request.params.id;
 
-        const eventIndex = events.findIndex(event => event.eventID === id);
+        const eventToToggle = await db.orm.public.Event
+            .where({ selfId: id })
+            .select('activeState')
+            .first();
 
-        if (eventIndex === -1) {
+        if (!eventToToggle) {
             return response.status(404).json({ message: "Показ с указанным ID не найден." });
         }
 
-        events[eventIndex].activestate = !events[eventIndex].activestate;
-        await writeJsonFile("events.json", events);
+        await db.orm.public.Event
+            .where({ selfId: id })
+            .update({ activeState: !eventToToggle.activeState });
 
-        response.json({ message: "Состояние изменено.", activestate: events[eventIndex].activestate });
+        response.json({ message: "Состояние изменено.", activestate: !eventToToggle.activeState });
     } catch (error) {
         logger.error("Ошибка при изменении состояния:", error);
         response.status(500).json({ message: "Ошибка сервера при изменении состояния." });
@@ -76,24 +73,19 @@ router.patch("/:id/toggle-active", authMiddleware, async function (request, resp
 // Удалить конкретную дату показа
 router.delete("/:id", authMiddleware, async function (request, response) {
     try {
-        const id = parseInt(request.params.id);
-        const events = await readJsonFile("events.json", []);
+        const id = request.params.id;
 
-        const eventExists = events.some(event => event.eventID === id);
+        const eventToDelete = await db.orm.public.Event
+            .where({ selfId: id })
+            .first();
 
-        if (!eventExists) {
+        if (!eventToDelete) {
             return response.status(404).json({ message: "Показ не найден." });
         }
 
-        const updatedEvents = events.filter(event => event.eventID !== id);
-        await writeJsonFile("events.json", updatedEvents);
+        await db.orm.public.Event.where({ selfId: id }).delete();
 
-        // КАСКАДНОЕ УДАЛЕНИЕ ЗРИТЕЛЕЙ ПОКАЗА
-        const registrations = await readJsonFile("registrations.json");
-        const updatedRegistrations = registrations.filter(r => r.boundEventID !== id);
-        await writeJsonFile("registrations.json", updatedRegistrations);
-
-        response.json({ message: "Показ успешно удален. Списки гостей очищены." });
+        response.json({ message: "Показ успешно удален." });
     } catch (error) {
         logger.error("Ошибка при удалении показа:", error);
         response.status(500).json({ message: "Ошибка сервера при удалении показа." });
@@ -104,11 +96,21 @@ router.delete("/:id", authMiddleware, async function (request, response) {
 // Получить список гостей по ID события
 router.get("/:boundEventID/guests", authMiddleware, async function(request, response) {
     try {
-        const boundEventID = parseInt(request.params.boundEventID, 10);
+        const boundEventID = request.params.boundEventID;
 
-        const registrations = await readJsonFile("registrations.json");
-
-        const guests = registrations.filter(r => r.boundEventID === boundEventID);
+        const boundedGuests = await db.orm.public.Registration
+            .where({ eventId: boundEventID })
+            .all();
+        
+        const guests = boundedGuests.map(guest => ({
+            boundEventID: boundEventID,
+            individual_ID: guest.selfId,
+            name: guest.name,
+            surname: guest.surname,
+            middleName: guest.middleName,
+            phoneNumber: guest.phoneNumber,
+            email: guest.email
+        }))
 
         response.json(guests);
 
@@ -121,11 +123,19 @@ router.get("/:boundEventID/guests", authMiddleware, async function(request, resp
 // Удалить ВСЕХ гостей, привязанных к конкретному событию (boundEventID)
 router.delete("/:boundEventID/guests", authMiddleware, async function (request, response) {
     try {
-        const boundEventID = parseInt(request.params.boundEventID, 10);
-        const registrations = await readJsonFile("registrations.json");
+        const boundEventID = request.params.boundEventID;
 
-        const updatedRegistrations = registrations.filter(r => r.boundEventID !== boundEventID);
-        await writeJsonFile("registrations.json", updatedRegistrations);
+        const guestsToDelete = await db.orm.public.Registration
+            .where({ eventId: boundEventID })
+            .first();
+
+        if (!guestsToDelete) {
+            return response.status(404).json({ message: "Ни один гость не записался на этот показ." });
+        }
+
+        await db.orm.public.Registration
+            .where({ eventId: boundEventID })
+            .deleteAll();
 
         response.json({ message: "Все записи регистрации на данный показ успешно аннулированы." });
 
