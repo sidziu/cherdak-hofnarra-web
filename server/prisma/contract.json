@@ -39,8 +39,16 @@
         "models": {
           "Archive": {
             "fields": {
-              "description": {
+              "dates": {
+                "many": true,
                 "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamp-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -74,7 +82,7 @@
                   "kind": "scalar"
                 }
               },
-              "mainImage": {
+              "mainPhoto": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -138,6 +146,9 @@
             },
             "storage": {
               "fields": {
+                "dates": {
+                  "column": "dates"
+                },
                 "description": {
                   "column": "description"
                 },
@@ -153,8 +164,8 @@
                 "image": {
                   "column": "image"
                 },
-                "mainImage": {
-                  "column": "mainImage"
+                "mainPhoto": {
+                  "column": "mainPhoto"
                 },
                 "photos": {
                   "column": "photos"
@@ -716,10 +727,26 @@
           "table": {
             "archive": {
               "columns": {
+                "dates": {
+                  "codecId": "pg/timestamp-string@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "timestamp",
+                  "noCheck": [
+                    "elementNotNull"
+                  ],
+                  "nullable": false,
+                  "typeParams": {
+                    "precision": 0
+                  }
+                },
                 "description": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": true
                 },
                 "director": {
                   "codecId": "pg/text@1",
@@ -741,7 +768,7 @@
                   "nativeType": "text",
                   "nullable": false
                 },
-                "mainImage": {
+                "mainPhoto": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
@@ -1219,7 +1246,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "edfbd33688bbab953a719703163515f5b1ce064bdcc917dfc582a86904d52e66"
+    "storageHash": "1f9aca06be00bdd77f9616025225a5375b1cf34bbc6a2f2c57f59120f0dfadbc"
   },
   "capabilities": {
     "postgres": {

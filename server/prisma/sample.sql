@@ -59,11 +59,12 @@ CREATE TABLE "Archive" (
     "title" TEXT NOT NULL,
     "genre" TEXT,
     "director" TEXT,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "duration" INTEGER NOT NULL,
     "rating" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "mainImage" TEXT,
+    "mainPhoto" TEXT,
+    "dates" TIMESTAMP(0) NOT NULL DEFAULT '{}'
     "videos" TEXT[] NOT NULL DEFAULT '{}',
     "photos" TEXT[] NOT NULL DEFAULT '{}',
 
