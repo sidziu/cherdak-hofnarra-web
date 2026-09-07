@@ -401,7 +401,7 @@ function EventsSection({ authFetch }) {
             return;
         }
         // Формируем текст для рукописного списка
-        const textToCopy = guests.map((g, i) => `${i + 1}. ${g.surname} ${g.firstName} ${g.lastName}`).join('\n');
+        const textToCopy = guests.map((g, i) => `${i + 1}. ${g.surname} ${g.name} ${g.middleName}`).join('\n');
         
         navigator.clipboard.writeText(textToCopy)
             .then(() => alert("Список гостей скопирован в буфер обмена!"))
@@ -615,8 +615,8 @@ function EventsSection({ authFetch }) {
                             <div className="admin-tabs"><div className="admin-tab active">Записать гостя</div></div>
                             <form className="admin-form-section" onSubmit={handleAddGuest} style={{ marginBottom: 0 }}>
                                 <div className="admin-form-group"><label>Фамилия</label><input name="surname" type="text" className="admin-input" required /></div>
-                                <div className="admin-form-group"><label>Имя</label><input name="firstName" type="text" className="admin-input" required /></div>
-                                <div className="admin-form-group"><label>Отчество</label><input name="lastName" type="text" className="admin-input" required /></div>
+                                <div className="admin-form-group"><label>Имя</label><input name="name" type="text" className="admin-input" required /></div>
+                                <div className="admin-form-group"><label>Отчество</label><input name="middleName" type="text" className="admin-input" required /></div>
                                 <div className="admin-form-group"><label>Email</label><input name="email" type="email" className="admin-input" /></div>
                                 <div className="admin-form-group"><label>Телефон</label><input name="phoneNumber" type="text" className="admin-input" /></div>
                                 <button type="submit" className="admin-btn admin-btn-primary" style={{ width: "100%" }}>Добавить гостя</button>
@@ -639,7 +639,7 @@ function EventsSection({ authFetch }) {
                                         {guests.map((guest, idx) => (
                                             <tr key={guest.individual_ID}>
                                                 <td>{idx + 1}</td>
-                                                <td className="highlight-text">{guest.surname} {guest.firstName} {guest.lastName}</td>
+                                                <td className="highlight-text">{guest.surname} {guest.name} {guest.middleName}</td>
                                                 <td style={{ fontSize: "12px" }}><div>{guest.phoneNumber || "—"}</div><div style={{ color: "#666" }}>{guest.email || "—"}</div></td>
                                                 <td><button className="admin-btn admin-btn-danger admin-btn-action" onClick={() => handleDeleteGuest(guest.individual_ID)}>✕</button></td>
                                             </tr>
