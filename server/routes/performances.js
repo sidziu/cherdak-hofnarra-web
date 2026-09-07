@@ -59,7 +59,7 @@ router.get("/", async function(request, response) {
             imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
             performances: perf.events.map(e => ({
                 eventID: e.selfId,
-                activeState: e.activeState,
+                activestate: e.activeState,
                 scene: e.scene,
                 // преобразование к ISO 8601
                 // исходная строка: YYYY-MM-DD HH:MM:SS.SSS
