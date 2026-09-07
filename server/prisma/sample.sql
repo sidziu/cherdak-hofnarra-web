@@ -36,7 +36,6 @@ CREATE TABLE "Event" (
     CONSTRAINT "Event_pkey" PRIMARY KEY ("selfId"),
     CONSTRAINT "Event_performanceId_fkey" FOREIGN KEY ("performanceId") REFERENCES "Performance"("selfId") ON DELETE CASCADE ON UPDATE CASCADE
 );
--- Prisma автоматически создает индексы для внешних ключей
 CREATE INDEX "Event_performanceId_idx" ON "Event"("performanceId");
 
 -- 4. Registration
@@ -67,11 +66,11 @@ CREATE TABLE "Archive" (
     "mainImage" TEXT,
     "videos" TEXT[] NOT NULL DEFAULT '{}',
     "photos" TEXT[] NOT NULL DEFAULT '{}',
-    "actors" UUID[] NOT NULL DEFAULT '{}',
 
     CONSTRAINT "Archive_pkey" PRIMARY KEY ("selfId")
 );
 
+-- 6. Person
 CREATE TABLE "Person" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
     "orderNo" SERIAL,
@@ -83,3 +82,14 @@ CREATE TABLE "Person" (
 
     CONSTRAINT "Person_pkey" PRIMARY KEY ("selfId")
 );
+
+-- 7. ArchiveActor
+CREATE TABLE "ArchiveActor" (
+    "archiveId" UUID NOT NULL,
+    "personId" UUID NOT NULL,
+
+    CONSTRAINT "ArchiveActor_pkey" PRIMARY KEY ("archiveId", "personId"),
+    CONSTRAINT "ArchiveActor_archiveId_fkey" FOREIGN KEY ("archiveId") REFERENCES "Archive"("selfId") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "ArchiveActor_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("selfId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE INDEX "ArchiveActor_personId_idx" ON "ArchiveActor"("personId");

@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'223f631607c5ef5c843ab2a7eb74e358cd7ad4d597a05197a95ff794967d5a75'>;
+  StorageHashBase<'edfbd33688bbab953a719703163515f5b1ce064bdcc917dfc582a86904d52e66'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -252,7 +252,10 @@ export type FieldOutputTypes = {
       readonly mainImage: CodecTypes['pg/text@1']['output'] | null;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
-      readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['output']>;
+    };
+    readonly ArchiveActor: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'];
+      readonly personId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly Event: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
@@ -313,7 +316,10 @@ export type FieldInputTypes = {
       readonly mainImage: CodecTypes['pg/text@1']['input'] | null;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
-      readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['input']>;
+    };
+    readonly ArchiveActor: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'];
+      readonly personId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly Event: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
@@ -363,7 +369,6 @@ export type FieldInputTypes = {
 export type StorageColumnTypes = {
   readonly public: {
     readonly archive: {
-      readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['output']>;
       readonly description: CodecTypes['pg/text@1']['output'];
       readonly director: CodecTypes['pg/text@1']['output'] | null;
       readonly duration: CodecTypes['pg/int4@1']['output'];
@@ -375,6 +380,10 @@ export type StorageColumnTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+    };
+    readonly archiveActor: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'];
+      readonly personId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['output'];
@@ -424,7 +433,6 @@ export type StorageColumnTypes = {
 export type StorageColumnInputTypes = {
   readonly public: {
     readonly archive: {
-      readonly actors: ReadonlyArray<CodecTypes['pg/uuid@1']['input']>;
       readonly description: CodecTypes['pg/text@1']['input'];
       readonly director: CodecTypes['pg/text@1']['input'] | null;
       readonly duration: CodecTypes['pg/int4@1']['input'];
@@ -436,6 +444,10 @@ export type StorageColumnInputTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+    };
+    readonly archiveActor: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'];
+      readonly personId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['input'];
@@ -569,20 +581,71 @@ type ContractBase = Omit<
                     readonly value: DefaultLiteralValue<'pg/text@1', readonly []>;
                   };
                 };
-                readonly actors: {
-                  readonly nativeType: 'uuid';
-                  readonly codecId: 'pg/uuid@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/uuid@1', readonly []>;
-                  };
-                };
               };
               primaryKey: { readonly columns: readonly ['selfId']; readonly name: 'Archive_pkey' };
               uniques: readonly [];
               indexes: readonly [];
               foreignKeys: readonly [];
+            };
+            readonly archiveActor: {
+              columns: {
+                readonly archiveId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly personId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['archiveId', 'personId'];
+                readonly name: 'ArchiveActor_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'ArchiveActor_personId_idx';
+                  readonly columns: readonly ['personId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'archiveActor_archiveId_idx_334e2044';
+                  readonly prefix: 'archiveActor_archiveId_idx';
+                  readonly columns: readonly ['archiveId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archiveActor';
+                    readonly columns: readonly ['archiveId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archive';
+                    readonly columns: readonly ['selfId'];
+                  };
+                  readonly name: 'ArchiveActor_archiveId_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archiveActor';
+                    readonly columns: readonly ['personId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'person';
+                    readonly columns: readonly ['selfId'];
+                  };
+                  readonly name: 'ArchiveActor_personId_fkey';
+                },
+              ];
             };
             readonly event: {
               columns: {
@@ -895,6 +958,10 @@ type ContractBase = Omit<
     };
     readonly event: { readonly namespace: 'public' & NamespaceId; readonly model: 'Event' };
     readonly person: { readonly namespace: 'public' & NamespaceId; readonly model: 'Person' };
+    readonly archiveActor: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ArchiveActor';
+    };
     readonly registration: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Registration';
@@ -956,13 +1023,20 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
                 readonly many: true;
               };
+            };
+            readonly relations: {
               readonly actors: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
-                readonly many: true;
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ArchiveActor';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['selfId'];
+                  readonly targetFields: readonly ['archiveId'];
+                };
               };
             };
-            readonly relations: Record<string, never>;
             readonly storage: {
               readonly table: 'archive';
               readonly namespaceId: 'public';
@@ -978,7 +1052,50 @@ type ContractBase = Omit<
                 readonly mainImage: { readonly column: 'mainImage' };
                 readonly videos: { readonly column: 'videos' };
                 readonly photos: { readonly column: 'photos' };
-                readonly actors: { readonly column: 'actors' };
+              };
+            };
+          };
+          readonly ArchiveActor: {
+            readonly fields: {
+              readonly archiveId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly personId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly archive: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Archive';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['archiveId'];
+                  readonly targetFields: readonly ['selfId'];
+                };
+              };
+              readonly person: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Person';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['personId'];
+                  readonly targetFields: readonly ['selfId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'archiveActor';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly archiveId: { readonly column: 'archiveId' };
+                readonly personId: { readonly column: 'personId' };
               };
             };
           };
@@ -1139,7 +1256,19 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly archiveActors: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ArchiveActor';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['selfId'];
+                  readonly targetFields: readonly ['personId'];
+                };
+              };
+            };
             readonly storage: {
               readonly table: 'person';
               readonly namespaceId: 'public';

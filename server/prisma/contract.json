@@ -8,6 +8,10 @@
       "model": "Archive",
       "namespace": "public"
     },
+    "archiveActor": {
+      "model": "ArchiveActor",
+      "namespace": "public"
+    },
     "event": {
       "model": "Event",
       "namespace": "public"
@@ -35,14 +39,6 @@
         "models": {
           "Archive": {
             "fields": {
-              "actors": {
-                "many": true,
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/uuid@1",
-                  "kind": "scalar"
-                }
-              },
               "description": {
                 "nullable": false,
                 "type": {
@@ -123,12 +119,25 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "actors": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "selfId"
+                  ],
+                  "targetFields": [
+                    "archiveId"
+                  ]
+                },
+                "to": {
+                  "model": "ArchiveActor",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
-                "actors": {
-                  "column": "actors"
-                },
                 "description": {
                   "column": "description"
                 },
@@ -165,6 +174,68 @@
               },
               "namespaceId": "public",
               "table": "archive"
+            }
+          },
+          "ArchiveActor": {
+            "fields": {
+              "archiveId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "personId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "archive": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "archiveId"
+                  ],
+                  "targetFields": [
+                    "selfId"
+                  ]
+                },
+                "to": {
+                  "model": "Archive",
+                  "namespace": "public"
+                }
+              },
+              "person": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "personId"
+                  ],
+                  "targetFields": [
+                    "selfId"
+                  ]
+                },
+                "to": {
+                  "model": "Person",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "archiveId": {
+                  "column": "archiveId"
+                },
+                "personId": {
+                  "column": "personId"
+                }
+              },
+              "namespaceId": "public",
+              "table": "archiveActor"
             }
           },
           "Event": {
@@ -421,7 +492,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "archiveActors": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "selfId"
+                  ],
+                  "targetFields": [
+                    "personId"
+                  ]
+                },
+                "to": {
+                  "model": "ArchiveActor",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "contactInfo": {
@@ -629,19 +716,6 @@
           "table": {
             "archive": {
               "columns": {
-                "actors": {
-                  "codecId": "pg/uuid@1",
-                  "default": {
-                    "kind": "literal",
-                    "value": []
-                  },
-                  "many": true,
-                  "nativeType": "uuid",
-                  "noCheck": [
-                    "elementNotNull"
-                  ],
-                  "nullable": false
-                },
                 "description": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -725,6 +799,85 @@
                   "selfId"
                 ],
                 "name": "Archive_pkey"
+              },
+              "uniques": []
+            },
+            "archiveActor": {
+              "columns": {
+                "archiveId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "personId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "ArchiveActor_archiveId_fkey",
+                  "onDelete": "cascade",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "archiveId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archiveActor"
+                  },
+                  "target": {
+                    "columns": [
+                      "selfId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archive"
+                  }
+                },
+                {
+                  "name": "ArchiveActor_personId_fkey",
+                  "onDelete": "cascade",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "personId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archiveActor"
+                  },
+                  "target": {
+                    "columns": [
+                      "selfId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "person"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "personId"
+                  ],
+                  "name": "ArchiveActor_personId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "archiveId"
+                  ],
+                  "name": "archiveActor_archiveId_idx_334e2044",
+                  "prefix": "archiveActor_archiveId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "archiveId",
+                  "personId"
+                ],
+                "name": "ArchiveActor_pkey"
               },
               "uniques": []
             },
@@ -1066,7 +1219,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "223f631607c5ef5c843ab2a7eb74e358cd7ad4d597a05197a95ff794967d5a75"
+    "storageHash": "edfbd33688bbab953a719703163515f5b1ce064bdcc917dfc582a86904d52e66"
   },
   "capabilities": {
     "postgres": {
