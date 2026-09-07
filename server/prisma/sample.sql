@@ -44,6 +44,8 @@ CREATE TABLE "Registration" (
     "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
     "eventId" UUID NOT NULL,
     "name" TEXT NOT NULL,
+    "surname" TEXT NOT NULL,
+    "middleName" TEXT,
     "email" TEXT,
     "phoneNumber" TEXT,
 
