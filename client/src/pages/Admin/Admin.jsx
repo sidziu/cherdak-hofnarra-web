@@ -278,6 +278,20 @@ function PersonsSection({ authFetch }) {
         loadItems();
     };
 
+    const handleToggleStatus = async (id) => {
+        try {
+            const res = await authFetch(`/persons/switch/${id}`, { method: "PATCH" });
+            if (res.ok) {
+                loadItems();
+            } else {
+                const data = await res.json();
+                alert(data.message || "Ошибка при смене статуса");
+            }
+        } catch (error) {
+            console.error("Ошибка при смене статуса:", error);
+        }
+    };
+
     return (
         <div>
             <div className="admin-tabs"><div className="admin-tab active">Добавить сотрудника</div></div>
@@ -304,7 +318,17 @@ function PersonsSection({ authFetch }) {
             <div className="admin-tabs"><div className="admin-tab active">Текущий состав</div></div>
             <div className="admin-table-wrapper">
                 <table className="admin-table">
-                    <thead><tr><th>Портрет</th><th>Имя</th><th>Роль</th><th>Контакты</th><th>Порядок</th><th>Действия</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Портрет</th>
+                            <th>Имя</th>
+                            <th>Роль</th>
+                            <th>Контакты</th>
+                            <th>Статус</th>
+                            <th>Порядок</th>
+                            <th>Действия</th>
+                            </tr>
+                        </thead>
                     <tbody>
                         {items.map((item, index) => (
                             <tr key={item.id}>
@@ -312,6 +336,15 @@ function PersonsSection({ authFetch }) {
                                 <td className="highlight-text">{item.name}</td>
                                 <td>{item.role}</td>
                                 <td>{item.contact_info || "—"}</td>
+                                <td>
+                                    <button 
+                                        className={`admin-btn ${item.isActive ? "admin-btn-primary" : "admin-btn-secondary"}`}
+                                        onClick={() => handleToggleStatus(item.id)}
+                                        title="Нажмите, чтобы переключить статус"
+                                    >
+                                        {item.isActive ? "Активен" : "Неактивен"}
+                                    </button>
+                                </td>
                                 <td>
                                     <button className="admin-btn admin-btn-action" disabled={index === 0} onClick={() => handleSwap(item.id, items[index - 1].id)}>▲</button>
                                     <button className="admin-btn admin-btn-action" disabled={index === items.length - 1} onClick={() => handleSwap(item.id, items[index + 1].id)}>▼</button>
@@ -470,7 +503,7 @@ function EventsSection({ authFetch }) {
         if (
             !window.confirm("ВНИМАНИЕ! Это действие удалит этот спектакль и ВСЕ его показы. Продолжить?") 
             ||
-            !window.confirm("ВНИМАНИЕ! Это действие удалит этот спектакль и ВСЕ его показы. Подтвердите удаление.")
+            !window.confirm("Подтвердите удаление.")
         ) return;
         
         await authFetch(`/performances/${id}`, { method: "DELETE" });
@@ -676,25 +709,71 @@ function ArchiveSection({ authFetch }) {
         perf.performances.length === 0 || perf.performances.every(event => event.activestate === false)
     );
 
+    // Архивировать спектакль
     const handleArchivePerformance = async (id) => {
         if (!window.confirm("Скопировать этот спектакль в архив?")) return;
         try {
             const res = await authFetch(`/performances/${id}/archive`, { method: "POST" });
+            const data = await res.json();
             if (res.ok) {
-                alert("Спектакль успешно скопирован в архив!");
+                if (data.isArchived) {
+                    alert("Спектакль скопирован в архив.\nВнимание: в архиве уже существует спектакль с таким названием, сейчас там находится не менее 2-х его копий.");
+                } else {
+                    alert(data.message || "Спектакль успешно скопирован в архив!");
+                }
                 loadData();
             } else {
-                const data = await res.json();
                 alert(data.message || "Ошибка при архивации");
             }
         } catch (error) { console.error(error); }
     };
 
-    // Удаление архива
+    // Удаление архивной записи
     const handleDeleteArchive = async (id) => {
         if (!window.confirm("Полностью удалить этот архив и все его медиа-файлы?")) return;
         await authFetch(`/archive/${id}`, { method: "DELETE" });
         loadData();
+    };
+
+    // Добавление даты показа
+    const handleAddDate = async (e, id) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const date = formData.get("date");
+        if (!date) return;
+
+        try {
+            const res = await authFetch(`/archive/${id}/date`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ date })
+            });
+            if (res.ok) {
+                e.target.reset();
+                loadData();
+            } else {
+                const data = await res.json();
+                alert(data.message || "Ошибка добавления даты");
+            }
+        } catch (error) { console.error(error); }
+    };
+
+    // Удаление даты показа
+    const handleDeleteDate = async (id, date) => {
+        if (!window.confirm("Удалить эту дату показа?")) return;
+        try {
+            const res = await authFetch(`/archive/${id}/date`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ date })
+            });
+            if (res.ok) {
+                loadData();
+            } else {
+                const data = await res.json();
+                alert(data.message || "Ошибка удаления даты");
+            }
+        } catch (error) { console.error(error); }
     };
 
     // Добавление видео (ссылки)
@@ -717,9 +796,15 @@ function ArchiveSection({ authFetch }) {
         } catch (error) { console.error(error); }
     };
 
-    // Добавление фотографий (файлов)
+    // Добавить фотографии
     const handleAddPhotos = async (e, id) => {
         e.preventDefault();
+        const fileInput = e.target.elements.photos;
+        if (fileInput && fileInput.files.length > 20) {
+            alert("Можно загружать не более 20 фотографий за один раз.");
+            return;
+        }
+
         const formData = new FormData(e.target);
         try {
             const res = await authFetch(`/archive/${id}/photos`, { method: "POST", body: formData });
@@ -727,6 +812,23 @@ function ArchiveSection({ authFetch }) {
                 e.target.reset();
                 loadData();
             } else alert("Ошибка загрузки фото");
+        } catch (error) { console.error(error); }
+    };
+
+    // Выбор главной фотографии
+    const handleSetMainPhoto = async (id, photoFilename) => {
+        try {
+            const res = await authFetch(`/archive/${id}/main-photo`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ photoFilename })
+            });
+            if (res.ok) {
+                loadData();
+            } else {
+                const data = await res.json();
+                alert(data.message || "Ошибка при выборе главной фотографии");
+            }
         } catch (error) { console.error(error); }
     };
 
@@ -812,7 +914,16 @@ function ArchiveSection({ authFetch }) {
             <div className="admin-tabs" style={{ marginTop: "30px" }}><div className="admin-tab active">Управление архивными записями</div></div>
             <div className="admin-table-wrapper" style={{ overflowX: "auto" }}>
                 <table className="admin-table">
-                    <thead><tr><th style={{ width: "20%" }}>Информация</th><th style={{ width: "22%" }}>Видео</th><th style={{ width: "24%" }}>Фотогалерея</th><th style={{ width: "24%" }}>Актёры</th><th style={{ width: "10%" }}>Действия</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th style={{ width: "18%" }}>Информация</th>
+                            <th style={{ width: "18%" }}>Даты показов</th>
+                            <th style={{ width: "18%" }}>Видео</th>
+                            <th style={{ width: "22%" }}>Фотогалерея</th>
+                            <th style={{ width: "16%" }}>Актёры</th>
+                            <th style={{ width: "8%" }}>Действия</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {archiveItems.map(item => (
                             <tr key={item.id} style={{ verticalAlign: "top" }}>
@@ -823,6 +934,29 @@ function ArchiveSection({ authFetch }) {
                                     <div style={{ fontSize: "12px", color: "#333" }}>{item.director}</div>
                                     <div style={{ fontSize: "11px", color: "#666" }}>{item.duration} минут | {item.rating}</div>
                                 </td>
+
+                                {/* ДАТЫ ПОКАЗОВ */}
+                                <td>
+                                    <ul style={{ margin: "0 0 10px 0", paddingLeft: "15px", fontSize: "12px" }}>
+                                        {item.dates?.map((d, idx) => (
+                                            <li key={idx} style={{ marginBottom: "5px" }}>
+                                                <span>{new Date(d).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })}</span>
+                                                <button 
+                                                    className="admin-btn admin-btn-action" 
+                                                    style={{ color: "red", marginLeft: "5px", border: "none", background: "none", padding: "0", cursor: "pointer" }} 
+                                                    onClick={() => handleDeleteDate(item.id, d)}
+                                                    title="Удалить дату"
+                                                >✕</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    {/* Форма добавления даты */}
+                                    <form onSubmit={(e) => handleAddDate(e, item.id)} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                                        <input type="datetime-local" name="date" className="admin-input" required style={{ padding: "4px" }} />
+                                        <button type="submit" className="admin-btn">Добавить дату</button>
+                                    </form>
+                                </td>
+
                                 {/* ВИДЕО */}
                                 <td>
                                     <ul style={{ margin: "0 0 10px 0", paddingLeft: "15px", fontSize: "12px", wordBreak: "break-all" }}>
@@ -839,22 +973,69 @@ function ArchiveSection({ authFetch }) {
                                         <button type="submit" className="admin-btn">Добавить</button>
                                     </form>
                                 </td>
+
                                 {/* ФОТОГРАФИИ */}
                                 <td>
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }}>
-                                        {item.photoUrls?.map((url, idx) => (
-                                            <div key={idx} style={{ position: "relative" }}>
-                                                <img src={url} alt={`gallery-${idx}`} style={{ height: "40px", width: "40px", objectFit: "cover" }} />
-                                                <button onClick={() => handleDeletePhoto(item.id, item.photos[idx])} style={{ position: "absolute", top: "-5px", right: "-5px", background: "red", color: "white", border: "none", borderRadius: "50%", width: "15px", height: "15px", fontSize: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
-                                            </div>
-                                        ))}
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "10px" }}>
+                                        {item.photoUrls?.map((url, idx) => {
+                                            const photoName = item.photos[idx];
+                                            const isMain = item.mainPhoto && item.mainPhoto.toLowerCase() === photoName.toLowerCase();
+
+                                            return (
+                                                <div key={idx} style={{ position: "relative" }}>
+                                                    {/* Подсветка главной фотографии */}
+                                                    <img 
+                                                        src={url} 
+                                                        alt={`gallery-${idx}`} 
+                                                        style={{ 
+                                                            height: "40px", 
+                                                            width: "40px", 
+                                                            objectFit: "cover",
+                                                            border: isMain ? "2px solid #ad0909" : "1px solid #ccc",
+                                                            boxSizing: "border-box"
+                                                        }} 
+                                                    />
+                                                    {/* Кнопка удаления фото */}
+                                                    <button 
+                                                        onClick={() => handleDeletePhoto(item.id, photoName)} 
+                                                        style={{ position: "absolute", top: "-5px", right: "-5px", background: "red", color: "white", border: "none", borderRadius: "50%", width: "15px", height: "15px", fontSize: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                                                        title="Удалить фото"
+                                                    >✕</button>
+
+                                                    {/* Выбор главной фотографии на звёздочку */}
+                                                    <button 
+                                                        onClick={() => handleSetMainPhoto(item.id, photoName)} 
+                                                        style={{ 
+                                                            position: "absolute", 
+                                                            bottom: "-5px", 
+                                                            left: "-5px", 
+                                                            background: isMain ? "#ad0909" : "#333", 
+                                                            color: "white", 
+                                                            border: "none", 
+                                                            borderRadius: "50%", 
+                                                            width: "15px", 
+                                                            height: "15px", 
+                                                            fontSize: "9px", 
+                                                            cursor: "pointer", 
+                                                            display: "flex", 
+                                                            alignItems: "center", 
+                                                            justifyContent: "center" 
+                                                        }}
+                                                        title={isMain ? "Главная фотография" : "Сделать главной"}
+                                                    >★</button>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                     {/* Форма добавления фото */}
-                                    <form onSubmit={(e) => handleAddPhotos(e, item.id)} style={{ display: "flex", gap: "5px" }}>
+                                    <form onSubmit={(e) => handleAddPhotos(e, item.id)} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                                         <input type="file" name="photos" multiple accept=".png,.jpg,.jpeg,.webp" className="admin-input" required style={{ padding: "2px" }} />
+                                        <div style={{ fontSize: "10px", color: "#666" }}>Максимум 20 файлов за раз</div>
                                         <button type="submit" className="admin-btn">Загрузить</button>
                                     </form>
                                 </td>
+
+                                {/* АКТЁРЫ */}
                                 <td>
                                     <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "10px" }}>
                                         {item.actors?.map((actor) => (
@@ -874,6 +1055,7 @@ function ArchiveSection({ authFetch }) {
                                         <button type="submit" className="admin-btn">Добавить</button>
                                     </form>
                                 </td>
+
                                 {/* ДЕЙСТВИЯ */}
                                 <td><button className="admin-btn admin-btn-danger" onClick={() => handleDeleteArchive(item.id)}>Удалить запись</button></td>
                             </tr>
