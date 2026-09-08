@@ -17,6 +17,20 @@ const PORT = process.env.PORT || 3001;
 
 const uploadArchivePhotos = createUploader("images/archive", [".png", ".jpg", ".jpeg", ".webp"]);
 
+/**
+ * Вспомогательная функция для приведения любой строки даты к формату БД 'YYYY-MM-DD HH:MM:SS'
+Работает на уровне строк, исключая искажения часовых поясов и миллисекунд
+ * @param {string} input 
+ * @returns {string}
+ */
+function normalizeDbDate(input) {
+    if (!input || typeof input !== "string") return null;
+    const match = input.trim().match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::(\d{2}))?/);
+    if (!match) return null;
+    const [, datePart, timePart, secPart] = match;
+    return `${datePart} ${timePart}:${secPart || "00"}`;
+}
+
 // Получить весь архив
 router.get("/", async function(request, response) {
     try {
@@ -38,6 +52,7 @@ router.get("/", async function(request, response) {
             return {
                 id: item.selfId,
                 title: item.title,
+                mainPhoto: item.mainPhoto,
                 genre: item.genre,
                 director: item.director,
                 description: item.description,
@@ -45,8 +60,10 @@ router.get("/", async function(request, response) {
                 rating: item.rating,
                 photos: item.photos,
                 videos: item.videos, // currently external URLs only
+                dates: item.dates,
                 imageUrl: `${SERVER_URL}/images/events/${item.image}`,
-                photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`),
+                mainPhotoUrl: item.mainPhoto? `${SERVER_URL}/images/archive/${item.mainPhoto}` : undefined,
+                photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`), 
                 actors: mappedActors 
             };
         });
@@ -143,6 +160,44 @@ router.post("/:id/photos", authMiddleware, uploadArchivePhotos.array("photos", 2
     }
 });
 
+// Выбрать "главную" фотографию
+router.patch("/:id/main-photo", authMiddleware, async function (request, response) {
+    try {
+        const id = request.params.id;
+        const { photoFilename } = request.body;
+        
+        const cleanPhotoFilename = photoFilename.trim()
+
+        if(!photoFilename){
+            return response.status(400).json({ message: "Необходимо выбрать фотографию." });
+        }
+
+        const archiveEntry = await db.orm.public.Archive
+            .where({ selfId: id })
+            .first();
+
+        if(!archiveEntry){
+            return response.status(404).json({ message: "Архивное событие не найдено." });
+        }
+
+        if(!archiveEntry.photos.includes(cleanPhotoFilename)){
+            return response.status(404).json({ message: "Такой фотографии не существует." });
+        }
+
+        await db.orm.public.Archive
+            .where({ selfId: id })
+            .update({ mainPhoto: cleanPhotoFilename });
+        
+        response.json({
+            message: "Главная фотография назначена.",
+            photo: cleanPhotoFilename
+        });
+    } catch (error) {
+        
+    }
+
+});
+
 // Добавить ссылку на видео
 router.post("/:id/videos", authMiddleware, async function (request, response) {
     try {
@@ -210,6 +265,13 @@ router.delete("/:id/photos", authMiddleware, async function (request, response) 
         } catch (err) {
             logger.warn(`Файл не найден: ${photoPath}`);
         };
+
+        // Если удалённая фотография выбрана "главной", очищаем это поле
+        if(archiveEntry.mainPhoto == photoName){
+            await db.orm.public.Archive
+                .where({ selfId: id })
+                .update({ mainPhoto: null});
+        }
 
         response.json({
             message: "Фотография удалена.",
@@ -328,6 +390,81 @@ router.delete("/:id/actors", authMiddleware, async function (request, response) 
     } catch (error) {
         logger.error(error);
         response.status(500).json({ message: "Ошибка сервера при удалении актера." });
+    }
+});
+
+// - ДОБАВЛЕНИЕ / УДАЛЕНИЕ ДАТ ПОКАЗОВ -
+// Добавить архивную дату показа
+router.post("/:id/date", authMiddleware, async function (request, response) {
+    try {
+        const id = request.params.id;
+        const { date } = request.body;
+
+        const cleanDate = normalizeDbDate(date);
+        logger.info(`Получена дата ${cleanDate}`)
+        if (!cleanDate) {
+            return response.status(400).json({ message: "Необходимо передать дату и время." });
+        }
+
+        const archiveEntry = await db.orm.public.Archive
+            .where({ selfId: id })
+            .first();
+
+        if (!archiveEntry) {
+            return response.status(404).json({ message: "Архивное событие не найдено." });
+        }
+
+        const updatedDates = [...archiveEntry.dates, cleanDate];
+
+        const updatedArchive = await db.orm.public.Archive
+            .where({ selfId: id })
+            .update({ dates: updatedDates });
+
+        response.json({ 
+            message: "Дата успешно добавлена.", 
+            dates: updatedArchive.dates,
+        });
+
+    } catch (error) {
+        logger.error("Ошибка при добавлении даты:", error);
+        response.status(500).json({ message: "Ошибка сервера." });
+    }
+});
+
+// Удалить архивную дату показа
+router.delete("/:id/date", authMiddleware, async function (request, response) {
+    try {
+        const id = request.params.id;
+        const { date } = request.body;
+
+        const cleanDate = normalizeDbDate(date);
+        if (!cleanDate) {
+            return response.status(400).json({ message: "Необходимо передать дату и время." });
+        }
+
+        const archiveItem = await db.orm.public.Archive
+            .where({ selfId: id })
+            .first();
+
+        if (!archiveItem) {
+            return response.status(404).json({ message: "Архивное событие не найдено." });
+        }
+
+        const updatedDates = archiveItem.dates.filter(date => normalizeDbDate(date) !== cleanDate);
+
+        const updatedArchive = await db.orm.public.Archive
+            .where({ selfId: id })
+            .update({ dates: updatedDates });
+
+        response.json({ 
+            message: "Дата удалена.", 
+            dates: updatedArchive.dates, 
+        });
+
+    } catch (error) {
+        logger.error("Ошибка при удалении даты:", error);
+        response.status(500).json({ message: "Ошибка сервера." });
+
     }
 });
 

@@ -157,7 +157,9 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
 
         const performanceToArchive = await db.orm.public.Performance
             .where({ selfId: id })
+            .include('events')
             .first();
+
         if (!performanceToArchive) {
             return response.status(404).json({ message: "Спектакль не найден в базе данных афиши." });
         }
@@ -170,6 +172,8 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             responseMessage += 'Внимание: в архиве сейчас находится не менее 2-х копий этого спектакля.';
         }
 
+        const dates = performanceToArchive.events.map(event => event.date);
+
         const archivedPerformance = await db.orm.public.Archive.create({
             title: performanceToArchive.title,
             genre: performanceToArchive.genre,
@@ -178,6 +182,7 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             duration: performanceToArchive.duration,
             rating: performanceToArchive.rating,
             image: performanceToArchive.image,
+            dates: dates,
         });
 
         logger.info(`Спектакль ID: ${id} скопирован в архив.`);
