@@ -17,20 +17,6 @@ const PORT = process.env.PORT || 3001;
 
 const uploadArchivePhotos = createUploader("images/archive", [".png", ".jpg", ".jpeg", ".webp"]);
 
-/**
- * Вспомогательная функция для приведения любой строки даты к формату БД 'YYYY-MM-DD HH:MM:SS'
-Работает на уровне строк, исключая искажения часовых поясов и миллисекунд
- * @param {string} input 
- * @returns {string}
- */
-function normalizeDbDate(input) {
-    if (!input || typeof input !== "string") return null;
-    const match = input.trim().match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::(\d{2}))?/);
-    if (!match) return null;
-    const [, datePart, timePart, secPart] = match;
-    return `${datePart} ${timePart}:${secPart || "00"}`;
-}
-
 // Получить весь архив
 router.get("/", async function(request, response) {
     try {
@@ -61,7 +47,11 @@ router.get("/", async function(request, response) {
                 rating: item.rating,
                 photos: item.photos,
                 videos: item.videos, // currently external URLs only
-                events: item.events,
+                events: item.events.map(event => ({
+                    eventId: event.selfId,
+                    date: new Date(event.date.replace(' ', 'T') + 'Z'),
+                    scene: event.scene,
+                })),
                 imageUrl: `${SERVER_URL}/images/events/${item.image}`,
                 mainPhotoUrl: item.mainPhoto? `${SERVER_URL}/images/archive/${item.mainPhoto}` : undefined,
                 photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`), 
@@ -402,7 +392,7 @@ router.post("/:id/date", authMiddleware, async function (request, response) {
         const { date, scene } = request.body;
 
         const cleanScene = scene?.trim() || "Основная сцена";
-        const cleanDate = normalizeDbDate(date);
+        const cleanDate = new Date(date);
         
         if (!cleanDate) {
             return response.status(400).json({ message: "Необходимо передать дату и время." });
@@ -428,7 +418,7 @@ router.post("/:id/date", authMiddleware, async function (request, response) {
         const newArchiveEvent = await db.orm.public.ArchiveEvent.create({
             archiveId: id,
             scene: cleanScene,
-            date: cleanDate
+            date: cleanDate.toISOString(),
         });
 
         response.status(201).json({ 
@@ -443,37 +433,26 @@ router.post("/:id/date", authMiddleware, async function (request, response) {
 });
 
 // Удалить архивный показ
-router.delete("/:id/date", authMiddleware, async function (request, response) {
+router.delete("/:archiveEntryId/date", authMiddleware, async function (request, response) {
     try {
-        const id = request.params.id;
-        const { date } = request.body;
+        const id = request.params.archiveEntryId;
+        const { eventId } = request.body;
 
-        const cleanDate = normalizeDbDate(date);
-
-        if (!cleanDate) {
-            return response.status(400).json({ message: "Необходимо передать дату и время." });
-        }
-
-        const archiveItem = await db.orm.public.Archive
-            .where({ selfId: id })
-            .first();
-
-        if (!archiveItem) {
-            return response.status(404).json({ message: "Архивное событие не найдено." });
+        if(!eventId){
+            return response.status(400).json({ message: "Нужно передать eventId." })
         }
 
         const deletedEvent = await db.orm.public.ArchiveEvent
-            .where({ archiveId: id })
-            .where((e) => e.date.eq(cleanDate))
+            .where({ selfId: eventId, archiveId: id })
             .delete();
 
         if (!deletedEvent) {
-            return response.status(404).json({ message: "Указанная дата показа не найдена в архиве." });
+            return response.status(404).json({ message: "Архивный показ не найден." });
         }
 
         response.json({ 
             message: "Дата удалена.", 
-            event: deletedEvent 
+            event: deletedEvent
         });
 
     } catch (error) {

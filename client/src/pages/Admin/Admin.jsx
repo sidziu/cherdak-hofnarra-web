@@ -762,13 +762,13 @@ function ArchiveSection({ authFetch }) {
     };
 
     // Удаление даты показа
-    const handleDeleteDate = async (id, date) => {
+    const handleDeleteDate = async (entryId, eventId) => {
         if (!window.confirm("Удалить эту дату показа?")) return;
         try {
-            const res = await authFetch(`/archive/${id}/date`, {
+            const res = await authFetch(`/archive/${entryId}/date`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ date })
+                body: JSON.stringify({ eventId })
             });
             if (res.ok) {
                 loadData();
@@ -941,8 +941,8 @@ function ArchiveSection({ authFetch }) {
                                 {/* ДАТЫ ПОКАЗОВ */}
                                 <td>
                                     <ul style={{ margin: "0 0 10px 0", paddingLeft: "15px", fontSize: "12px" }}>
-                                        {(item.events || item.dates)?.map((ev, idx) => {
-                                            const dateVal = typeof ev === "object" ? ev.date : ev;
+                                        {(item.events)?.map((ev, idx) => {
+                                            const dateVal = typeof ev === "object" ? ev.date : null;
                                             const sceneVal = typeof ev === "object" ? ev.scene : null;
 
                                             return (
@@ -952,7 +952,7 @@ function ArchiveSection({ authFetch }) {
                                                     <button 
                                                         className="admin-btn admin-btn-action" 
                                                         style={{ color: "red", marginLeft: "5px", border: "none", background: "none", padding: "0", cursor: "pointer" }} 
-                                                        onClick={() => handleDeleteDate(item.id, dateVal)}
+                                                        onClick={() => handleDeleteDate(item.id, ev.eventId)}
                                                         title="Удалить дату"
                                                     >✕</button>
                                                 </li>
