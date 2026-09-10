@@ -172,8 +172,6 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             responseMessage += 'Внимание: в архиве сейчас находится не менее 2-х копий этого спектакля.';
         }
 
-        const dates = performanceToArchive.events.map(event => event.date);
-
         const archivedPerformance = await db.orm.public.Archive.create({
             title: performanceToArchive.title,
             genre: performanceToArchive.genre,
@@ -182,8 +180,19 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             duration: performanceToArchive.duration,
             rating: performanceToArchive.rating,
             image: performanceToArchive.image,
-            dates: dates,
         });
+
+        if (performanceToArchive.events && performanceToArchive.events.length > 0) {
+            await Promise.all(
+                performanceToArchive.events.map(event => 
+                    db.orm.public.ArchiveEvent.create({
+                        archiveId: archivedPerformance.selfId,
+                        scene: event.scene,
+                        date: event.date
+                    })
+                )
+            );
+        }
 
         logger.info(`Спектакль ID: ${id} скопирован в архив.`);
 

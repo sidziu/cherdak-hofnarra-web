@@ -740,13 +740,14 @@ function ArchiveSection({ authFetch }) {
         e.preventDefault();
         const formData = new FormData(e.target);
         const date = formData.get("date");
+        const scene = formData.get("scene");
         if (!date) return;
 
         try {
             const res = await authFetch(`/archive/${id}/date`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ date })
+                body: JSON.stringify({ date, scene })
             });
             if (res.ok) {
                 e.target.reset();
@@ -898,7 +899,7 @@ function ArchiveSection({ authFetch }) {
                 <table className="admin-table">
                     <thead><tr><th>Постер</th><th>Заголовок и жанр</th><th>Режиссёр</th><th>Действия</th></tr></thead>
                     <tbody>
-                        {pendingPerformances.length === 0 && <tr><td colSpan="4" style={{ textAlign: "center" }}>Нет спектаклей, готовых к отправке в архив.</td></tr>}
+                        {pendingPerformances.length === 0 && <tr><td colSpan="4" style={{ textAlign: "center" }}>Нет спектаклей, готовых к отправке в архив. Такими спектаклями считаются только те, у которых скрыты все показы.</td></tr>}
                         {pendingPerformances.map(perf => (
                             <tr key={perf.id}>
                                 <td><img src={perf.imageUrl} alt={perf.title} /></td>
@@ -938,21 +939,47 @@ function ArchiveSection({ authFetch }) {
                                 {/* ДАТЫ ПОКАЗОВ */}
                                 <td>
                                     <ul style={{ margin: "0 0 10px 0", paddingLeft: "15px", fontSize: "12px" }}>
-                                        {item.dates?.map((d, idx) => (
-                                            <li key={idx} style={{ marginBottom: "5px" }}>
-                                                <span>{new Date(d).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })}</span>
-                                                <button 
-                                                    className="admin-btn admin-btn-action" 
-                                                    style={{ color: "red", marginLeft: "5px", border: "none", background: "none", padding: "0", cursor: "pointer" }} 
-                                                    onClick={() => handleDeleteDate(item.id, d)}
-                                                    title="Удалить дату"
-                                                >✕</button>
-                                            </li>
-                                        ))}
+                                        {(item.events || item.dates)?.map((ev, idx) => {
+                                            const dateVal = typeof ev === "object" ? ev.date : ev;
+                                            const sceneVal = typeof ev === "object" ? ev.scene : null;
+
+                                            return (
+                                                <li key={idx} style={{ marginBottom: "5px" }}>
+                                                    <span>{new Date(dateVal).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })}</span>
+                                                    {sceneVal && <span style={{ color: "#666", marginLeft: "4px", fontSize: "11px" }}>({sceneVal})</span>}
+                                                    <button 
+                                                        className="admin-btn admin-btn-action" 
+                                                        style={{ color: "red", marginLeft: "5px", border: "none", background: "none", padding: "0", cursor: "pointer" }} 
+                                                        onClick={() => handleDeleteDate(item.id, dateVal)}
+                                                        title="Удалить дату"
+                                                    >✕</button>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
-                                    {/* Форма добавления даты */}
-                                    <form onSubmit={(e) => handleAddDate(e, item.id)} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                        <input type="datetime-local" name="date" className="admin-input" required style={{ padding: "4px" }} />
+                                    {/* Форма добавления даты и сцены */}
+                                    <form onSubmit={(e) => handleAddDate(e, item.id)} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                                        <div>
+                                            <label style={{ display: "block", fontWeight: "bold", fontSize: "11px", marginBottom: "3px" }}>Зал / Сцена</label>
+                                            <input 
+                                                type="text" 
+                                                name="scene" 
+                                                placeholder="Зал №1" 
+                                                className="admin-input" 
+                                                required 
+                                                style={{ padding: "4px" }} 
+                                            />
+                                        </div>
+                                        <div>
+                                            <label style={{ display: "block", fontWeight: "bold", fontSize: "11px", marginBottom: "3px" }}>Дата и время</label>
+                                            <input 
+                                                type="datetime-local" 
+                                                name="date" 
+                                                className="admin-input" 
+                                                required 
+                                                style={{ padding: "4px" }} 
+                                            />
+                                        </div>
                                         <button type="submit" className="admin-btn">Добавить дату</button>
                                     </form>
                                 </td>

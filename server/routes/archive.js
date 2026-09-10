@@ -36,6 +36,7 @@ router.get("/", async function(request, response) {
     try {
         const archive = await db.orm.public.Archive
             .include('actors', (actor) => actor.include('person'))
+            .include('events')
             .all();
 
         const archiveWithUrls = archive.map(item => {
@@ -60,7 +61,7 @@ router.get("/", async function(request, response) {
                 rating: item.rating,
                 photos: item.photos,
                 videos: item.videos, // currently external URLs only
-                dates: item.dates,
+                events: item.events,
                 imageUrl: `${SERVER_URL}/images/events/${item.image}`,
                 mainPhotoUrl: item.mainPhoto? `${SERVER_URL}/images/archive/${item.mainPhoto}` : undefined,
                 photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`), 
@@ -394,14 +395,15 @@ router.delete("/:id/actors", authMiddleware, async function (request, response) 
 });
 
 // - ДОБАВЛЕНИЕ / УДАЛЕНИЕ ДАТ ПОКАЗОВ -
-// Добавить архивную дату показа
+// Добавить архивный показ
 router.post("/:id/date", authMiddleware, async function (request, response) {
     try {
         const id = request.params.id;
-        const { date } = request.body;
+        const { date, scene } = request.body;
 
+        const cleanScene = scene?.trim() || "Основная сцена";
         const cleanDate = normalizeDbDate(date);
-        logger.info(`Получена дата ${cleanDate}`)
+        
         if (!cleanDate) {
             return response.status(400).json({ message: "Необходимо передать дату и время." });
         }
@@ -414,15 +416,24 @@ router.post("/:id/date", authMiddleware, async function (request, response) {
             return response.status(404).json({ message: "Архивное событие не найдено." });
         }
 
-        const updatedDates = [...archiveEntry.dates, cleanDate];
+        const existingEvent = await db.orm.public.ArchiveEvent
+            .where({ archiveId: id })
+            .where((e) => e.date.eq(cleanDate))
+            .first();
 
-        const updatedArchive = await db.orm.public.Archive
-            .where({ selfId: id })
-            .update({ dates: updatedDates });
+        if (existingEvent) {
+            return response.status(400).json({ message: "Такая дата показа уже добавлена к этому спектаклю." });
+        }
 
-        response.json({ 
+        const newArchiveEvent = await db.orm.public.ArchiveEvent.create({
+            archiveId: id,
+            scene: cleanScene,
+            date: cleanDate
+        });
+
+        response.status(201).json({ 
             message: "Дата успешно добавлена.", 
-            dates: updatedArchive.dates,
+            event: newArchiveEvent
         });
 
     } catch (error) {
@@ -431,13 +442,14 @@ router.post("/:id/date", authMiddleware, async function (request, response) {
     }
 });
 
-// Удалить архивную дату показа
+// Удалить архивный показ
 router.delete("/:id/date", authMiddleware, async function (request, response) {
     try {
         const id = request.params.id;
         const { date } = request.body;
 
         const cleanDate = normalizeDbDate(date);
+
         if (!cleanDate) {
             return response.status(400).json({ message: "Необходимо передать дату и время." });
         }
@@ -450,15 +462,18 @@ router.delete("/:id/date", authMiddleware, async function (request, response) {
             return response.status(404).json({ message: "Архивное событие не найдено." });
         }
 
-        const updatedDates = archiveItem.dates.filter(date => normalizeDbDate(date) !== cleanDate);
+        const deletedEvent = await db.orm.public.ArchiveEvent
+            .where({ archiveId: id })
+            .where((e) => e.date.eq(cleanDate))
+            .delete();
 
-        const updatedArchive = await db.orm.public.Archive
-            .where({ selfId: id })
-            .update({ dates: updatedDates });
+        if (!deletedEvent) {
+            return response.status(404).json({ message: "Указанная дата показа не найдена в архиве." });
+        }
 
         response.json({ 
             message: "Дата удалена.", 
-            dates: updatedArchive.dates, 
+            event: deletedEvent 
         });
 
     } catch (error) {
