@@ -16,24 +16,32 @@
 cd server
 npm install
 ```
+
 2. Создайте учётную запись администратора:
 ```sh
 npm run create_admin -- ваш_пароль
 ```
-3. Любым способом создайте базу данных в PostgreSQL.
-4. Настройте файл .env, используя .env.example как образец.
+
+3. Cоздайте базу данных в PostgreSQL. Это можно сделать запросом через PSQL или pgAdmin:
+```sql
+CREATE DATABASE your_name_here;
+```
+
+4. Создайте файл .env и скопируйте в него содержимое .env.example.
 Укажите адрес базы данных в отведённой строке:
 user:password - учётные данные от базы данных,
-localhost:5432 - адрес базы данных,
-mydb - название вашей базы данных.
+localhost:5432 - IP-адрес базы данных,
+your_name_here - название вашей базы данных.
 ```js
-DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+DATABASE_URL="postgresql://user:password@localhost:5432/your_name_here"
 ```
+
 5. Верифицируйте базу данных:
 ```sh
 npx prisma db update
 npx prisma db sign
 ```
+
 6. Запустите сервер.
 ```sh
 npm run start
