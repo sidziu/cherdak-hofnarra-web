@@ -47,6 +47,21 @@ npx prisma db sign
 npm run start
 ```
 
+### Дамп базы данных
+Дамп базы данных создаётся при помощи стандартных утилит PostgreSQL после верификации при помощи Prisma. Убедитесь, что утилиты pg_dump и pg_restore находятся в PATH, или укажите путь до них явно.
+1. Создание дампа: 
+```sh
+pg_dump -U <username> -h <host> -p <port> -d <database_name> -F c -b -v -f backup.dump
+```
+2. Восстановление в существующую чистую БД:
+```sh
+pg_restore -U <username> -h <host> -p <port> -d <database_name> -v backup.dump
+```
+3. Восстановление с перезаписью:
+```sh
+pg_restore -U <username> -h <host> -p <port> -d <database_name> --clean --if-exists -v backup.dump
+```
+
 ### Frontend
 ```bash
 cd client
