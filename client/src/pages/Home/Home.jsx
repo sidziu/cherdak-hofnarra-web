@@ -23,6 +23,8 @@ import "./Home-css/HomeArchive.css";
 
 import { useNavigate, NavLink } from "react-router-dom"; // роутинг
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 function Home() {
 
     const navigate = useNavigate();
@@ -144,6 +146,7 @@ function Home() {
       carouselItems = carouselItems.concat(carouselItems);
     }
   }
+  // console.log(carouselItems)
 
   return (
     <div className="home-container">
@@ -202,7 +205,7 @@ function Home() {
             // touchStartPreventDefault={false}
             freeMode={{ // свободный скролл карусели
               enabled: true,
-              sticky: true, // доводчик до следующего слайда
+              sticky: itsMobileWindow ? true : false, // доводчик до следующего слайда
               momentum: true, // "инерция"
               momentumRatio: itsMobileWindow ? 0.1 : 0.5, // коэффициент силы инерции, для телефона и декстопа разная
               momentumBounce: false, // отключает "отскок" в конце списка
@@ -219,7 +222,7 @@ function Home() {
               swiperRef.current = swiper;
             }}
             autoplay={{ 
-              delay: 4000, 
+              delay: 3500, 
               disableOnInteraction: false,
               pauseOnMouseEnter: false,
             }}
@@ -282,7 +285,7 @@ function Home() {
                         )}
 
                         <span className="performance-rate" data-atropos-offset="6">
-                          {item.rating}
+                          {item.rating}+
                         </span>
                         </div>
 
@@ -368,7 +371,7 @@ function Home() {
       {/* Секция Архива */}
       <section className="home-archive-section"> 
         <NavLink to="/archive" className="home-archive-title">Архив спектаклей</NavLink>
-        <div className="line-divider-container">
+        <div className="line-divider-archive-container">
           <h1 className="line-divider"></h1>
         </div>
 
@@ -377,7 +380,7 @@ function Home() {
 
         {!loading && !error && (
           <div className="home-archive-3d-container">
-            {archive.slice(0, 3).map((card, index) => (
+            {archive.filter(p => p.mainPhoto != null ).map((card, index) => (
               <div 
                 key={card.id} 
                 className={`home-archive-card-container card-position-${index}`}
@@ -385,7 +388,7 @@ function Home() {
               >
                 <div className="home-photo-container">
                     <img 
-                      src={card.photoUrls[0]}  
+                      src={`${API_URL}/images/archive/${card.mainPhoto}`}  
                       className="home-archive-photo" 
                     />
                   </div>

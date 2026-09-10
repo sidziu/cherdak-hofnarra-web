@@ -88,6 +88,8 @@
     align-items: flex-start;
     gap: 10px;
     box-sizing: border-box;
+
+    flex: 1
 }
 
 .archive-card-genre {
@@ -97,6 +99,7 @@
     color: #8b0000;
     font-weight: bold;
     letter-spacing: 0.05em;
+    text-align: start;
 }
 
 .archive-card-title {
@@ -131,6 +134,7 @@
     border-radius: 0;
     transition: all 0.3s ease;
     cursor:pointer;
+    margin-top: auto;
 }
 
 .archive-detail-btn:hover {

@@ -40,6 +40,9 @@ function About() {
         };
     }, []);
 
+    const activePersons = persons.filter(p => p.isActive);
+    const nonActivePersons = persons.filter(p => !p.isActive);
+
     const renderCard = (person) => (
         <div key={person.id} className="person-card">
             <div className="person-photo-container">
@@ -82,7 +85,7 @@ function About() {
                     <div className="team-container">
                         <h2 className="team-title">Актерский состав</h2>
                         <div className="persons-grid">
-                            {persons.map((actor) => renderCard(actor))}
+                            {activePersons.map((actor) => renderCard(actor))}
                         </div>
                         <h1 className="line-divider"></h1>
                     </div>
@@ -91,8 +94,7 @@ function About() {
                     <div className="team-container">
                         <h2 className="team-title">Бывшие участники</h2>
                         <div className="persons-grid">
-                            {persons.map((actor) => renderCard(actor))}
-                            {/* {nonActivePersons.map((person) => renderCard(person))} */}
+                            {nonActivePersons.map((actor) => renderCard(actor))}
                         </div>
                     </div>
                 </>

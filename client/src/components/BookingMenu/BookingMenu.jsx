@@ -145,6 +145,8 @@ function BookingMenu({
                 
                 <h2>Запись на спектакль</h2>
 
+                <h1 className="line-divider-booking"></h1>
+
                 {isSuccess ? (
                     <div className="success-container">
                         <p className="status-success">{statusMessage}</p>

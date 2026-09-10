@@ -56,6 +56,7 @@ router.get("/", async function(request, response) {
             description: perf.description,
             duration: perf.duration,
             rating: perf.rating,
+            image: perf.image,
             imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
             performances: perf.events.map(e => ({
                 eventID: e.selfId,

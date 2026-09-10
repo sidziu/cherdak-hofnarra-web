@@ -111,7 +111,11 @@ function Playbill() {
                             Записаться на показ
                         </button>
                     ) : (
-                        <NavLink to={`../archive/${event.performanceId}`} state={{ title: event.title }} className="booking-btn disabled">
+                        <NavLink
+                            to={`../archive/${event.archiveId || event.performanceId}`}
+                            state={{ title: event.title }}
+                            className="booking-btn disabled"
+                        >
                             &nbsp;&nbsp;&nbsp;&nbsp;Перейти в архив&nbsp;&nbsp;&nbsp;&nbsp;
                         </NavLink>
                     )}

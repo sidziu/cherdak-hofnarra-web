@@ -7,6 +7,12 @@
     margin-top:60px;
 }
 
+.line-divider-archive-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px 20px 0px 20px; 
+}
+
 
 /* Заголовок */
 .home-archive-title {
@@ -39,8 +45,6 @@
     align-items: center;
     gap: -30px; /* карточки перекрывают друг друга */
     padding: 80px 20px;
-    perspective: 1200px; /* Глубина 3д */
-    perspective-origin: 50% 50%;
     max-width: 1200px;
     margin: 0 auto;
 }

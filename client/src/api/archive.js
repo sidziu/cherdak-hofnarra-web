@@ -10,3 +10,11 @@ export const getArchive = async (signal) => {
 
     return(data);
 }
+
+export const getArchiveId = async (id, signal) => {
+    const response = await fetch(`${API_URL}/api/archive/${id}`, { signal });
+
+    if (!response.ok) throw new Error("Не удалось загрузить архивную запись");
+
+    return await response.json();
+}

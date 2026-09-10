@@ -33,23 +33,17 @@ function ArchiveDetail() {
                 setLoading(true);
                 setError("");
 
-                const [archivesData, perfsData] = await Promise.all([
-                    API.getArchive(controller.signal),
-                    API.getPerformances(controller.signal)
-                ]);
+                const archiveResponse = await API.getArchiveId(id, controller.signal);
+                const archiveData = Array.isArray(archiveResponse)
+                    ? archiveResponse[0]
+                    : archiveResponse;
 
-                const archiveData = archivesData.find(p => String(p.id) === String(id));
                 if (!archiveData) {
                     throw new Error("Спектакль не найден в архиве");
                 }
 
-                const foundPerf = perfsData.find(p => String(p.id) === String(id));
-                const eventsData = foundPerf && Array.isArray(foundPerf.performances)
-                    ? foundPerf.performances
-                    : [];
-
                 setPerformance(archiveData);
-                setEvents(eventsData);
+                setEvents(archiveData.events || []);
             } catch (err) {
                 if (err.name !== "AbortError") {
                     setError(err.message);
@@ -65,6 +59,9 @@ function ArchiveDetail() {
             controller.abort();
         };
     }, [id]);
+
+    console.log(events)
+    // console.log(performance)
 
     // Логика клавиш для фото (Esc для закрытия, стрелки для навигации)
     useEffect(() => {
@@ -129,7 +126,7 @@ function ArchiveDetail() {
                 <div className="detail-performance-info-container">
                     <div className="detail-header">
                         <span className="detail-genre">{performance.genre}</span>
-                        <span className="detail-rating">{performance.rating}</span>
+                        <span className="detail-rating">{performance.rating}+</span>
                     </div>
 
                     <h1 className="detail-title">{performance.title}</h1>
