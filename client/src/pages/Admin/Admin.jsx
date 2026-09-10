@@ -743,11 +743,13 @@ function ArchiveSection({ authFetch }) {
         const scene = formData.get("scene");
         if (!date) return;
 
+        const cleanDate = new Date(date).toISOString();
+
         try {
             const res = await authFetch(`/archive/${id}/date`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ date, scene })
+                body: JSON.stringify({ date: cleanDate, scene })
             });
             if (res.ok) {
                 e.target.reset();
