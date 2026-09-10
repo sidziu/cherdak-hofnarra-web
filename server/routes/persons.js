@@ -28,7 +28,7 @@ router.get("/", async function(request, response) {
             isActive: person.isActive,
             name: person.name,
             role: person.role,
-            contact_info: person.contact_info,
+            contact_info: person.contactInfo,
             image: person.image,
             imageUrl: `${SERVER_URL}/images/persons/${person.image}`
         }));
