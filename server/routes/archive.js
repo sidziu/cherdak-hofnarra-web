@@ -67,6 +67,63 @@ router.get("/", async function(request, response) {
     }
 });
 
+// Получить конкретуню запись в архиве
+router.get("/:id", async function(request, response) {
+    try {
+        const id = request.params.id;
+
+        const archive = await db.orm.public.Archive
+            .where({ selfId: id })
+            .include('actors', (actor) => actor.include('person'))
+            .include('events')
+            .all();
+
+        if(archive.length == 0){
+            return response.status(404).json({ message: 'Архивная запись не найдена.' })
+        }
+
+        const archiveWithUrls = archive.map(item => {
+            const mappedActors = item.actors.map(link => {
+                const person = link.person;
+                return {
+                    id: person.selfId,
+                    name: person.name,
+                    role: person.role,
+                    imageUrl: `${SERVER_URL}/images/persons/${person.image}`
+                }
+            });
+
+            return {
+                id: item.selfId,
+                title: item.title,
+                mainPhoto: item.mainPhoto,
+                genre: item.genre,
+                director: item.director,
+                description: item.description,
+                duration: item.duration,
+                rating: item.rating,
+                photos: item.photos,
+                videos: item.videos, // currently external URLs only
+                events: item.events.map(event => ({
+                    eventId: event.selfId,
+                    date: new Date(event.date.replace(' ', 'T') + 'Z'),
+                    scene: event.scene,
+                })),
+                imageUrl: `${SERVER_URL}/images/events/${item.image}`,
+                mainPhotoUrl: item.mainPhoto? `${SERVER_URL}/images/archive/${item.mainPhoto}` : undefined,
+                photoUrls: item.photos.map(photo => `${SERVER_URL}/images/archive/${photo}`), 
+                actors: mappedActors 
+            };
+        });
+
+        response.json(archiveWithUrls);
+
+    } catch (error) {
+        logger.error("Ошибка при чтении архива:", error);
+        response.status(500).json({ message: "Ошибка сервера при загрузке архива." });
+    }
+});
+
 // Удаление элемента архива по ID
 router.delete("/:id", authMiddleware, async function (request, response) {
     try {
