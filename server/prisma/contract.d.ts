@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1f9aca06be00bdd77f9616025225a5375b1cf34bbc6a2f2c57f59120f0dfadbc'>;
+  StorageHashBase<'e33d5c999b72779c9a153cadd1dd7ab184678c467d8877a5747c353241043c65'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -250,13 +250,18 @@ export type FieldOutputTypes = {
       readonly rating: CodecTypes['pg/text@1']['output'];
       readonly image: CodecTypes['pg/text@1']['output'];
       readonly mainPhoto: CodecTypes['pg/text@1']['output'] | null;
-      readonly dates: ReadonlyArray<TimestampString<0>>;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
     };
     readonly ArchiveActor: {
       readonly archiveId: CodecTypes['pg/uuid@1']['output'];
       readonly personId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly ArchiveEvent: {
+      readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'];
+      readonly scene: CodecTypes['pg/text@1']['output'];
+      readonly date: TimestampString<0>;
     };
     readonly Event: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
@@ -315,13 +320,18 @@ export type FieldInputTypes = {
       readonly rating: CodecTypes['pg/text@1']['input'];
       readonly image: CodecTypes['pg/text@1']['input'];
       readonly mainPhoto: CodecTypes['pg/text@1']['input'] | null;
-      readonly dates: ReadonlyArray<CodecTypes['pg/timestamp-string@1']['input']>;
       readonly videos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
     };
     readonly ArchiveActor: {
       readonly archiveId: CodecTypes['pg/uuid@1']['input'];
       readonly personId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly ArchiveEvent: {
+      readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'];
+      readonly scene: CodecTypes['pg/text@1']['input'];
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
     };
     readonly Event: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
@@ -371,7 +381,6 @@ export type FieldInputTypes = {
 export type StorageColumnTypes = {
   readonly public: {
     readonly archive: {
-      readonly dates: ReadonlyArray<TimestampString<0>>;
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly director: CodecTypes['pg/text@1']['output'] | null;
       readonly duration: CodecTypes['pg/int4@1']['output'];
@@ -387,6 +396,12 @@ export type StorageColumnTypes = {
     readonly archiveActor: {
       readonly archiveId: CodecTypes['pg/uuid@1']['output'];
       readonly personId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly archiveEvent: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'];
+      readonly date: TimestampString<0>;
+      readonly scene: CodecTypes['pg/text@1']['output'];
+      readonly selfId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['output'];
@@ -436,7 +451,6 @@ export type StorageColumnTypes = {
 export type StorageColumnInputTypes = {
   readonly public: {
     readonly archive: {
-      readonly dates: ReadonlyArray<CodecTypes['pg/timestamp-string@1']['input']>;
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly director: CodecTypes['pg/text@1']['input'] | null;
       readonly duration: CodecTypes['pg/int4@1']['input'];
@@ -452,6 +466,12 @@ export type StorageColumnInputTypes = {
     readonly archiveActor: {
       readonly archiveId: CodecTypes['pg/uuid@1']['input'];
       readonly personId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly archiveEvent: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'];
+      readonly date: CodecTypes['pg/timestamp-string@1']['input'];
+      readonly scene: CodecTypes['pg/text@1']['input'];
+      readonly selfId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly event: {
       readonly activeState: CodecTypes['pg/bool@1']['input'];
@@ -567,16 +587,6 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
-                readonly dates: {
-                  readonly nativeType: 'timestamp';
-                  readonly codecId: 'pg/timestamp-string@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/timestamp-string@1', readonly []>;
-                  };
-                  readonly typeParams: { readonly precision: 0 };
-                };
                 readonly videos: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
@@ -658,6 +668,59 @@ type ContractBase = Omit<
                     readonly columns: readonly ['selfId'];
                   };
                   readonly name: 'ArchiveActor_personId_fkey';
+                },
+              ];
+            };
+            readonly archiveEvent: {
+              columns: {
+                readonly selfId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly archiveId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly scene: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly date: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 0 };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['selfId']; readonly name: 'ArchiveEvent' };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'ArchiveEvent_archiveId_idx';
+                  readonly columns: readonly ['archiveId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archiveEvent';
+                    readonly columns: readonly ['archiveId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archive';
+                    readonly columns: readonly ['selfId'];
+                  };
+                  readonly name: 'ArchiveEvent_archiveId_fkey';
                 },
               ];
             };
@@ -976,6 +1039,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ArchiveActor';
     };
+    readonly archiveEvent: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ArchiveEvent';
+    };
     readonly registration: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Registration';
@@ -1027,14 +1094,6 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly dates: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamp-string@1';
-                };
-                readonly many: true;
-              };
               readonly videos: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1058,6 +1117,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['archiveId'];
                 };
               };
+              readonly events: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ArchiveEvent';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['selfId'];
+                  readonly targetFields: readonly ['archiveId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'archive';
@@ -1072,7 +1142,6 @@ type ContractBase = Omit<
                 readonly rating: { readonly column: 'rating' };
                 readonly image: { readonly column: 'image' };
                 readonly mainPhoto: { readonly column: 'mainPhoto' };
-                readonly dates: { readonly column: 'dates' };
                 readonly videos: { readonly column: 'videos' };
                 readonly photos: { readonly column: 'photos' };
               };
@@ -1119,6 +1188,53 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly archiveId: { readonly column: 'archiveId' };
                 readonly personId: { readonly column: 'personId' };
+              };
+            };
+          };
+          readonly ArchiveEvent: {
+            readonly fields: {
+              readonly selfId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly archiveId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly scene: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly date: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly typeParams: { readonly precision: 0 };
+                };
+              };
+            };
+            readonly relations: {
+              readonly archive: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Archive';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['archiveId'];
+                  readonly targetFields: readonly ['selfId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'archiveEvent';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly selfId: { readonly column: 'selfId' };
+                readonly archiveId: { readonly column: 'archiveId' };
+                readonly scene: { readonly column: 'scene' };
+                readonly date: { readonly column: 'date' };
               };
             };
           };

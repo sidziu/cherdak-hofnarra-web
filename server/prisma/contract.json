@@ -12,6 +12,10 @@
       "model": "ArchiveActor",
       "namespace": "public"
     },
+    "archiveEvent": {
+      "model": "ArchiveEvent",
+      "namespace": "public"
+    },
     "event": {
       "model": "Event",
       "namespace": "public"
@@ -39,14 +43,6 @@
         "models": {
           "Archive": {
             "fields": {
-              "dates": {
-                "many": true,
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamp-string@1",
-                  "kind": "scalar"
-                }
-              },
               "description": {
                 "nullable": true,
                 "type": {
@@ -142,13 +138,25 @@
                   "model": "ArchiveActor",
                   "namespace": "public"
                 }
+              },
+              "events": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "selfId"
+                  ],
+                  "targetFields": [
+                    "archiveId"
+                  ]
+                },
+                "to": {
+                  "model": "ArchiveEvent",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
               "fields": {
-                "dates": {
-                  "column": "dates"
-                },
                 "description": {
                   "column": "description"
                 },
@@ -247,6 +255,76 @@
               },
               "namespaceId": "public",
               "table": "archiveActor"
+            }
+          },
+          "ArchiveEvent": {
+            "fields": {
+              "archiveId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "date": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamp-string@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 0
+                  }
+                }
+              },
+              "scene": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "selfId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "archive": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "archiveId"
+                  ],
+                  "targetFields": [
+                    "selfId"
+                  ]
+                },
+                "to": {
+                  "model": "Archive",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "archiveId": {
+                  "column": "archiveId"
+                },
+                "date": {
+                  "column": "date"
+                },
+                "scene": {
+                  "column": "scene"
+                },
+                "selfId": {
+                  "column": "selfId"
+                }
+              },
+              "namespaceId": "public",
+              "table": "archiveEvent"
             }
           },
           "Event": {
@@ -727,22 +805,6 @@
           "table": {
             "archive": {
               "columns": {
-                "dates": {
-                  "codecId": "pg/timestamp-string@1",
-                  "default": {
-                    "kind": "literal",
-                    "value": []
-                  },
-                  "many": true,
-                  "nativeType": "timestamp",
-                  "noCheck": [
-                    "elementNotNull"
-                  ],
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 0
-                  }
-                },
                 "description": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -905,6 +967,74 @@
                   "personId"
                 ],
                 "name": "ArchiveActor_pkey"
+              },
+              "uniques": []
+            },
+            "archiveEvent": {
+              "columns": {
+                "archiveId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "date": {
+                  "codecId": "pg/timestamp-string@1",
+                  "nativeType": "timestamp",
+                  "nullable": false,
+                  "typeParams": {
+                    "precision": 0
+                  }
+                },
+                "scene": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "selfId": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "ArchiveEvent_archiveId_fkey",
+                  "onDelete": "cascade",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "archiveId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archiveEvent"
+                  },
+                  "target": {
+                    "columns": [
+                      "selfId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archive"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "archiveId"
+                  ],
+                  "name": "ArchiveEvent_archiveId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "selfId"
+                ],
+                "name": "ArchiveEvent"
               },
               "uniques": []
             },
@@ -1246,7 +1376,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "1f9aca06be00bdd77f9616025225a5375b1cf34bbc6a2f2c57f59120f0dfadbc"
+    "storageHash": "e33d5c999b72779c9a153cadd1dd7ab184678c467d8877a5747c353241043c65"
   },
   "capabilities": {
     "postgres": {

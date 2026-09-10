@@ -11,10 +11,10 @@ model Archive {
   rating      String
   image       String
   mainPhoto   String?
-  dates       TimestampString(0)[] @default([]) @noCheck(elementNotNull)
   videos      String[] @default([]) @noCheck(elementNotNull)
   photos      String[] @default([]) @noCheck(elementNotNull)
   actors      ArchiveActor[]
+  events      ArchiveEvent[]
 }
 
 model Performance {
@@ -60,6 +60,16 @@ model ArchiveActor {
 
   @@id([archiveId, personId], map: "ArchiveActor_pkey")
   @@index([personId], map: "ArchiveActor_personId_idx")
+}
+
+model ArchiveEvent {
+  selfId        Uuid           @id(map: "ArchiveEvent") @default(dbgenerated("gen_random_uuid()"))
+  archiveId     Uuid
+  scene         String
+  date          TimestampString(0)
+  archive       Archive    @relation(fields: [archiveId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "ArchiveEvent_archiveId_fkey")
+
+  @@index([archiveId], map: "ArchiveEvent_archiveId_idx")
 }
 
 model Registration {

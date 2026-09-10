@@ -94,3 +94,15 @@ CREATE TABLE "ArchiveActor" (
     CONSTRAINT "ArchiveActor_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("selfId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE INDEX "ArchiveActor_personId_idx" ON "ArchiveActor"("personId");
+
+-- 8. ArchiveEvent
+CREATE TABLE "ArchiveEvent" (
+    "selfId" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "archiveId" UUID NOT NULL,
+    "scene" TEXT NOT NULL,
+    "date" TIMESTAMP(0) NOT NULL,
+
+    CONSTRAINT "ArchiveEvent" PRIMARY KEY ("selfId"),
+    CONSTRAINT "ArchiveEvent_archiveId_fkey" FOREIGN KEY ("performanceId") REFERENCES "Performance"("selfId") ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE INDEX "ArchiveEvent_archiveId_idx" ON "Event"("performanceId");
