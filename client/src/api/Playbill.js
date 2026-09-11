@@ -47,6 +47,7 @@ export const getPlaybill = async (signal) => {
                         activestate: event.activestate,
                         date: formatPlaybillDate(event.date), // Вызываем функцию для конвертации даты в удобный формат
                         rawDate: event.date, // Сохраняем исходную дату для сортировки событий ( ниже )
+                        archiveId: perf.archiveId,
                     });
                     //console.log("rawPerformances", data); // Для проверки, что мы получаем с сервера
                 });

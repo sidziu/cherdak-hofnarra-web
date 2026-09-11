@@ -246,7 +246,7 @@ function Home() {
                 if (hasActivePerformance) {
                   openBooking(item.id);
                 } else {
-                  navigate(`/archive/${item.id}`);
+                  navigate(`/archive/${item.archiveId}`);
                 }
               };
 
