@@ -14,17 +14,12 @@ const formatPlaybillDate = (isoString) => {
 
 export const getPlaybill = async (signal) => {
 
-    const [response, archiveResponse] = await Promise.all([
-        fetch(`${API_URL}/api/performances`, { signal }),
-        fetch(`${API_URL}/api/archive`, { signal }),
-    ]);
+    const response = await fetch(`${API_URL}/api/performances`, { signal });
     //* Мы не запрашиваем файл events.json, так как сервер сам склеивает perf.и events, найти events можно по forEach
 
     if (!response.ok) throw new Error("Не удалось загрузить спектакли");
-    if (!archiveResponse.ok) throw new Error("Не удалось загрузить архив");
 
     const data = await response.json();
-    const archive = await archiveResponse.json();
         // response.json() - превращет ответ в текст (json), пишем await так как превращение в json может занять время :\
 
     // ---- //
@@ -38,14 +33,8 @@ export const getPlaybill = async (signal) => {
             // perf - переменная, которую только что создали, туда кладем временно один мпссив данных !спектакля!
             if (eventsList && Array.isArray(eventsList)) { //&& - "и", если оба условия верны | Проверяем есть ли вообще performances и является ли он массивом | Чтобы если кривые данные на сервере, сайт не упал, хотя вряд ли кнчн
                 eventsList.forEach((event) => {
-                    const archiveEntry = archive.find(
-                        (item) => item.image === perf.image
-                            || item.title === perf.title
-                    );
-
                     flatPlaybill.push({
                         performanceId: perf.id,
-                        archiveId: archiveEntry?.id,
                         eventId: event.eventID, // id - !события!
                         title: perf.title,
                         genre: perf.genre,
