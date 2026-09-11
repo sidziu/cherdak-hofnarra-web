@@ -38,6 +38,7 @@ router.get("/", async function(request, response) {
 
             return {
                 id: item.selfId,
+                performanceId: item.performanceId,
                 title: item.title,
                 image: item.image,
                 mainPhoto: item.mainPhoto,
@@ -96,6 +97,7 @@ router.get("/:id", async function(request, response) {
 
             return {
                 id: item.selfId,
+                performanceId: item.performanceId,
                 title: item.title,
                 image: item.image,
                 mainPhoto: item.mainPhoto,

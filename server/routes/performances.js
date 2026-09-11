@@ -37,6 +37,7 @@ router.get("/", async function(request, response) {
         const performances = await db.orm.public.Performance
             .select(
                 "selfId",
+                "archiveId",
                 "title",
                 "genre",
                 "director",
@@ -50,6 +51,75 @@ router.get("/", async function(request, response) {
 
         const groupedData = performances.map(perf => ({
             id: perf.selfId,
+            archiveId: perf.archiveId,
+            title: perf.title,
+            genre: perf.genre,
+            director: perf.director,
+            description: perf.description,
+            duration: perf.duration,
+            rating: perf.rating,
+            image: perf.image,
+            imageUrl: `${SERVER_URL}/images/events/${perf.image}`,
+            performances: perf.events.map(e => ({
+                eventID: e.selfId,
+                activestate: e.activeState,
+                scene: e.scene,
+                // преобразование к ISO 8601
+                // исходная строка: YYYY-MM-DD HH:MM:SS.SSS
+                date: new Date(e.date.replace(' ', 'T') + 'Z') 
+            }))
+        }));
+
+        response.json(groupedData);
+
+    } catch (error) {
+        logger.error("Ошибка чтения базы данных афиши:", error);
+        response.status(500).json({ message: "Ошибка сервера при загрузке афиши." });
+    }
+});
+
+// Получить список событий (спектакли) и связанных с ним постановок (время спектакля)
+router.get("/:id", async function(request, response) {
+    try {
+        const id = request.params.id;
+
+        const now = new Date();
+
+        // Деактивация просроченных ивентов
+        const deactivatedCount = await db.orm.public.Event
+            .where({ activeState: true })
+            .where( (e) => e.date.lt(now) )
+            .updateAndCount({ activeState: false });
+
+        if (deactivatedCount > 0) {
+            logger.info(
+                `Обнаружены устаревшие показы. ${deactivatedCount} переведено в неактивное состояние.`
+            );
+        }
+
+        const performances = await db.orm.public.Performance
+            .where({ selfId: id })
+            .select(
+                "selfId",
+                "archiveId",
+                "title",
+                "genre",
+                "director",
+                "description",
+                "duration",
+                "rating",
+                "image"
+            )
+            .include('events')
+            .all();
+
+        if (performances.length === 0) {
+            return response.status(404).json({ message: "Спектакль с указанным ID не найден." });
+        }
+
+        const groupedData = performances.map(perf => ({
+            id: perf.selfId,
+            archiveId: perf.archiveId,
             title: perf.title,
             genre: perf.genre,
             director: perf.director,
@@ -153,7 +223,6 @@ router.delete("/:id", authMiddleware, async function (request, response) {
 // Копирование спектакля в архив
 router.post("/:id/archive", authMiddleware, async function (request, response) {
     try {
-        let responseMessage = 'Спектакль скопирован в архив.\n';
         const id = request.params.id;
 
         const performanceToArchive = await db.orm.public.Performance
@@ -165,12 +234,13 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             return response.status(404).json({ message: "Спектакль не найден в базе данных афиши." });
         }
 
-        // Проверяем, есть ли одноимённый спектакль в архиве
+        // Проверяем, архивирован ли спектакль
         const isArchived = await db.orm.public.Archive
-            .where((a) => a.title.ilike(performanceToArchive.title))
+            .where({ performanceId: performanceToArchive.selfId })
             .first();
+        
         if (isArchived) {
-            responseMessage += 'Внимание: в архиве сейчас находится не менее 2-х копий этого спектакля.';
+            return response.status(400).json({ message: "Спектакль уже архивирован." });
         }
 
         const archivedPerformance = await db.orm.public.Archive.create({
@@ -181,6 +251,7 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             duration: performanceToArchive.duration,
             rating: performanceToArchive.rating,
             image: performanceToArchive.image,
+            performanceId: performanceToArchive.selfId,
         });
 
         if (performanceToArchive.events && performanceToArchive.events.length > 0) {
@@ -195,10 +266,14 @@ router.post("/:id/archive", authMiddleware, async function (request, response) {
             );
         }
 
+        await db.orm.public.Performance
+            .where({ selfId: id })
+            .update({ archiveId: archivedPerformance.selfId });
+
         logger.info(`Спектакль ID: ${id} скопирован в архив.`);
 
         response.status(201).json({ 
-            message: responseMessage,
+            message: 'Спектакль скопирован в архив.',
             isArchived: Boolean(isArchived),
             archivedPerformance: archivedPerformance 
         });

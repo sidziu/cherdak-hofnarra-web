@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e33d5c999b72779c9a153cadd1dd7ab184678c467d8877a5747c353241043c65'>;
+  StorageHashBase<'ff1baecad0e623557d9d7e2c71604a4a00edfcf5e815d10fa92e21a99ac6ca3c'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -242,6 +242,7 @@ export type FieldOutputTypes = {
   readonly public: {
     readonly Archive: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly performanceId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly genre: CodecTypes['pg/text@1']['output'] | null;
       readonly director: CodecTypes['pg/text@1']['output'] | null;
@@ -272,6 +273,7 @@ export type FieldOutputTypes = {
     };
     readonly Performance: {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly genre: CodecTypes['pg/text@1']['output'] | null;
       readonly director: CodecTypes['pg/text@1']['output'] | null;
@@ -312,6 +314,7 @@ export type FieldInputTypes = {
   readonly public: {
     readonly Archive: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly performanceId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly genre: CodecTypes['pg/text@1']['input'] | null;
       readonly director: CodecTypes['pg/text@1']['input'] | null;
@@ -342,6 +345,7 @@ export type FieldInputTypes = {
     };
     readonly Performance: {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly genre: CodecTypes['pg/text@1']['input'] | null;
       readonly director: CodecTypes['pg/text@1']['input'] | null;
@@ -387,6 +391,7 @@ export type StorageColumnTypes = {
       readonly genre: CodecTypes['pg/text@1']['output'] | null;
       readonly image: CodecTypes['pg/text@1']['output'];
       readonly mainPhoto: CodecTypes['pg/text@1']['output'] | null;
+      readonly performanceId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly rating: CodecTypes['pg/text@1']['output'];
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
@@ -411,6 +416,7 @@ export type StorageColumnTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly performance: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly director: CodecTypes['pg/text@1']['output'] | null;
       readonly duration: CodecTypes['pg/int4@1']['output'];
@@ -457,6 +463,7 @@ export type StorageColumnInputTypes = {
       readonly genre: CodecTypes['pg/text@1']['input'] | null;
       readonly image: CodecTypes['pg/text@1']['input'];
       readonly mainPhoto: CodecTypes['pg/text@1']['input'] | null;
+      readonly performanceId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly photos: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly rating: CodecTypes['pg/text@1']['input'];
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
@@ -481,6 +488,7 @@ export type StorageColumnInputTypes = {
       readonly selfId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly performance: {
+      readonly archiveId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly director: CodecTypes['pg/text@1']['input'] | null;
       readonly duration: CodecTypes['pg/int4@1']['input'];
@@ -547,6 +555,11 @@ type ContractBase = Omit<
                     readonly expression: 'gen_random_uuid()';
                   };
                 };
+                readonly performanceId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
                 readonly title: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
@@ -608,8 +621,29 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['selfId']; readonly name: 'Archive_pkey' };
               uniques: readonly [];
-              indexes: readonly [];
-              foreignKeys: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'archive_performanceId_idx_0e17f50f';
+                  readonly prefix: 'archive_performanceId_idx';
+                  readonly columns: readonly ['performanceId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archive';
+                    readonly columns: readonly ['performanceId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'performance';
+                    readonly columns: readonly ['selfId'];
+                  };
+                  readonly name: 'Archive_performanceId_fkey';
+                },
+              ];
             };
             readonly archiveActor: {
               columns: {
@@ -797,6 +831,11 @@ type ContractBase = Omit<
                     readonly expression: 'gen_random_uuid()';
                   };
                 };
+                readonly archiveId: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
                 readonly title: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
@@ -838,8 +877,29 @@ type ContractBase = Omit<
                 readonly name: 'Performance_pkey';
               };
               uniques: readonly [];
-              indexes: readonly [];
-              foreignKeys: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'performance_archiveId_idx_334e2044';
+                  readonly prefix: 'performance_archiveId_idx';
+                  readonly columns: readonly ['archiveId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'performance';
+                    readonly columns: readonly ['archiveId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'archive';
+                    readonly columns: readonly ['selfId'];
+                  };
+                  readonly name: 'Performance_archiveId_fkey';
+                },
+              ];
             };
             readonly person: {
               columns: {
@@ -1062,6 +1122,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly performanceId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
               readonly title: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1128,12 +1192,24 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['archiveId'];
                 };
               };
+              readonly performance: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Performance';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['performanceId'];
+                  readonly targetFields: readonly ['selfId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'archive';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly selfId: { readonly column: 'selfId' };
+                readonly performanceId: { readonly column: 'performanceId' };
                 readonly title: { readonly column: 'title' };
                 readonly genre: { readonly column: 'genre' };
                 readonly director: { readonly column: 'director' };
@@ -1307,6 +1383,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly archiveId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
               readonly title: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1337,6 +1417,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly archive: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Archive';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['archiveId'];
+                  readonly targetFields: readonly ['selfId'];
+                };
+              };
               readonly events: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -1354,6 +1445,7 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly selfId: { readonly column: 'selfId' };
+                readonly archiveId: { readonly column: 'archiveId' };
                 readonly title: { readonly column: 'title' };
                 readonly genre: { readonly column: 'genre' };
                 readonly director: { readonly column: 'director' };

@@ -85,6 +85,13 @@
                   "kind": "scalar"
                 }
               },
+              "performanceId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
               "photos": {
                 "many": true,
                 "nullable": false,
@@ -153,6 +160,21 @@
                   "model": "ArchiveEvent",
                   "namespace": "public"
                 }
+              },
+              "performance": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "performanceId"
+                  ],
+                  "targetFields": [
+                    "selfId"
+                  ]
+                },
+                "to": {
+                  "model": "Performance",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -174,6 +196,9 @@
                 },
                 "mainPhoto": {
                   "column": "mainPhoto"
+                },
+                "performanceId": {
+                  "column": "performanceId"
                 },
                 "photos": {
                   "column": "photos"
@@ -424,6 +449,13 @@
           },
           "Performance": {
             "fields": {
+              "archiveId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
               "description": {
                 "nullable": true,
                 "type": {
@@ -482,6 +514,21 @@
               }
             },
             "relations": {
+              "archive": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "archiveId"
+                  ],
+                  "targetFields": [
+                    "selfId"
+                  ]
+                },
+                "to": {
+                  "model": "Archive",
+                  "namespace": "public"
+                }
+              },
               "events": {
                 "cardinality": "1:N",
                 "on": {
@@ -500,6 +547,9 @@
             },
             "storage": {
               "fields": {
+                "archiveId": {
+                  "column": "archiveId"
+                },
                 "description": {
                   "column": "description"
                 },
@@ -835,6 +885,11 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "performanceId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
                 "photos": {
                   "codecId": "pg/text@1",
                   "default": {
@@ -881,8 +936,37 @@
                   "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "name": "Archive_performanceId_fkey",
+                  "onDelete": "cascade",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "performanceId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archive"
+                  },
+                  "target": {
+                    "columns": [
+                      "selfId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "performance"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "performanceId"
+                  ],
+                  "name": "archive_performanceId_idx_0e17f50f",
+                  "prefix": "archive_performanceId_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "selfId"
@@ -1117,6 +1201,11 @@
             },
             "performance": {
               "columns": {
+                "archiveId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
                 "description": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -1162,8 +1251,37 @@
                   "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "name": "Performance_archiveId_fkey",
+                  "onDelete": "setNull",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "archiveId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "performance"
+                  },
+                  "target": {
+                    "columns": [
+                      "selfId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "archive"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "archiveId"
+                  ],
+                  "name": "performance_archiveId_idx_334e2044",
+                  "prefix": "performance_archiveId_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "selfId"
@@ -1376,7 +1494,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "e33d5c999b72779c9a153cadd1dd7ab184678c467d8877a5747c353241043c65"
+    "storageHash": "ff1baecad0e623557d9d7e2c71604a4a00edfcf5e815d10fa92e21a99ac6ca3c"
   },
   "capabilities": {
     "postgres": {

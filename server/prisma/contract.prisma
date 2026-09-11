@@ -3,6 +3,7 @@
 
 model Archive {
   selfId      Uuid     @id(map: "Archive_pkey") @default(dbgenerated("gen_random_uuid()"))
+  performanceId Uuid?
   title       String
   genre       String?
   director    String?
@@ -15,10 +16,12 @@ model Archive {
   photos      String[] @default([]) @noCheck(elementNotNull)
   actors      ArchiveActor[]
   events      ArchiveEvent[]
+  performance Performance @relation(fields: [performanceId], references: [selfId], onDelete: Cascade, onUpdate: Cascade, map: "Archive_performanceId_fkey")
 }
 
 model Performance {
   selfId      Uuid    @id(map: "Performance_pkey") @default(dbgenerated("gen_random_uuid()"))
+  archiveId   Uuid?
   title       String
   genre       String?
   director    String?
@@ -27,6 +30,7 @@ model Performance {
   rating      String
   image       String
   events      Event[]
+  archive    Archive @relation(fields: [archiveId], references: [selfId], onDelete: SetNull, onUpdate: Cascade, map: "Performance_archiveId_fkey")
 }
 
 model Event {
