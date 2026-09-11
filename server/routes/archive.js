@@ -73,27 +73,11 @@ router.get("/:id", async function(request, response) {
     try {
         const id = request.params.id;
 
-        let archive = await db.orm.public.Archive
+        const archive = await db.orm.public.Archive
             .where({ selfId: id })
             .include('actors', (actor) => actor.include('person'))
             .include('events')
             .all();
-
-        // Performance and Archive have separate UUIDs after the PostgreSQL migration.
-        // Keep old links working by resolving a performance UUID to its archive copy.
-        if (archive.length === 0) {
-            const performance = await db.orm.public.Performance
-                .where({ selfId: id })
-                .first();
-
-            if (performance) {
-                archive = await db.orm.public.Archive
-                    .where({ image: performance.image })
-                    .include('actors', (actor) => actor.include('person'))
-                    .include('events')
-                    .all();
-            }
-        }
 
         if(archive.length == 0){
             return response.status(404).json({ message: 'Архивная запись не найдена.' })
