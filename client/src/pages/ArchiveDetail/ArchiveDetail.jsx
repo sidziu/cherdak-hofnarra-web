@@ -189,7 +189,7 @@ function ArchiveDetail() {
                     </div>
                 ) : (
                     <div className="archive-video-placeholder">
-                        <p>Видеозапись данного спектакля остутствует или будет добавлена позже.</p>
+                        <p>Видеозапись данного спектакля отcутствует или будет добавлена позже.</p>
                     </div>
                 )}
             </div>
@@ -212,7 +212,7 @@ function ArchiveDetail() {
                     </div>
                 ) : (
                     <div className="archive-photos-placeholder">
-                        <p className="no-data">Кадры с данного спектакля остутствуют или будут добавлены позже</p>
+                        <p className="no-data">Кадры с данного спектакля отcутствуют или будут добавлены позже</p>
                     </div>
                 )}
             </div>

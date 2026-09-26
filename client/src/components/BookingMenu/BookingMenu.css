@@ -1,3 +1,104 @@
+
+.url-booking-menu-container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 90px;
+}
+
+.load-url-booking-menu {
+    grid-area: 1/1;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3; /* Цвет фонового кольца */
+    border-top: 5px solid #b2b2b2; /* Цвет крутящейся активной части */
+    border-radius: 50%; /* Превращает квадрат в круг */
+    animation: spin 1s linear infinite;
+}
+
+.bg-url-booking-menu {
+    grid-area: 1/1;
+    z-index: 2;
+
+    border-radius: 30px;
+    width: 40%;
+    height: 80%;
+    background-color:  rgba(196, 184, 184, 0.25)
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.url-booking-menu {
+    grid-area: 1/1;
+    z-index: 3;
+    border-radius: 30px;
+    width: 40%;
+    height: 80%;
+}
+
+.close-url-booking-menu-panel {
+    white-space: pre;
+
+    font-family: Arial;
+    /* margin-top: 0px; */
+    /* margin-right: auto; */
+    margin-top: auto;
+    margin-bottom: 20px;
+    padding: 15px 35px;
+    background-color: #8b0000 !important;
+    color: #ffffff !important;
+    border: 2px solid #8b0000 !important;
+    border-radius: 30px; 
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    text-decoration: none; /* убрать подчеркивание  */
+    
+    display: flex;
+    justify-content: center;
+
+    grid-area: 1/1;
+    z-index: 4;
+
+    width: 40%;
+}
+
+.close-url-booking-menu-panel:hover {
+    transform: scale(1.02);
+    background-color: #a00000 !important;
+    border-color: #8b0000 !important;
+    /* transform: translateY(-3px); */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 748px) {
+    .url-booking-menu {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .bg-url-booking-menu {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .url-booking-menu-container{
+        margin-bottom: 0;
+    }
+}
+
+
 /* полупрозрачный фон на весь экран */
 .booking-menu-overlay {
     position: fixed;      /* Фиксируем поверх всего */
@@ -37,7 +138,7 @@
 }
 
 .menu-close-btn {
-    position: absolute;
+    /* position: absolute; */
     top: 15px;
     right: 25px;
     background: none;

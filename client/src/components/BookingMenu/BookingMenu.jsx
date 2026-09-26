@@ -47,6 +47,18 @@ function BookingMenu({
         }
         
     }, [isOpen, initialPerformanceId, initialEventId]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const scrollStop = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            document.body.style.overflow = scrollStop;
+        };
+    }, [isOpen]);
+
     // Пропсы в [] - условие чтобы useEffect срабатывал при их изменении, то есть если пользователь откроет форму, закроет, потом снова откроет, то данные будут сбрасываться и устанавливаться заново
 
     
@@ -139,7 +151,7 @@ function BookingMenu({
     
     return (
         <div className="booking-menu-overlay" onClick={onClose}>
-            <div className="booking-menu-content" onClick={(e) => e.stopPropagation()}>
+            {/*<div className="booking-menu-content" onClick={(e) => e.stopPropagation()}>
                 
                 <button className="menu-close-btn" onClick={onClose}>&times;</button>
                 
@@ -188,7 +200,7 @@ function BookingMenu({
                             />
                         </div>
 
-                        {/* ВЫБОР СПЕКТАКЛЯ */}
+                        {/* ВЫБОР СПЕКТАКЛЯ 
                         <div className="form-group">
                             <label>Спектакль:</label>
                             <select 
@@ -209,7 +221,7 @@ function BookingMenu({
                             </select>
                         </div>
 
-                        {/* ВЫБОР СЕАНСА */}
+                        {/* ВЫБОР СЕАНСА 
                         <div className="form-group">
                             <label>Дата и время:</label>
                             <select 
@@ -242,6 +254,21 @@ function BookingMenu({
                         </button>
                     </form>
                 )}
+            </div>*/}
+            <div className="url-booking-menu-container">
+                <div className="bg-url-booking-menu"></div>
+                <div className="load-url-booking-menu"></div>
+                <iframe
+                    className="url-booking-menu"
+                    src={'https://docs.google.com/forms/d/e/1FAIpQLSeUfkedNLHWREHyxgn2upRqdJS4CHZ_ulRfHUUX8h6C9sXEfA/viewform?usp=publish-editor'}
+                    width="40%"
+                    height="80%"
+                    frameBorder="0"
+                    // marginHeight="0"
+                    // marginWidth="0"
+                >
+            </iframe>
+            <div className="close-url-booking-menu-panel">Закрыть</div>
             </div>
         </div>
     );

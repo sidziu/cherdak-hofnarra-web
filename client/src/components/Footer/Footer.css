@@ -103,7 +103,7 @@
     max-width: 90px; 
     height: auto;
     border-radius: 12px;
-    cursor: pointer; 
+    /* cursor: pointer;  */
     margin-top: 10px;
 }
 
