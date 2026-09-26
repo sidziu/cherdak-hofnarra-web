@@ -1,0 +1,11 @@
+node_modules/
+logs/
+data/admin.json
+dist/
+dist-ssr/
+*.local
+public/
+migrations/
+
+npm-debug.log
+.env
