@@ -8,7 +8,6 @@
 
 ## Установка и запуск
 
-### Backend
 Требуется установленный Docker.
 
 1. Скопируйте файл .env.example. Переименуйте его в .env и заполните согласно образцу.
@@ -30,7 +29,7 @@ JWT_SECRET= # секретный ключ
 docker compose up
 ```
 
-3. Создайте администратора.
+3. Создайте администратора. Вводите команды по порядку.
 ```sh
 docker compose exec -it server sh
 npm run create_admin -- ваш_пароль
@@ -50,11 +49,4 @@ pg_restore -U username -h host -p port -d database_name -v backup.dump
 3. Восстановление с перезаписью:
 ```sh
 pg_restore -U username -h host -p port -d database_name --clean --if-exists -v backup.dump
-```
-
-### Frontend
-```bash
-cd client
-npm i
-npm run dev
 ```
