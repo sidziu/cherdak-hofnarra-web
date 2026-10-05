@@ -37,16 +37,20 @@ exit
 ```
 
 ### Дамп базы данных
-Дамп базы данных создаётся при помощи стандартных утилит PostgreSQL после верификации при помощи Prisma. Учтите: дамп не копирует фотографии, хранящиеся на сервере.
+Дамп базы данных создаётся при помощи утилит из контейнера с PostgreSQL. Дамп не копирует фотографии, хранящиеся на server/public.
 1. Создание дампа: 
 ```sh
-pg_dump -U username -h host -p port -d database_name -F c -b -v -f backup.dump
+docker exec -t cherdak_hofnarra_postgres pg_dump -U cherdak_user -d cherdak_db -F c -b -v -f /tmp/backup.dump
+docker cp cherdak_hofnarra_postgres:/tmp/backup.dump ./backup.dump
+docker exec cherdak_hofnarra_postgres rm /tmp/backup.dump
 ```
-2. Восстановление в существующую чистую БД:
+2. Восстановление из дампа:
 ```sh
-pg_restore -U username -h host -p port -d database_name -v backup.dump
+docker cp backup.dump cherdak_hofnarra_postgres:/backup.dump
+docker exec -it cherdak_hofnarra_postgres pg_restore -U cherdak_user -d cherdak_db --no-owner --no-acl -v --clean /backup.dump
+docker exec -it cherdak_hofnarra_postgres rm /backup.dump
 ```
-3. Восстановление с перезаписью:
+3. Восстановление сохранённой папки public:
 ```sh
-pg_restore -U username -h host -p port -d database_name --clean --if-exists -v backup.dump
+docker cp ./public/. cherdak_hofnarra_server:/app/public
 ```
