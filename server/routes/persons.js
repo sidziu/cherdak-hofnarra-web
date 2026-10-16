@@ -76,7 +76,7 @@ router.post("/", authMiddleware, uploadPerson.single("image"), async function (r
         response.status(500).json({ message: "Ошибка сервера при сохранении данных" });
 
         if(file){
-            await fs.unlink(file);
+            await fs.unlink(file.path);
         }
     }
 });
