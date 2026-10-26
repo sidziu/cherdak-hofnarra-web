@@ -9,6 +9,9 @@ import { readJsonFile } from "../utilities/json_io.js";
 const router = express.Router();
 
 const SECRET_KEY = process.env.JWT_SECRET || "default_secret";
+if (SECRET_KEY === "default_secret") {
+    logger.warn("ВНИМАНИЕ: JWT_SECRET не задан в переменных окружения!");
+}
 
 router.post("/login", async (req, res) => {
     try {

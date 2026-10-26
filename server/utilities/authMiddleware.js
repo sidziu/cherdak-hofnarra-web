@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import logger from "./logger.js";
 
 const SECRET_KEY = process.env.JWT_SECRET || "default_secret";
+if (SECRET_KEY === "default_secret") {
+    logger.warn("ВНИМАНИЕ: JWT_SECRET не задан в переменных окружения!");
+}
 
 export default (req, res, next) => {
     // Клиент должен присылать заголовок: Authorization: Bearer <token>
