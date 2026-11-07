@@ -3,7 +3,7 @@ import "./Home-css/Home.css";
 import { API } from "../../api/index.js";
 
 import logo from "../../assets/logotypes/new-logo-withouttext.webp"; // Лого (пока не используется в JSX)
-import startBg from "../../assets/backgrounds-home/bg1.webp"; // Фон первого экрана
+import startBg from "../../assets/backgrounds-home/bg2.webp"; // Фон первого экрана
 import BookingMenu from "../../components/BookingMenu/BookingMenu.jsx"; // Компонент модалки записи
 
 // Swiper и Atropos для карусели
@@ -161,7 +161,7 @@ function Home() {
         <div className="overlay-container">
           <div className="overlay-content-container">
             <h1 className="start-title">Чердак Хофнарра</h1>
-            <p className="start-subtitle">Театральная студия</p>
+            <p className="start-subtitle">Театральная мастерская</p>
             <h1 className="title-spbgasu">СПбГАСУ</h1>
 
             {error && <h1 className="error-text">Ошибка загрузки: {error}</h1>}

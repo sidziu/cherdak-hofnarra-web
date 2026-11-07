@@ -87,12 +87,12 @@ function About() {
                         <div className="persons-grid">
                             {activePersons.map((actor) => renderCard(actor))}
                         </div>
-                        <h1 className="line-divider"></h1>
+                        {/* <h1 className="line-divider"></h1> */}
                     </div>
         
                     {/* Секция неактивных персоналий */}
                     <div className="team-container">
-                        <h2 className="team-title">Бывшие участники</h2>
+                        <h2 className="team-title">Актёры прошлых лет</h2>
                         <div className="persons-grid">
                             {nonActivePersons.map((actor) => renderCard(actor))}
                         </div>

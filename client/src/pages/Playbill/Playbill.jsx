@@ -79,7 +79,7 @@ function Playbill() {
                 <div className="event-info">
                     <div className="event-title-rating">
                         <h2 className="event-card-title">{event.title}</h2>
-                        <p className="event-rating">{event.rating}</p>
+                        <p className="event-rating">{event.rating}+</p>
                     </div>
 
                     <p className="event-genre"> <strong>Жанр:</strong> {event.genre}</p>

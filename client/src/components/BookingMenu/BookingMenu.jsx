@@ -260,7 +260,7 @@ function BookingMenu({
                 <div className="load-url-booking-menu"></div>
                 <iframe
                     className="url-booking-menu"
-                    src={'https://docs.google.com/forms/d/e/1FAIpQLSeUfkedNLHWREHyxgn2upRqdJS4CHZ_ulRfHUUX8h6C9sXEfA/viewform?usp=publish-editor'}
+                    src={''}
                     width="40%"
                     height="80%"
                     frameBorder="0"
